@@ -251,7 +251,7 @@ function render(){
     d.className = 'card r-'+rk + (affordable?'':' unaffordable');
     d.innerHTML = `
       <div class="card-cost">${c.cost}</div>
-      <div class="card-art"><span>${c.emoji}</span></div>
+      <div class="card-art">${CARD_ART[c.name] || `<span style="font-size:44px;display:flex;align-items:center;justify-content:center;height:100%">${c.emoji}</span>`}</div>
       <div class="card-divider"></div>
       <div class="card-name-bar"><div class="card-name">${c.name}</div></div>
       <div class="card-textbox">
