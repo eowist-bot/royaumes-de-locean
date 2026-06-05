@@ -250,13 +250,17 @@ function render(){
     const d = document.createElement('div');
     d.className = 'card r-'+rk + (affordable?'':' unaffordable');
     d.innerHTML = `
-      <div class="card-art">${c.emoji}</div>
       <div class="card-cost">${c.cost}</div>
-      <div class="card-body">
-        <div class="card-name">${c.name}</div>
-        <div class="card-rarity rarity-${rk}">${c.rarity}</div>
-        <div class="card-stats"><span class="atk">⚔️${c.atk}</span><span class="hp">❤️${c.hp}</span></div>
-        ${c.keywords.length?`<div class="card-keywords">${c.keywords.join(' · ')}</div>`:''}
+      <div class="card-art"><span>${c.emoji}</span></div>
+      <div class="card-divider"></div>
+      <div class="card-name-bar"><div class="card-name">${c.name}</div></div>
+      <div class="card-textbox">
+        <div class="card-rarity-gem rarity-${rk}">${c.rarity.toUpperCase()}</div>
+        ${c.keywords.length?`<div class="card-keywords">${c.keywords.join(' · ')}</div>`:'<div class="card-keywords" style="color:#555">—</div>'}
+      </div>
+      <div class="card-footer">
+        <div class="stat-gem atk">${c.atk}</div>
+        <div class="stat-gem hp">${c.hp}</div>
       </div>`;
     if(affordable) d.onclick = ()=>playCard(i);
     handEl.appendChild(d);
