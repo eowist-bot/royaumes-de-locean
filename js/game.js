@@ -180,7 +180,7 @@ function makeUnit(c, opts={}){
   if(c.hasShield)      cls += ' shield-up';
   if(has(c,'Provocation')) cls += ' has-taunt';
   d.className = cls;
-  d.innerHTML = `<span class="u-emoji">${c.emoji}</span>
+  d.innerHTML = `<div class="u-art">${CARD_ART[c.name] || `<span class="u-emoji">${c.emoji}</span>`}</div>
     <div class="u-name">${c.name}</div>
     <div class="u-stats"><span class="u-atk">⚔️${c.atk}</span><span class="u-hp">❤️${c.currentHp}</span></div>
     ${c.keywords.length?`<div class="u-kw">${c.keywords.join(' · ')}</div>`:''}`;
