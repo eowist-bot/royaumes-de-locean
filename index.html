@@ -4,21 +4,36 @@
 <h1>🌊 Royaumes de l'Océan</h1>
 
 <div id='enemyZone'>
-<h2>⚓ Amiral IA</h2>
-<div>PV: <span id='enemyHp'></span></div>
-<div id='enemyBoard' class='board'></div>
+  <div id='enemyStats'>
+    <span>⚓ Amiral IA</span>
+    <span class='bar-label'>❤️ <span id='enemyHpVal'></span></span>
+    <div class='bar-wrap'><div class='bar-hp' id='enemyHpBar'></div></div>
+    <span class='bar-label'>💎 <span id='enemyManaVal'></span></span>
+    <div class='bar-wrap'><div class='bar-mana' id='enemyManaBar'></div></div>
+  </div>
+  <div id='enemyBoard' class='board'></div>
 </div>
 
 <hr>
 
-<h2>🚢 Capitaine</h2>
-<div id='playerBoard' class='board'></div>
-<div id='playerStats'>PV: <span id='playerHp'></span> | 💎 Mana: <span id='mana'></span>/<span id='maxMana'></span></div>
+<div id='playerZone'>
+  <h2>🚢 Capitaine</h2>
+  <div id='playerBoard' class='board'></div>
+  <div id='playerStats'>
+    <span class='bar-label'>❤️ <span id='playerHpVal'></span></span>
+    <div class='bar-wrap'><div class='bar-hp' id='playerHpBar'></div></div>
+    <span class='bar-label'>💎 <span id='manaVal'></span></span>
+    <div class='bar-wrap'><div class='bar-mana' id='manaBar'></div></div>
+  </div>
+</div>
 
 <h2>🃏 Main du Capitaine</h2>
 <div id='hand' class='hand'></div>
 
-<button id='endTurn'>Fin du tour</button>
+<div id='controls'>
+  <button id='endTurn'>Fin du tour</button>
+  <button id='cancelBtn'>Annuler</button>
+</div>
 <div id='log'></div>
 
 <script src='data/cards.js'></script>
