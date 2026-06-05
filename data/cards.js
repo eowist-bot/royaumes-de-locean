@@ -12,6 +12,6 @@ const CARD_POOL=[
   {name:'Anguille Électrique',emoji:'⚡',  cost:4,atk:3,hp:3,rarity:'Rare',     keywords:['Poison']},
   {name:'Baleine Géante',    emoji:'🐋',   cost:5,atk:3,hp:8,rarity:'Épique',   keywords:['Provocation']},
   {name:'Kraken des Abysses',emoji:'🐙',   cost:5,atk:5,hp:5,rarity:'Épique',   keywords:[]},
-  {name:'Gardien Sacré',     emoji:'🦁',   cost:6,atk:4,hp:6,rarity:'Légendaire',keywords:['Provocation','Bouclier divin']},
+  {name:'Gardien des Abysses',emoji:'🦭',   cost:6,atk:4,hp:6,rarity:'Légendaire',keywords:['Provocation','Bouclier divin']},
   {name:'Dragon Marin',      emoji:'🐉',   cost:7,atk:10,hp:8,rarity:'Légendaire',keywords:['Charge']},
 ];

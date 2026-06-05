@@ -1,38 +1,45 @@
 <!DOCTYPE html><html lang='fr'><head>
 <meta charset='UTF-8'><title>Royaumes de l'Océan</title>
 <link rel='stylesheet' href='css/style.css'></head><body>
+
 <h1>🌊 Royaumes de l'Océan</h1>
 
-<div id='enemyZone'>
-  <div id='enemyStats'>
-    <span>⚓ Amiral IA</span>
-    <span class='bar-label'>❤️ <span id='enemyHpVal'></span></span>
-    <div class='bar-wrap'><div class='bar-hp' id='enemyHpBar'></div></div>
-    <span class='bar-label'>💎 <span id='enemyManaVal'></span></span>
-    <div class='bar-wrap'><div class='bar-mana' id='enemyManaBar'></div></div>
+<div class='hero-zone' id='enemyZone'>
+  <div class='hero-header' id='enemyHeader'>
+    <div class='hero-avatar enemy'>⚓</div>
+    <div>
+      <div class='hero-name'>Amiral Maelström</div>
+      <div class='stats-row'>
+        <div class='stat-line'><span class='stat-icon'>❤️</span><span class='stat-val' id='enemyHpVal'></span><div class='bar-wrap'><div class='bar-hp' id='enemyHpBar'></div></div></div>
+        <div class='stat-line'><span class='stat-icon'>💎</span><span class='stat-val' id='enemyManaVal'></span><div class='bar-wrap'><div class='bar-mana' id='enemyManaBar'></div></div></div>
+      </div>
+    </div>
   </div>
   <div id='enemyBoard' class='board'></div>
 </div>
 
 <hr>
 
-<div id='playerZone'>
-  <h2>🚢 Capitaine</h2>
-  <div id='playerBoard' class='board'></div>
-  <div id='playerStats'>
-    <span class='bar-label'>❤️ <span id='playerHpVal'></span></span>
-    <div class='bar-wrap'><div class='bar-hp' id='playerHpBar'></div></div>
-    <span class='bar-label'>💎 <span id='manaVal'></span></span>
-    <div class='bar-wrap'><div class='bar-mana' id='manaBar'></div></div>
+<div class='hero-zone' id='playerZone'>
+  <div class='hero-header'>
+    <div class='hero-avatar player'>🚢</div>
+    <div>
+      <div class='hero-name'>Capitaine Aurore</div>
+      <div class='stats-row'>
+        <div class='stat-line'><span class='stat-icon'>❤️</span><span class='stat-val' id='playerHpVal'></span><div class='bar-wrap'><div class='bar-hp' id='playerHpBar'></div></div></div>
+        <div class='stat-line'><span class='stat-icon'>💎</span><span class='stat-val' id='manaVal'></span><div class='bar-wrap'><div class='bar-mana' id='manaBar'></div></div></div>
+      </div>
+    </div>
   </div>
+  <div id='playerBoard' class='board'></div>
 </div>
 
-<h2>🃏 Main du Capitaine</h2>
+<h2 style='font-family:Cinzel,serif;font-size:15px;color:#c9a84c;letter-spacing:2px;margin:14px 0 4px'>🃏 Main du Capitaine</h2>
 <div id='hand' class='hand'></div>
 
 <div id='controls'>
-  <button id='endTurn'>Fin du tour</button>
-  <button id='cancelBtn'>Annuler</button>
+  <button id='endTurn'>⚔️ Fin du tour</button>
+  <button id='cancelBtn'>✕ Annuler</button>
 </div>
 <div id='log'></div>
 

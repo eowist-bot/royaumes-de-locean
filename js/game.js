@@ -107,7 +107,7 @@ function enemyTurn(){
     } else if(!player.board.some(c=>has(c,'Provocation'))){
       // Attaque directe au héros
       log(`🤖 ${attacker.name} attaque votre héros !`, 'log-enemy');
-      dealDamage(attacker, player);
+      dealDamage(attacker, player, true);
     }
   });
 }
@@ -166,19 +166,38 @@ function endTurn(){
 }
 
 // --- Rendu ---
+function rarityKey(r){
+  return r==='Légendaire'?'legendaire':r==='Épique'?'epique':r==='Rare'?'rare':'commune';
+}
+
+function makeUnit(c, opts={}){
+  const d = document.createElement('div');
+  let cls = 'unit';
+  if(opts.selected)    cls += ' selected';
+  if(opts.canAttack)   cls += ' can-attack';
+  if(opts.exhausted)   cls += ' exhausted';
+  if(opts.validTarget) cls += ' valid-target';
+  if(c.hasShield)      cls += ' shield-up';
+  if(has(c,'Provocation')) cls += ' has-taunt';
+  d.className = cls;
+  d.innerHTML = `<span class="u-emoji">${c.emoji}</span>
+    <div class="u-name">${c.name}</div>
+    <div class="u-stats"><span class="u-atk">⚔️${c.atk}</span><span class="u-hp">❤️${c.currentHp}</span></div>
+    ${c.keywords.length?`<div class="u-kw">${c.keywords.join(' · ')}</div>`:''}`;
+  return d;
+}
+
 function render(){
-  const hasTaunt = player.board.some(c=>has(c,'Provocation'));
+  // Stats barres
+  document.getElementById('playerHpVal').textContent  = player.hp+'/'+MAX_HP;
+  document.getElementById('playerHpBar').style.width  = Math.max(0,player.hp/MAX_HP*100)+'%';
+  document.getElementById('manaVal').textContent       = player.mana+'/'+player.maxMana;
+  document.getElementById('manaBar').style.width       = player.maxMana?Math.max(0,player.mana/player.maxMana*100)+'%':'0%';
 
-  // Stats avec barres
-  document.getElementById('playerHpVal').textContent = player.hp;
-  document.getElementById('playerHpBar').style.width = Math.max(0,player.hp/MAX_HP*100)+'%';
-  document.getElementById('manaVal').textContent = player.mana+'/'+player.maxMana;
-  document.getElementById('manaBar').style.width = Math.max(0,player.mana/player.maxMana*100)+'%';
-
-  document.getElementById('enemyHpVal').textContent = enemy.hp;
-  document.getElementById('enemyHpBar').style.width = Math.max(0,enemy.hp/MAX_HP*100)+'%';
-  document.getElementById('enemyManaVal').textContent = enemy.mana+'/'+enemy.maxMana;
-  document.getElementById('enemyManaBar').style.width = Math.max(0,enemy.mana/enemy.maxMana*100)+'%';
+  document.getElementById('enemyHpVal').textContent   = enemy.hp+'/'+MAX_HP;
+  document.getElementById('enemyHpBar').style.width   = Math.max(0,enemy.hp/MAX_HP*100)+'%';
+  document.getElementById('enemyManaVal').textContent  = enemy.mana+'/'+enemy.maxMana;
+  document.getElementById('enemyManaBar').style.width  = enemy.maxMana?Math.max(0,enemy.mana/enemy.maxMana*100)+'%':'0%';
 
   // Bouton annuler
   document.getElementById('cancelBtn').style.display = selectedUnit ? 'inline-block' : 'none';
@@ -186,22 +205,17 @@ function render(){
   // Plateau joueur
   const pb = document.getElementById('playerBoard');
   pb.innerHTML = '';
-  player.board.forEach((c,i)=>{
+  player.board.forEach(c=>{
     const canAtk = !c.attacked && !c.justPlayed;
     const isSel  = selectedUnit === c;
-    const d = document.createElement('div');
-    d.className = 'unit'
-      + (isSel ? ' selected' : '')
-      + (canAtk && !selectedUnit ? ' can-attack' : '')
-      + (!canAtk && !isSel ? ' exhausted' : '')
-      + (c.hasShield ? ' shield' : '');
-    d.innerHTML = `<div class="emoji">${c.emoji}</div>
-      <div class="name">${c.name}</div>
-      <div class="stats">⚔️${c.atk} ❤️${c.currentHp}</div>
-      ${c.keywords.length?`<div style="font-size:9px;color:#aef">${c.keywords.join(', ')}</div>`:''}`;
-    d.onclick = () => {
-      if(selectedUnit === c){ selectedUnit=null; render(); return; }
-      if(!selectedUnit && canAtk){ selectedUnit=c; render(); return; }
+    const d = makeUnit(c,{
+      selected:   isSel,
+      canAttack:  canAtk && !selectedUnit,
+      exhausted:  !canAtk && !isSel,
+    });
+    d.onclick = ()=>{
+      if(selectedUnit===c){ selectedUnit=null; render(); return; }
+      if(!selectedUnit && canAtk){ selectedUnit=c; render(); }
     };
     pb.appendChild(d);
   });
@@ -211,27 +225,20 @@ function render(){
   eb.innerHTML = '';
   const enemyTaunts = enemy.board.filter(c=>has(c,'Provocation'));
   enemy.board.forEach(c=>{
-    const isValidTarget = selectedUnit && (enemyTaunts.length===0 || has(c,'Provocation'));
-    const d = document.createElement('div');
-    d.className = 'unit' + (isValidTarget?' valid-target':'') + (c.hasShield?' shield':'');
-    d.innerHTML = `<div class="emoji">${c.emoji}</div>
-      <div class="name">${c.name}</div>
-      <div class="stats">⚔️${c.atk} ❤️${c.currentHp}</div>
-      ${c.keywords.length?`<div style="font-size:9px;color:#aef">${c.keywords.join(', ')}</div>`:''}`;
-    if(isValidTarget) d.onclick = ()=>playerAttack(c);
+    const isValid = selectedUnit && (enemyTaunts.length===0 || has(c,'Provocation'));
+    const d = makeUnit(c,{validTarget:isValid});
+    if(isValid) d.onclick = ()=>playerAttack(c);
     eb.appendChild(d);
   });
 
-  // Cible héros ennemi (si sélectionné et pas de provocation)
-  const enemyStats = document.getElementById('enemyStats');
+  // Héros ennemi ciblable
+  const enemyHeader = document.getElementById('enemyHeader');
   if(selectedUnit && enemyTaunts.length===0){
-    enemyStats.style.cursor='crosshair';
-    enemyStats.style.outline='2px solid #e74c3c';
-    enemyStats.onclick = ()=>playerAttack(null,true);
+    enemyHeader.classList.add('targetable');
+    enemyHeader.onclick = ()=>playerAttack(null,true);
   } else {
-    enemyStats.style.cursor='';
-    enemyStats.style.outline='';
-    enemyStats.onclick = null;
+    enemyHeader.classList.remove('targetable');
+    enemyHeader.onclick = null;
   }
 
   // Main du joueur
@@ -239,14 +246,18 @@ function render(){
   handEl.innerHTML = '';
   player.hand.forEach((c,i)=>{
     const affordable = c.cost <= player.mana;
+    const rk = rarityKey(c.rarity);
     const d = document.createElement('div');
-    d.className = 'card' + (affordable?'':' unaffordable');
-    d.innerHTML = `<div class="art">${c.emoji}</div>
-      <div class="${rarityClass(c.rarity)}">${c.rarity}</div>
-      <h3>${c.name}</h3>
-      <div class="cost">💎 ${c.cost}</div>
-      <div>⚔️ ${c.atk} | ❤️ ${c.hp}</div>
-      ${c.keywords.length?`<div class="keywords">${c.keywords.join(' · ')}</div>`:''}`;
+    d.className = 'card r-'+rk + (affordable?'':' unaffordable');
+    d.innerHTML = `
+      <div class="card-art">${c.emoji}</div>
+      <div class="card-cost">${c.cost}</div>
+      <div class="card-body">
+        <div class="card-name">${c.name}</div>
+        <div class="card-rarity rarity-${rk}">${c.rarity}</div>
+        <div class="card-stats"><span class="atk">⚔️${c.atk}</span><span class="hp">❤️${c.hp}</span></div>
+        ${c.keywords.length?`<div class="card-keywords">${c.keywords.join(' · ')}</div>`:''}
+      </div>`;
     if(affordable) d.onclick = ()=>playCard(i);
     handEl.appendChild(d);
   });
