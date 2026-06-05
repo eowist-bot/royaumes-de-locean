@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang='fr'><head>
+<meta charset='UTF-8'><title>Royaumes de l'Océan</title>
+<link rel='stylesheet' href='css/style.css'></head><body>
+<h1>🌊 Royaumes de l'Océan</h1>
+
+<div id='enemyZone'>
+<h2>⚓ Amiral IA</h2>
+<div>PV: <span id='enemyHp'></span></div>
+<div id='enemyBoard' class='board'></div>
+</div>
+
+<hr>
+
+<div id='playerBoard' class='board'></div>
+<div id='playerStats'>🚢 PV: <span id='playerHp'></span> | 💎 Mana: <span id='mana'></span>/<span id='maxMana'></span></div>
+
+<h2>Main</h2>
+<div id='hand' class='hand'></div>
+
+<button id='endTurn'>Fin du tour</button>
+<div id='log'></div>
+
+<script src='data/cards.js'></script>
+<script src='js/game.js'></script>
+</body></html>

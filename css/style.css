@@ -1,0 +1,18 @@
+
+body{background:#0a2239;color:#eee;font-family:Verdana;padding:20px}
+.board,.hand{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}
+.card{
+width:220px;height:320px;background:linear-gradient(#f5f5f5,#ddd);
+border-radius:14px;padding:10px;color:#111;
+box-shadow:0 4px 12px rgba(0,0,0,.5);cursor:pointer}
+.art{
+height:140px;border-radius:8px;
+display:flex;align-items:center;justify-content:center;
+font-size:72px;background:linear-gradient(#1d3557,#457b9d);color:white}
+.unit{width:180px;background:#d9ed92;color:black;border-radius:10px;padding:8px}
+.legendary{color:#f4a261;font-weight:bold}
+.epic{color:#c77dff;font-weight:bold}
+.rare{color:#4cc9f0;font-weight:bold}
+.cost{color:#1565c0;font-weight:bold}
+#playerStats{font-size:22px;margin:10px 0}
+#log{height:220px;overflow:auto;border:1px solid #555;padding:8px;margin-top:10px}
