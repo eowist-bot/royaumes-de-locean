@@ -5,12 +5,92 @@ const MAX_HP = 30;
 const player = {hp:MAX_HP, mana:1, maxMana:1, hand:[], board:[]};
 const enemy  = {hp:MAX_HP, mana:1, maxMana:1, hand:[], board:[]};
 
-let selectedUnit = null; // unité joueur sélectionnée pour attaquer
+let selectedUnit = null;
+
+// ── Sons Web Audio ──
+const AC = new (window.AudioContext || window.webkitAudioContext)();
+
+function resumeAC(){ if(AC.state==='suspended') AC.resume(); }
+
+function playTone(cfg){
+  resumeAC();
+  const osc = AC.createOscillator();
+  const gain = AC.createGain();
+  osc.connect(gain); gain.connect(AC.destination);
+  osc.type = cfg.type || 'sine';
+  osc.frequency.setValueAtTime(cfg.freq, AC.currentTime);
+  if(cfg.freqEnd) osc.frequency.exponentialRampToValueAtTime(cfg.freqEnd, AC.currentTime + cfg.dur);
+  gain.gain.setValueAtTime(cfg.vol || 0.3, AC.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, AC.currentTime + cfg.dur);
+  osc.start(AC.currentTime);
+  osc.stop(AC.currentTime + cfg.dur);
+}
+
+function sndHit(){   // créature blessée
+  playTone({type:'sawtooth', freq:220, freqEnd:110, dur:0.18, vol:0.25});
+  setTimeout(()=>playTone({type:'sine', freq:180, freqEnd:90, dur:0.14, vol:0.15}), 60);
+}
+function sndDeath(){ // créature détruite
+  playTone({type:'sawtooth', freq:300, freqEnd:60, dur:0.4, vol:0.3});
+  setTimeout(()=>playTone({type:'square', freq:150, freqEnd:40, dur:0.35, vol:0.2}), 80);
+}
+function sndHeroHit(){ // héros touché — coup sourd
+  resumeAC();
+  const buf = AC.createBuffer(1, AC.sampleRate*0.4, AC.sampleRate);
+  const d = buf.getChannelData(0);
+  for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2)*0.6;
+  const src = AC.createBufferSource();
+  src.buffer = buf;
+  const filt = AC.createBiquadFilter();
+  filt.type='lowpass'; filt.frequency.value=180;
+  src.connect(filt); filt.connect(AC.destination);
+  src.start();
+  playTone({type:'sine', freq:90, freqEnd:40, dur:0.35, vol:0.4});
+}
+function sndVictory(){
+  [[523,0],[659,0.15],[784,0.3],[1046,0.5]].forEach(([f,t])=>
+    setTimeout(()=>playTone({type:'sine', freq:f, freqEnd:f*1.02, dur:0.4, vol:0.3}), t*1000));
+}
+function sndDefeat(){
+  [[392,0],[349,0.2],[311,0.4],[261,0.65]].forEach(([f,t])=>
+    setTimeout(()=>playTone({type:'sine', freq:f, freqEnd:f*0.97, dur:0.5, vol:0.25}), t*1000));
+}
+
+// ── Effets visuels ──
+function flashUnit(el, amount, isDeath=false){
+  el.classList.remove('hit');
+  void el.offsetWidth; // reflow pour relancer l'animation
+  el.classList.add('hit');
+  el.addEventListener('animationend', ()=>el.classList.remove('hit'), {once:true});
+  spawnDmgNumber(el, amount, isDeath);
+}
+
+function flashHero(zoneId, amount){
+  const zone = document.getElementById(zoneId);
+  if(!zone) return;
+  zone.classList.remove('hit');
+  void zone.offsetWidth;
+  zone.classList.add('hit');
+  zone.addEventListener('animationend', ()=>zone.classList.remove('hit'), {once:true});
+  spawnDmgNumber(zone, amount, false, true);
+}
+
+function spawnDmgNumber(anchor, amount, isDeath, isHero=false){
+  const num = document.createElement('div');
+  num.className = 'dmg-number' + (isHero?' hero':'') + (isDeath?' death':'');
+  num.textContent = isDeath ? '💀' : '-'+amount;
+  num.style.left = (anchor.offsetWidth/2 - 16) + 'px';
+  num.style.top  = '4px';
+  anchor.style.position = 'relative';
+  anchor.appendChild(num);
+  num.addEventListener('animationend', ()=>num.remove());
+}
 
 // --- Utilitaires ---
+let _uidCounter = 0;
 function cloneCard(){
   const c = CARD_POOL[Math.floor(Math.random()*CARD_POOL.length)];
-  return {...c, keywords:[...c.keywords], currentHp:c.hp, attacked:false, justPlayed:true, hasShield:c.keywords.includes('Bouclier divin')};
+  return {...c, keywords:[...c.keywords], currentHp:c.hp, attacked:false, justPlayed:true, hasShield:c.keywords.includes('Bouclier divin'), _uid:++_uidCounter};
 }
 function draw(t){ t.hand.push(cloneCard()); }
 function has(unit, kw){ return unit.keywords.includes(kw); }
@@ -30,24 +110,30 @@ function dealDamage(attacker, defender, defenderIsHero=false){
   if(defenderIsHero){
     const dmg = attacker.atk;
     defender.hp -= dmg;
+    sndHeroHit();
+    const zoneId = defender === player ? 'playerZone' : 'enemyZone';
+    flashHero(zoneId, dmg);
     log(`⚔️ ${attacker.name} attaque le héros ennemi pour ${dmg} dégâts !`, 'log-attack');
     return;
   }
-  // Bouclier divin absorbe une attaque
+  // Bouclier divin
   if(defender.hasShield){
     defender.hasShield = false;
     log(`🛡 ${defender.name} absorbe l'attaque grâce au Bouclier divin !`, 'log-event');
   } else {
     if(has(attacker,'Poison')){
       defender.currentHp = 0;
+      sndHit();
       log(`☠️ ${attacker.name} empoisonne ${defender.name} !`, 'log-attack');
     } else {
       defender.currentHp -= attacker.atk;
+      sndHit();
     }
   }
-  // Contre-attaque (si le défenseur survit et n'a pas de shield)
+  // Contre-attaque
   if(!attacker.hasShield && !has(defender,'Poison')){
     attacker.currentHp -= defender.atk;
+    if(defender.atk > 0) sndHit();
   } else if(attacker.hasShield){
     attacker.hasShield = false;
     log(`🛡 ${attacker.name} absorbe la contre-attaque !`, 'log-event');
@@ -55,19 +141,22 @@ function dealDamage(attacker, defender, defenderIsHero=false){
 }
 
 function cleanup(){
-  const died = (board) => board.filter(c => c.currentHp <= 0).map(c=>c.name);
-  const pDied = died(player.board);
-  const eDied = died(enemy.board);
-  pDied.forEach(n => log(`💀 ${n} est détruit !`, 'log-event'));
-  eDied.forEach(n => log(`💀 ${n} est détruit !`, 'log-event'));
+  const dying = [...player.board, ...enemy.board].filter(c=>c.currentHp<=0);
+  dying.forEach(c=>{
+    sndDeath();
+    log(`💀 ${c.name} est détruit !`, 'log-event');
+    // Flash visuel sur l'élément DOM si encore présent
+    const el = document.querySelector(`[data-uid="${c._uid}"]`);
+    if(el) flashUnit(el, 0, true);
+  });
   player.board = player.board.filter(c=>c.currentHp>0);
   enemy.board  = enemy.board.filter(c=>c.currentHp>0);
 }
 
 // --- Vérification fin de partie ---
 function checkEnd(){
-  if(enemy.hp<=0){ setTimeout(()=>{ alert('🏆 Victoire ! Vous avez coulé l\'Amiral !'); location.reload(); },100); return true; }
-  if(player.hp<=0){ setTimeout(()=>{ alert('💀 Défaite ! L\'Amiral a coulé votre flotte !'); location.reload(); },100); return true; }
+  if(enemy.hp<=0){  sndVictory(); setTimeout(()=>{ alert('🏆 Victoire ! Vous avez coulé l\'Amiral !'); location.reload(); },800); return true; }
+  if(player.hp<=0){ sndDefeat(); setTimeout(()=>{ alert('💀 Défaite ! L\'Amiral a coulé votre flotte !'); location.reload(); },800); return true; }
   return false;
 }
 
@@ -180,6 +269,7 @@ function makeUnit(c, opts={}){
   if(c.hasShield)      cls += ' shield-up';
   if(has(c,'Provocation')) cls += ' has-taunt';
   d.className = cls;
+  d.dataset.uid = c._uid;
   d.innerHTML = `<div class="u-art">${CARD_ART[c.name] || `<span class="u-emoji">${c.emoji}</span>`}</div>
     <div class="u-name">${c.name}</div>
     <div class="u-stats"><span class="u-atk">⚔️${c.atk}</span><span class="u-hp">❤️${c.currentHp}</span></div>
