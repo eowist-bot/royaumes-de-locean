@@ -26,13 +26,16 @@ function playTone(cfg){
   osc.stop(AC.currentTime + cfg.dur);
 }
 
-function sndHit(){   // créature blessée
-  playTone({type:'sawtooth', freq:220, freqEnd:110, dur:0.18, vol:0.25});
-  setTimeout(()=>playTone({type:'sine', freq:180, freqEnd:90, dur:0.14, vol:0.15}), 60);
+function sndHit(){   // créature blessée — impact doux
+  playTone({type:'sine', freq:520, freqEnd:320, dur:0.12, vol:0.12});
+  setTimeout(()=>playTone({type:'sine', freq:380, freqEnd:260, dur:0.1, vol:0.08}), 50);
 }
-function sndDeath(){ // créature détruite
-  playTone({type:'sawtooth', freq:300, freqEnd:60, dur:0.4, vol:0.3});
-  setTimeout(()=>playTone({type:'square', freq:150, freqEnd:40, dur:0.35, vol:0.2}), 80);
+function sndDeath(){ // créature détruite — glas solennel
+  resumeAC();
+  // Son principal — cloche grave descendante
+  playTone({type:'sine', freq:440, freqEnd:180, dur:0.7, vol:0.35});
+  setTimeout(()=>playTone({type:'sine', freq:330, freqEnd:110, dur:0.6, vol:0.25}), 120);
+  setTimeout(()=>playTone({type:'triangle', freq:220, freqEnd:80, dur:0.5, vol:0.2}), 260);
 }
 function sndHeroHit(){ // héros touché — coup sourd
   resumeAC();
@@ -142,10 +145,12 @@ function dealDamage(attacker, defender, defenderIsHero=false){
 
 function cleanup(){
   const dying = [...player.board, ...enemy.board].filter(c=>c.currentHp<=0);
-  dying.forEach(c=>{
-    sndDeath();
-    log(`💀 ${c.name} est détruit !`, 'log-event');
-    // Flash visuel sur l'élément DOM si encore présent
+  dying.forEach((c, i)=>{
+    // Décalage pour éviter la superposition si plusieurs morts simultanées
+    setTimeout(()=>{
+      sndDeath();
+      log(`💀 ${c.name} est détruit !`, 'log-event');
+    }, i * 180);
     const el = document.querySelector(`[data-uid="${c._uid}"]`);
     if(el) flashUnit(el, 0, true);
   });
