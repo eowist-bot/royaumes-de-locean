@@ -362,6 +362,18 @@ function render(){
   });
 }
 
+// --- Musique de fond ---
+const bgm = document.getElementById('bgm');
+bgm.volume = 0.35;
+
+function startBGM(){
+  bgm.play().catch(()=>{});
+  document.removeEventListener('pointerdown', startBGM);
+  document.removeEventListener('keydown', startBGM);
+}
+document.addEventListener('pointerdown', startBGM);
+document.addEventListener('keydown', startBGM);
+
 // --- Init ---
 for(let i=0;i<4;i++){ draw(player); draw(enemy); }
 document.getElementById('endTurn').onclick = endTurn;
