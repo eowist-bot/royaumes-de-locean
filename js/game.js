@@ -12,11 +12,13 @@ let _uidCounter    = 0;
 
 // ── Sons Web Audio ──
 const AC = new (window.AudioContext || window.webkitAudioContext)();
+const masterGain = AC.createGain();
+masterGain.connect(AC.destination);
 function resumeAC(){ if(AC.state==='suspended') AC.resume(); }
 function playTone(cfg){
   resumeAC();
   const osc = AC.createOscillator(), gain = AC.createGain();
-  osc.connect(gain); gain.connect(AC.destination);
+  osc.connect(gain); gain.connect(masterGain);
   osc.type = cfg.type||'sine';
   osc.frequency.setValueAtTime(cfg.freq, AC.currentTime);
   if(cfg.freqEnd) osc.frequency.exponentialRampToValueAtTime(cfg.freqEnd, AC.currentTime+cfg.dur);
@@ -40,7 +42,7 @@ function sndHeroHit(){
   for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2)*0.6;
   const src = AC.createBufferSource(); src.buffer=buf;
   const filt = AC.createBiquadFilter(); filt.type='lowpass'; filt.frequency.value=180;
-  src.connect(filt); filt.connect(AC.destination); src.start();
+  src.connect(filt); filt.connect(masterGain); src.start();
   playTone({type:'sine', freq:90, freqEnd:40, dur:0.35, vol:0.4});
 }
 function sndSpell(){
@@ -602,4 +604,89 @@ document.getElementById('cancelBtn').onclick  = ()=>{ selectedUnit=null; pending
 document.getElementById('heroPowerBtn').onclick = useHeroPower;
 
 log('🌊 La bataille commence ! Bonne chance, Capitaine !','log-event');
+
+// ── Bouton son ──
+let globalMuted = false;
+const muteBtn = document.getElementById('muteBtn');
+muteBtn.onclick = ()=>{
+  globalMuted = !globalMuted;
+  bgm.muted = globalMuted;
+  // Couper le gain de l'AudioContext via un nœud master
+  masterGain.gain.value = globalMuted ? 0 : 1;
+  muteBtn.textContent = globalMuted ? '🔇' : '🔊';
+  muteBtn.classList.toggle('muted', globalMuted);
+};
+
+// ── Infobulle ──
+const KEYWORD_DESC = {
+  'Charge':        'Peut attaquer dès le tour où elle est posée.',
+  'Provocation':   'Les ennemis doivent obligatoirement attaquer cette unité.',
+  'Poison':        'Détruit toute unité qu\'elle touche, quelle que soit ses PV.',
+  'Bouclier divin':'Absorbe la première attaque reçue sans dégâts.',
+};
+const TYPE_DESC = {
+  'Pirate':      'Synergie : +1 ATK par autre Pirate allié (max +3).',
+  'Bête marine': 'Synergie : +1 PV par autre Bête marine alliée (max +3).',
+  'Élémental':   'Synergie : +1/+1 par autre Élémental allié (max +2).',
+  'Sort':        'Sort — effet immédiat, pas d\'unité posée.',
+};
+const tip = document.getElementById('tooltip');
+let tipTimeout = null;
+
+function showTooltip(card, x, y){
+  const rk = rarityKey(card.rarity);
+  const typeColor = card.cardType==='Pirate'?'#ffb090':card.cardType==='Bête marine'?'#80c8ff':card.cardType==='Élémental'?'#c880ff':'#80ffb0';
+
+  let html = `<div class="tip-name">${card.name}</div>`;
+  if(card.cardType){
+    html += `<div class="tip-type" style="background:rgba(255,255,255,.08);color:${typeColor}">${card.cardType}</div>`;
+    if(TYPE_DESC[card.cardType])
+      html += `<div class="tip-section"><span class="tip-kw-desc">${TYPE_DESC[card.cardType]}</span></div>`;
+  }
+  if(card.isSpell && card.spellDesc){
+    html += `<hr><div class="tip-section"><span class="tip-spell">✨ ${card.spellDesc}</span></div>`;
+  }
+  if(card.battlecry){
+    html += `<hr><div class="tip-section"><span class="tip-bc">★ Battlecry : ${card.battlecry.desc}</span></div>`;
+  }
+  if(card.keywords && card.keywords.length){
+    html += '<hr>';
+    card.keywords.forEach(kw=>{
+      if(KEYWORD_DESC[kw])
+        html += `<div class="tip-section"><span class="tip-kw">${kw}</span><br><span class="tip-kw-desc">${KEYWORD_DESC[kw]}</span></div>`;
+    });
+  }
+  tip.innerHTML = html;
+
+  // Positionnement — éviter les bords d'écran
+  const tw = 230, th = tip.scrollHeight || 140;
+  let lx = x + 14, ly = y - 10;
+  if(lx + tw > window.innerWidth  - 10) lx = x - tw - 10;
+  if(ly + th > window.innerHeight - 10) ly = y - th;
+  tip.style.left = lx + 'px';
+  tip.style.top  = ly + 'px';
+  tip.classList.add('visible');
+}
+function hideTooltip(){ tip.classList.remove('visible'); }
+
+// Attacher les infobulles dynamiquement via délégation
+document.addEventListener('mousemove', e=>{
+  if(tip.classList.contains('visible'))
+    tip.style.left = (e.clientX+14)+'px', tip.style.top = (e.clientY-10)+'px';
+});
+document.addEventListener('mouseover', e=>{
+  const cardEl = e.target.closest('.card');
+  if(!cardEl){ hideTooltip(); return; }
+  clearTimeout(tipTimeout);
+  // Retrouver la carte par index dans la main
+  const hand = document.getElementById('hand');
+  const idx  = [...hand.children].indexOf(cardEl);
+  if(idx < 0){ hideTooltip(); return; }
+  const card = player.hand[idx];
+  if(!card){ hideTooltip(); return; }
+  tipTimeout = setTimeout(()=>showTooltip(card, e.clientX, e.clientY), 300);
+});
+document.addEventListener('mouseout', e=>{
+  if(e.target.closest('.card')){ clearTimeout(tipTimeout); hideTooltip(); }
+});
 render();
