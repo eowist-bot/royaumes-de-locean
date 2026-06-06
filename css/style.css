@@ -249,3 +249,70 @@ hr{border:none;border-top:1px solid var(--border);margin:8px 0}
   animation:float-up .9s ease forwards}
 .dmg-number.hero{font-size:28px;color:#ff8800;text-shadow:0 0 12px #ff4400,0 2px 4px rgba(0,0,0,.9)}
 .dmg-number.death{color:#ffffff;text-shadow:0 0 12px #aaaaff,0 2px 4px rgba(0,0,0,.9)}
+
+/* ── Bannière de transition de tour ── */
+#turn-banner{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.7);
+  background:linear-gradient(135deg,#071828ee,#0a1e34ee);
+  border:2px solid var(--gold);border-radius:16px;
+  padding:18px 48px;z-index:1000;pointer-events:none;
+  font-family:'Pirata One',cursive;font-size:32px;color:var(--gold);
+  letter-spacing:4px;text-shadow:0 0 20px rgba(201,168,76,.6);
+  opacity:0;transition:opacity .3s,transform .3s;white-space:nowrap}
+#turn-banner.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+
+/* ── Log différencié joueur / IA ── */
+#log div{padding:2px 6px;border-radius:4px;margin:1px 0}
+.log-player{
+  color:#7dd8f0;border-left:3px solid #3a9fc0;padding-left:8px !important;
+  background:rgba(58,159,192,.08)}
+.log-enemy{
+  color:#f0a06a;border-left:3px solid #c06830;padding-left:8px !important;
+  background:rgba(192,104,48,.08);text-align:right;border-left:none !important;
+  border-right:3px solid #c06830;padding-right:8px !important}
+.log-event{color:#f4d03f}
+.log-attack{color:#e87070}
+.log-play{color:#5dbb7c}
+
+/* ── Types de créatures ── */
+.u-type,.card-type-badge{
+  font-size:8px;font-weight:700;letter-spacing:.5px;
+  padding:1px 4px;border-radius:3px;display:inline-block;margin:1px 0}
+.type-Pirate,.type-Pirate{background:#7a2a0a;color:#ffb090}
+.type-Bête-marine,.type-Bête-marine{background:#0a3a6a;color:#80c8ff}
+.type-Élémental,.type-Élémental{background:#3a0a6a;color:#c880ff}
+.type-Sort{background:#0a4a2a;color:#80ffb0}
+
+/* Synergie active */
+.unit.synergy-active{box-shadow:0 0 0 2px #f4d03f,0 0 12px 4px rgba(244,208,63,.35) !important}
+.stat-gem.buffed,.u-atk.buffed{color:#ffe080 !important;text-shadow:0 0 6px #ffd700}
+
+/* ── Pouvoir héros ── */
+.hero-power-btn{
+  width:52px;height:52px;border-radius:50%;border:2px solid #c9a84c;
+  background:radial-gradient(circle at 35% 35%,#2a4a6a,#0d1e30);
+  font-size:20px;cursor:pointer;color:#fff;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:1px;transition:transform .15s,box-shadow .15s;padding:0}
+.hero-power-btn span{font-size:9px;color:#c9a84c;font-weight:700;line-height:1}
+.hero-power-btn.available{box-shadow:0 0 10px rgba(201,168,76,.5);border-color:#ffe080}
+.hero-power-btn.available:hover{transform:scale(1.12);box-shadow:0 0 18px rgba(201,168,76,.7)}
+.hero-power-btn.used{opacity:.4;cursor:not-allowed;border-color:#555}
+.hero-power-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* ── Deck count ── */
+.deck-count{font-size:10px;color:#7a9ab0;letter-spacing:.5px;text-align:center}
+
+/* ── Sorts ── */
+.card.spell .card-art{background:radial-gradient(ellipse,#1a0a40,#04020c)}
+.card.spell{background:linear-gradient(175deg,#0e0a28,#080418) !important}
+.spell-desc{color:#b0c8ff !important;font-style:italic;font-size:9px !important}
+.battlecry-desc{color:#ffe080;font-style:italic;font-size:8.5px}
+.card-footer.spell-footer{justify-content:center}
+.spell-type{font-family:'Cinzel',serif;font-size:9px;color:#b0c8ff;letter-spacing:2px}
+
+/* Stats endommagées */
+.u-hp.damaged{color:#ff8080 !important}
+
+/* Battlecry star sur unité */
+.u-bc{position:absolute;top:2px;right:3px;font-size:9px;color:#ffe080;line-height:1}
