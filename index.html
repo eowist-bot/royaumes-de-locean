@@ -1,25 +1,68 @@
 <!DOCTYPE html><html lang='fr'><head>
 <meta charset='UTF-8'><title>Royaumes de l'Océan</title>
 <link rel='stylesheet' href='css/style.css'></head><body>
-<h1>🌊 Royaumes de l'Océan</h1>
 
-<div id='enemyZone'>
-<h2>⚓ Amiral IA</h2>
-<div>PV: <span id='enemyHp'></span></div>
-<div id='enemyBoard' class='board'></div>
+<div id='turn-banner'></div>
+<h1>Royaumes de l'Océan</h1>
+
+<div id='game-layout'>
+  <div id='game-main'>
+
+    <div class='hero-zone' id='enemyZone'>
+      <div class='hero-header' id='enemyHeader'>
+        <div class='hero-avatar enemy'>⚓</div>
+        <div style='flex:1'>
+          <div class='hero-name'>Amiral Maelström</div>
+          <div class='stats-row'>
+            <div class='stat-line'><span class='stat-icon'>❤️</span><span class='stat-val' id='enemyHpVal'></span><div class='bar-wrap'><div class='bar-hp' id='enemyHpBar'></div></div></div>
+            <div class='stat-line'><span class='stat-icon'>💎</span><span class='stat-val' id='enemyManaVal'></span><div class='bar-wrap'><div class='bar-mana' id='enemyManaBar'></div></div></div>
+          </div>
+        </div>
+        <div class='deck-count' id='enemyDeckCount'></div>
+      </div>
+      <div id='enemyBoard' class='board'></div>
+    </div>
+
+    <hr>
+
+    <div class='hero-zone' id='playerZone'>
+      <div class='hero-header'>
+        <div class='hero-avatar player'>🚢</div>
+        <div style='flex:1'>
+          <div class='hero-name'>Capitaine Aurore</div>
+          <div class='stats-row'>
+            <div class='stat-line'><span class='stat-icon'>❤️</span><span class='stat-val' id='playerHpVal'></span><div class='bar-wrap'><div class='bar-hp' id='playerHpBar'></div></div></div>
+            <div class='stat-line'><span class='stat-icon'>💎</span><span class='stat-val' id='manaVal'></span><div class='bar-wrap'><div class='bar-mana' id='manaBar'></div></div></div>
+          </div>
+        </div>
+        <div style='display:flex;flex-direction:column;align-items:center;gap:6px'>
+          <button id='heroPowerBtn' class='hero-power-btn' title="Soins d'urgence — Récupère 2 PV (coût : 2💎)">💊<span>2💎</span></button>
+          <div class='deck-count' id='playerDeckCount'></div>
+        </div>
+      </div>
+      <div id='playerBoard' class='board'></div>
+    </div>
+
+    <h2 class='hand-title'>🃏 Main du Capitaine</h2>
+    <div id='hand' class='hand'></div>
+
+    <div id='controls'>
+      <button id='endTurn'>⚔️ Fin du tour</button>
+      <button id='cancelBtn'>✕ Annuler</button>
+      <button id='muteBtn' title='Couper / remettre le son'>🔊</button>
+    </div>
+
+  </div>
+
+  <aside id='sidebar'>
+    <div class='sidebar-title'>📜 Journal de combat</div>
+    <div id='log'></div>
+  </aside>
 </div>
 
-<hr>
-
-<div id='playerBoard' class='board'></div>
-<div id='playerStats'>🚢 PV: <span id='playerHp'></span> | 💎 Mana: <span id='mana'></span>/<span id='maxMana'></span></div>
-
-<h2>Main</h2>
-<div id='hand' class='hand'></div>
-
-<button id='endTurn'>Fin du tour</button>
-<div id='log'></div>
-
+<div id='tooltip'></div>
+<audio id='bgm' src='audio/musique-ambiance.mp3' loop preload='auto'></audio>
 <script src='data/cards.js'></script>
+<script src='data/card-art.js'></script>
 <script src='js/game.js'></script>
 </body></html>

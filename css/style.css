@@ -1,18 +1,346 @@
 
-body{background:#0a2239;color:#eee;font-family:Verdana;padding:20px}
-.board,.hand{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}
+@import url('https://fonts.googleapis.com/css2?family=Pirata+One&family=Cinzel:wght@600;700&family=Open+Sans:wght@400;600&display=swap');
+
+:root{
+  --bg:       #2e4a6a;
+  --surface:  #0d2137;
+  --border:   #2a5070;
+  --gold:     #c9a84c;
+  --common:   #8a9bb0;
+  --rare:     #4cc9f0;
+  --epic:     #b07aff;
+  --legendary:#f4a261;
+}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:#e8edf2;font-family:'Open Sans',sans-serif;
+  padding:16px;max-width:1300px;margin:0 auto}
+
+/* ── Layout deux colonnes ── */
+#game-layout{display:flex;gap:16px;align-items:flex-start}
+#game-main{flex:1;min-width:0}
+#sidebar{width:260px;flex-shrink:0;position:sticky;top:16px}
+.sidebar-title{font-family:'Cinzel',serif;font-size:13px;color:var(--gold);
+  letter-spacing:2px;margin-bottom:8px;text-align:center}
+.hand-title{font-family:'Cinzel',serif;font-size:15px;color:var(--gold);
+  letter-spacing:2px;margin:14px 0 4px}
+
+h1{text-align:center;font-family:'Pirata One',cursive;font-size:48px;
+  color:var(--gold);letter-spacing:4px;
+  text-shadow:0 0 30px rgba(201,168,76,.5),0 2px 6px rgba(0,0,0,.8);
+  margin:0 0 12px;line-height:1}
+
+/* ── Zones héros ── */
+.hero-zone{background:linear-gradient(135deg,#071828,#0a1e34);
+  border:1px solid var(--border);border-radius:14px;padding:14px;margin:8px 0;
+  box-shadow:0 4px 16px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06)}
+
+.hero-header{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.hero-avatar{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:30px;flex-shrink:0;
+  box-shadow:0 0 0 2px var(--gold),0 4px 12px rgba(0,0,0,.5)}
+.hero-avatar.enemy{background:radial-gradient(circle,#3b1a1a,#1a0a0a)}
+.hero-avatar.player{background:radial-gradient(circle,#1a2e4a,#0d1e30)}
+.hero-name{font-family:'Cinzel',serif;font-size:15px;color:var(--gold);letter-spacing:1px}
+
+/* Barres de stats */
+.stats-row{display:flex;flex-direction:column;gap:5px;flex:1}
+.stat-line{display:flex;align-items:center;gap:8px}
+.stat-icon{width:20px;text-align:center;font-size:13px}
+.stat-val{font-size:12px;min-width:38px;color:#bcd}
+.bar-wrap{flex:1;height:8px;background:rgba(0,0,0,.4);border-radius:4px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.06)}
+.bar-hp  {height:100%;background:linear-gradient(90deg,#1a7a3a,#27ae60);border-radius:4px;transition:width .4s}
+.bar-mana{height:100%;background:linear-gradient(90deg,#1a4a8a,#2980b9);border-radius:4px;transition:width .4s}
+
+/* ── Plateau ── */
+.board{display:flex;gap:8px;flex-wrap:wrap;min-height:96px;
+  padding:10px;border:2px dashed rgba(255,255,255,.08);border-radius:10px;
+  background:rgba(0,0,0,.15);margin:6px 0}
+
+/* ── Unités ── */
+.unit{
+  width:76px;border-radius:10px;padding:8px 5px 6px;
+  cursor:pointer;text-align:center;position:relative;
+  transition:transform .15s,box-shadow .15s;
+  font-size:11px;background:var(--surface);
+  border:1px solid var(--border);
+  box-shadow:0 3px 8px rgba(0,0,0,.4)}
+.unit:hover{transform:translateY(-5px);box-shadow:0 8px 18px rgba(0,0,0,.5)}
+.unit .u-emoji{font-size:28px;line-height:1.1;display:block}
+.unit .u-art{width:100%;height:46px;border-radius:6px;overflow:hidden;margin-bottom:3px}
+.unit .u-art svg{width:100%;height:100%;display:block}
+.unit .u-name{font-size:9px;font-weight:600;color:#c8d8e8;margin:3px 0 2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.unit .u-stats{display:flex;justify-content:center;gap:6px;font-size:11px;font-weight:700}
+.unit .u-atk{color:#e74c3c}
+.unit .u-hp {color:#2ecc71}
+.unit .u-kw {font-size:8px;color:#7fb3d3;margin-top:2px;line-height:1.2}
+
+/* États d'unité */
+.unit.can-attack {border-color:#27ae60;box-shadow:0 0 0 2px #27ae60,0 3px 8px rgba(0,0,0,.4)}
+.unit.selected   {border-color:#f4d03f;box-shadow:0 0 0 3px #f4d03f,0 -4px 0 0 #f4d03f;transform:translateY(-7px)}
+.unit.valid-target{border-color:#e74c3c;box-shadow:0 0 0 2px #e74c3c;animation:pulse .65s infinite alternate;cursor:crosshair}
+.unit.exhausted  {opacity:.5;filter:grayscale(.5)}
+.unit.shield-up::after{content:'🛡';position:absolute;top:-9px;right:-6px;font-size:13px;
+  filter:drop-shadow(0 0 4px gold)}
+@keyframes pulse{from{box-shadow:0 0 0 2px #e74c3c}to{box-shadow:0 0 10px 4px rgba(231,76,60,.6)}}
+
+/* Provocation */
+.unit.has-taunt{border-style:double;border-color:#e67e22;border-width:3px}
+
+/* ── Cartes en main ── */
+.hand{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0;padding:4px}
+
+/* Cadre de carte CCG */
 .card{
-width:220px;height:320px;background:linear-gradient(#f5f5f5,#ddd);
-border-radius:14px;padding:10px;color:#111;
-box-shadow:0 4px 12px rgba(0,0,0,.5);cursor:pointer}
-.art{
-height:140px;border-radius:8px;
-display:flex;align-items:center;justify-content:center;
-font-size:72px;background:linear-gradient(#1d3557,#457b9d);color:white}
-.unit{width:180px;background:#d9ed92;color:black;border-radius:10px;padding:8px}
-.legendary{color:#f4a261;font-weight:bold}
-.epic{color:#c77dff;font-weight:bold}
-.rare{color:#4cc9f0;font-weight:bold}
-.cost{color:#1565c0;font-weight:bold}
-#playerStats{font-size:22px;margin:10px 0}
-#log{height:220px;overflow:auto;border:1px solid #555;padding:8px;margin-top:10px}
+  width:130px;height:210px;border-radius:10px;cursor:pointer;position:relative;
+  display:flex;flex-direction:column;
+  box-shadow:0 8px 24px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.08);
+  transition:transform .2s,box-shadow .2s;
+  overflow:visible;flex-shrink:0}
+.card:hover:not(.unaffordable){transform:translateY(-14px) scale(1.06) rotate(-1deg);
+  box-shadow:0 20px 40px rgba(0,0,0,.8),0 0 20px var(--card-glow,rgba(255,255,255,.1))}
+.card.unaffordable{opacity:.38;cursor:not-allowed;filter:grayscale(.9)}
+
+/* Cadres par rareté */
+.card.r-commune{
+  background:linear-gradient(175deg,#2a3a4e 0%,#1a2838 50%,#111e2b 100%);
+  border:2px solid #4a6a88;--card-glow:rgba(138,155,176,.3)}
+.card.r-rare{
+  background:linear-gradient(175deg,#0e2a50 0%,#0a1e3c 50%,#061428 100%);
+  border:2px solid var(--rare);--card-glow:rgba(76,201,240,.4)}
+.card.r-epique{
+  background:linear-gradient(175deg,#2a0e50 0%,#1e0a3c 50%,#140628 100%);
+  border:2px solid var(--epic);--card-glow:rgba(176,122,255,.4)}
+.card.r-legendaire{
+  background:linear-gradient(175deg,#4a2a08 0%,#3a1e06 50%,#281404 100%);
+  border:2px solid var(--legendary);--card-glow:rgba(244,162,97,.5);
+  box-shadow:0 8px 24px rgba(0,0,0,.7),0 0 12px rgba(244,162,97,.2),inset 0 1px 0 rgba(255,255,255,.08)}
+
+/* Coin supérieur : gemme de mana */
+.card-cost{
+  position:absolute;top:-10px;left:-10px;z-index:10;
+  width:30px;height:30px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#5ba8ff,#1255b0 60%,#0a2d6e);
+  border:2px solid #6ec6ff;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cinzel',serif;font-size:14px;font-weight:700;color:#fff;
+  box-shadow:0 0 10px rgba(91,168,255,.6),0 2px 6px rgba(0,0,0,.6)}
+
+/* Zone d'illustration */
+.card-art{
+  margin:6px 6px 0;border-radius:6px;height:82px;
+  position:relative;overflow:hidden;flex-shrink:0}
+.card-art svg{width:100%;height:100%;display:block}
+.card-art::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:24px;
+  background:linear-gradient(transparent,rgba(0,0,0,.65));pointer-events:none;z-index:1}
+
+/* Séparateur ornemental */
+.card-divider{
+  height:2px;margin:0 6px;flex-shrink:0;
+  background:var(--div-color,rgba(74,106,136,.6));
+  position:relative}
+.card-divider::before,.card-divider::after{
+  content:'◆';position:absolute;top:50%;transform:translateY(-50%);
+  font-size:6px;color:var(--div-color,#4a6a88)}
+.card-divider::before{left:4px}
+.card-divider::after{right:4px}
+.r-rare      .card-divider{--div-color:#4cc9f0}
+.r-epique    .card-divider{--div-color:#b07aff}
+.r-legendaire .card-divider{--div-color:#c9a84c}
+
+/* Bandeau du nom */
+.card-name-bar{
+  padding:3px 8px;text-align:center;flex-shrink:0;
+  background:rgba(0,0,0,.4)}
+.card-name{
+  font-family:'Cinzel',serif;font-size:8.5px;font-weight:700;
+  color:#e8edf2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  text-shadow:0 1px 3px rgba(0,0,0,.8)}
+
+/* Zone de texte / mots-clés */
+.card-textbox{
+  flex:1;margin:0 5px;padding:3px 5px;
+  background:rgba(0,0,0,.3);border-radius:4px;
+  border:1px solid rgba(255,255,255,.06);
+  display:flex;flex-direction:column;justify-content:center}
+.card-rarity-gem{
+  font-size:7.5px;font-weight:700;text-align:center;letter-spacing:.5px;margin-bottom:2px}
+.rarity-commune   {color:var(--common)}
+.rarity-rare      {color:var(--rare)}
+.rarity-epique    {color:var(--epic)}
+.rarity-legendaire{color:var(--legendary)}
+.card-keywords{font-size:8px;color:#9fcfe8;text-align:center;line-height:1.4;
+  font-style:italic}
+
+/* Piédestal stats (ATK/HP) */
+.card-footer{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:3px 4px 5px;flex-shrink:0}
+.stat-gem{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cinzel',serif;font-size:13px;font-weight:700;
+  box-shadow:0 2px 6px rgba(0,0,0,.6)}
+.stat-gem.atk{
+  background:radial-gradient(circle at 35% 35%,#ff7a7a,#b01212 60%,#6e0a0a);
+  border:2px solid #ff9090;color:#fff}
+.stat-gem.hp{
+  background:radial-gradient(circle at 35% 35%,#7aff9a,#12b032 60%,#0a6e1e);
+  border:2px solid #90ffaa;color:#fff}
+
+/* ── Contrôles ── */
+#controls{display:flex;gap:10px;margin:10px 0}
+button{padding:9px 22px;border:none;border-radius:9px;cursor:pointer;
+  font-size:13px;font-weight:700;letter-spacing:.5px;transition:background .15s,transform .1s}
+button:active{transform:scale(.97)}
+#endTurn{background:linear-gradient(135deg,#c0392b,#e74c3c);color:#fff;
+  box-shadow:0 4px 10px rgba(231,76,60,.3)}
+#endTurn:hover{background:linear-gradient(135deg,#e74c3c,#ff6b6b)}
+#cancelBtn{background:#2a3a4a;color:#aac;border:1px solid #3a5068;display:none}
+#cancelBtn:hover{background:#3a4a5a}
+
+/* ── Journal ── */
+#log{height:520px;overflow-y:auto;border:1px solid var(--border);padding:8px 10px;
+  border-radius:10px;background:#050f1c;font-size:12px;line-height:1.6;
+  box-shadow:0 4px 16px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.04)}
+#log::-webkit-scrollbar{width:6px}
+#log::-webkit-scrollbar-thumb{background:#1a3a5c;border-radius:3px}
+.log-attack{color:#e87070}
+.log-play  {color:#5dbb7c}
+.log-event {color:#f4d03f}
+.log-enemy {color:#e6994d}
+
+hr{border:none;border-top:1px solid var(--border);margin:8px 0}
+
+/* Cible héros */
+.hero-header.targetable{cursor:crosshair;outline:2px solid #e74c3c;border-radius:10px;
+  animation:pulse .65s infinite alternate}
+
+/* ── Effets de dégâts ── */
+@keyframes dmg-shake{
+  0%{transform:translateX(0)}
+  20%{transform:translateX(-5px)}
+  40%{transform:translateX(5px)}
+  60%{transform:translateX(-4px)}
+  80%{transform:translateX(3px)}
+  100%{transform:translateX(0)}
+}
+@keyframes dmg-flash{
+  0%,100%{filter:none}
+  30%{filter:brightness(3) saturate(0) sepia(1) hue-rotate(-30deg)}
+}
+@keyframes float-up{
+  0%{opacity:1;transform:translateY(0) scale(1)}
+  100%{opacity:0;transform:translateY(-48px) scale(1.3)}
+}
+@keyframes hero-flash{
+  0%,100%{box-shadow:none}
+  40%{box-shadow:0 0 30px 10px rgba(231,76,60,.8)}
+}
+.unit.hit{animation:dmg-shake .35s ease,dmg-flash .35s ease}
+.hero-zone.hit{animation:hero-flash .5s ease}
+.dmg-number{
+  position:absolute;z-index:999;pointer-events:none;
+  font-family:'Cinzel',serif;font-weight:700;font-size:22px;
+  color:#ff4444;text-shadow:0 0 8px #ff0000,0 2px 4px rgba(0,0,0,.9);
+  animation:float-up .9s ease forwards}
+.dmg-number.hero{font-size:28px;color:#ff8800;text-shadow:0 0 12px #ff4400,0 2px 4px rgba(0,0,0,.9)}
+.dmg-number.death{color:#ffffff;text-shadow:0 0 12px #aaaaff,0 2px 4px rgba(0,0,0,.9)}
+
+/* ── Bannière de transition de tour ── */
+#turn-banner{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.7);
+  background:linear-gradient(135deg,#071828ee,#0a1e34ee);
+  border:2px solid var(--gold);border-radius:16px;
+  padding:18px 48px;z-index:1000;pointer-events:none;
+  font-family:'Pirata One',cursive;font-size:32px;color:var(--gold);
+  letter-spacing:4px;text-shadow:0 0 20px rgba(201,168,76,.6);
+  opacity:0;transition:opacity .3s,transform .3s;white-space:nowrap}
+#turn-banner.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+
+/* ── Log différencié joueur / IA ── */
+#log div{padding:2px 6px;border-radius:4px;margin:1px 0}
+.log-player{
+  color:#7dd8f0;border-left:3px solid #3a9fc0;padding-left:8px !important;
+  background:rgba(58,159,192,.08)}
+.log-enemy{
+  color:#f0a06a;border-left:3px solid #c06830;padding-left:8px !important;
+  background:rgba(192,104,48,.08);text-align:right;border-left:none !important;
+  border-right:3px solid #c06830;padding-right:8px !important}
+.log-event{color:#f4d03f}
+.log-attack{color:#e87070}
+.log-play{color:#5dbb7c}
+
+/* ── Types de créatures ── */
+.u-type,.card-type-badge{
+  font-size:8px;font-weight:700;letter-spacing:.5px;
+  padding:1px 4px;border-radius:3px;display:inline-block;margin:1px 0}
+.type-Pirate,.type-Pirate{background:#7a2a0a;color:#ffb090}
+.type-Bête-marine,.type-Bête-marine{background:#0a3a6a;color:#80c8ff}
+.type-Élémental,.type-Élémental{background:#3a0a6a;color:#c880ff}
+.type-Sort{background:#0a4a2a;color:#80ffb0}
+
+/* Synergie active */
+.unit.synergy-active{box-shadow:0 0 0 2px #f4d03f,0 0 12px 4px rgba(244,208,63,.35) !important}
+.stat-gem.buffed,.u-atk.buffed{color:#ffe080 !important;text-shadow:0 0 6px #ffd700}
+
+/* ── Pouvoir héros ── */
+.hero-power-btn{
+  width:52px;height:52px;border-radius:50%;border:2px solid #c9a84c;
+  background:radial-gradient(circle at 35% 35%,#2a4a6a,#0d1e30);
+  font-size:20px;cursor:pointer;color:#fff;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:1px;transition:transform .15s,box-shadow .15s;padding:0}
+.hero-power-btn span{font-size:9px;color:#c9a84c;font-weight:700;line-height:1}
+.hero-power-btn.available{box-shadow:0 0 10px rgba(201,168,76,.5);border-color:#ffe080}
+.hero-power-btn.available:hover{transform:scale(1.12);box-shadow:0 0 18px rgba(201,168,76,.7)}
+.hero-power-btn.used{opacity:.4;cursor:not-allowed;border-color:#555}
+.hero-power-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* ── Deck count ── */
+.deck-count{font-size:10px;color:#7a9ab0;letter-spacing:.5px;text-align:center}
+
+/* ── Sorts ── */
+.card.spell .card-art{background:radial-gradient(ellipse,#1a0a40,#04020c)}
+.card.spell{background:linear-gradient(175deg,#0e0a28,#080418) !important}
+.spell-desc{color:#b0c8ff !important;font-style:italic;font-size:9px !important}
+.battlecry-desc{color:#ffe080;font-style:italic;font-size:8.5px}
+.card-footer.spell-footer{justify-content:center}
+.spell-type{font-family:'Cinzel',serif;font-size:9px;color:#b0c8ff;letter-spacing:2px}
+
+/* Stats endommagées */
+.u-hp.damaged{color:#ff8080 !important}
+
+/* ── Bouton son ── */
+#muteBtn{background:#1a2e45;color:#e8edf2;border:1px solid var(--border);
+  font-size:16px;padding:8px 14px;border-radius:9px;transition:background .15s}
+#muteBtn:hover{background:#2a4060}
+#muteBtn.muted{color:#888;border-color:#444}
+
+/* ── Infobulle cartes ── */
+#tooltip{
+  position:fixed;z-index:2000;pointer-events:none;
+  max-width:220px;padding:10px 12px;border-radius:10px;
+  background:linear-gradient(135deg,#071828f0,#0a1e34f0);
+  border:1px solid var(--gold);
+  font-family:'Open Sans',sans-serif;font-size:12px;color:#dde8f2;
+  line-height:1.6;box-shadow:0 6px 20px rgba(0,0,0,.7);
+  opacity:0;transition:opacity .15s;white-space:normal}
+#tooltip.visible{opacity:1}
+#tooltip .tip-name{font-family:'Cinzel',serif;font-size:13px;color:var(--gold);
+  margin-bottom:6px;font-weight:700}
+#tooltip .tip-type{font-size:10px;font-weight:700;letter-spacing:.5px;
+  margin-bottom:5px;padding:1px 6px;border-radius:3px;display:inline-block}
+#tooltip .tip-section{margin:4px 0;padding:4px 6px;border-radius:5px;
+  background:rgba(255,255,255,.05);font-size:11px}
+#tooltip .tip-kw{color:#ffe080;font-weight:600}
+#tooltip .tip-kw-desc{color:#bcd;font-style:italic}
+#tooltip .tip-spell{color:#80c8ff;font-style:italic}
+#tooltip .tip-bc{color:#ffe080}
+#tooltip hr{border:none;border-top:1px solid rgba(255,255,255,.1);margin:5px 0}
+
+/* Battlecry star sur unité */
+.u-bc{position:absolute;top:2px;right:3px;font-size:9px;color:#ffe080;line-height:1}
