@@ -936,7 +936,6 @@ function finishDraft(){
     '<div class="draft-done-msg">⚓ Deck complet ! Bon vent, Capitaine !</div>';
   setTimeout(()=>{
     document.getElementById('draft-screen').style.display='none';
-    document.getElementById('game-layout').style.display='flex';
     startGame();
   }, 1200);
 }
