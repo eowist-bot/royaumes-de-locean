@@ -178,6 +178,17 @@ function enemyUseHeroPower(){
   } else if(hp.effect==='deal1'){
     player.hp-=1; sndHeroHit(); flashHero('playerZone',1);
     log(`⚡ Pouvoir héros : ${stage.name} inflige 1 dégât !`,'log-enemy');
+  } else if(hp.effect==='deal1Random'){
+    const targets=[...player.board];
+    if(targets.length){
+      const t=targets[Math.floor(Math.random()*targets.length)];
+      t.currentHp-=1;
+      log(`👁️ Pouvoir héros : L'Entité inflige 1 dégât à ${t.name} !`,'log-enemy');
+      cleanup();
+    } else {
+      player.hp-=1; sndHeroHit(); flashHero('playerZone',1);
+      log(`👁️ Pouvoir héros : L'Entité inflige 1 dégât à votre héros !`,'log-enemy');
+    }
   }
 }
 
@@ -321,11 +332,19 @@ function cleanup(){
   enemy.board  = enemy.board.filter(c=>c.currentHp>0);
 }
 
+function showCombatResult(win, then){
+  const ov = document.getElementById('combat-result');
+  ov.textContent = win ? '⚔️ Victoire !' : '💀 Défaite !';
+  ov.className = 'combat-result-overlay ' + (win ? 'win' : 'lose');
+  ov.style.display = 'flex';
+  setTimeout(()=>{ ov.style.display='none'; then(); }, 1400);
+}
+
 function checkEnd(){
   if(enemy.hp<=0){
+    sndVictory();
     if(gameMode==='quick'){
-      sndVictory();
-      setTimeout(()=>{
+      showCombatResult(true, ()=>{
         document.getElementById('game-layout').style.display='none';
         const el=document.getElementById('reward-screen');
         el.innerHTML=`
@@ -334,13 +353,16 @@ function checkEnd(){
           <div class="camp-subtitle">L'Amiral Maelström est coulé !</div>
           <button id="reward-continue-btn" onclick="location.reload()">🔄 Rejouer</button>`;
         el.style.display='flex';
-      }, 900);
+      });
     } else {
-      handleCampaignVictory();
+      showCombatResult(true, handleCampaignVictory);
     }
     return true;
   }
-  if(player.hp<=0){ showDefeatScreen(); return true; }
+  if(player.hp<=0){
+    showCombatResult(false, showDefeatScreen);
+    return true;
+  }
   return false;
 }
 
@@ -830,6 +852,12 @@ const CAMPAIGN_STAGES = [
     heroPower:{name:'Recrutement', desc:'Invoque un Matelot 1/1', cost:2, emoji:'📣', effect:'summonMatelot'},
     deckType:null, hp:38,
   },
+  {
+    name:"L'Entité des Profondeurs", avatar:'👁️', title:'Boss Secret',
+    desc:"Une force indicible tapie au fond des abysses. Aucun capitaine n'en est revenu.",
+    heroPower:{name:'Œil abyssal', desc:'1 dégât à une unité aléatoire ennemie', cost:1, emoji:'👁️', effect:'deal1Random'},
+    deckType:null, hp:45, secret:true,
+  },
 ];
 let campaignStage = 0;
 
@@ -889,11 +917,16 @@ function buildEnemyDeck(stageConfig, stageIdx){
 
 function showCampaignIntro(){
   const el = document.getElementById('campaign-screen');
+  const save = loadCampaignSave();
+  const secretUnlocked = localStorage.getItem('secretBossUnlocked')==='1';
+  const normalStages = CAMPAIGN_STAGES.filter(s=>!s.secret);
+  const secretBoss   = CAMPAIGN_STAGES.find(s=>s.secret);
+
   el.innerHTML = `
     <div class="camp-title">⚓ Les Océans en Guerre</div>
     <div class="camp-subtitle">4 combats vous attendent, Capitaine !</div>
     <div class="camp-stages">
-      ${CAMPAIGN_STAGES.map((s,i)=>`
+      ${normalStages.map((s,i)=>`
         <div class="camp-stage">
           <div class="camp-avatar-big">${s.avatar}</div>
           <div class="camp-stage-info">
@@ -903,11 +936,43 @@ function showCampaignIntro(){
           </div>
         </div>`).join('')}
     </div>
-    <button id="camp-start-btn">⚔️ Partir en campagne !</button>`;
+    ${secretBoss ? `
+    <div class="camp-secret-boss ${secretUnlocked?'unlocked':'locked'}">
+      <div class="camp-avatar-big">${secretUnlocked ? secretBoss.avatar : '❓'}</div>
+      <div class="camp-stage-info">
+        <div class="camp-stage-num">BOSS SECRET</div>
+        <div class="camp-stage-name">${secretUnlocked ? secretBoss.name : '???'}</div>
+        <div class="camp-stage-desc">${secretUnlocked ? secretBoss.desc : 'Terminez la campagne pour le débloquer.'}</div>
+      </div>
+    </div>` : ''}
+    <div class="camp-buttons">
+      ${save ? `<button id="camp-resume-btn">▶️ Reprendre (Combat ${save.stage+1}/4)</button>` : ''}
+      <button id="camp-start-btn">⚔️ ${save ? 'Nouvelle campagne' : 'Partir en campagne !'}</button>
+      ${secretUnlocked ? `<button id="camp-secret-btn">👁️ Défier L'Entité</button>` : ''}
+    </div>`;
   el.style.display = 'flex';
+
+  if(save) document.getElementById('camp-resume-btn').onclick = ()=>{
+    el.style.display = 'none';
+    campaignStage = save.stage;
+    draftDeck = save.deck.map(name=>CARD_POOL.find(c=>c.name===name)).filter(Boolean);
+    player.hp = save.hp;
+    player.deck = [...draftDeck];
+    for(let i=player.deck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[player.deck[i],player.deck[j]]=[player.deck[j],player.deck[i]];}
+    player.hand=[]; player.mana=1; player.maxMana=1; player.heroPowerUsed=false; player.fatigue=0;
+    startCampaignFight();
+  };
+
   document.getElementById('camp-start-btn').onclick = ()=>{
     el.style.display = 'none';
     campaignStage = 0;
+    localStorage.removeItem('campaignSave');
+    startCampaignFight();
+  };
+
+  if(secretUnlocked) document.getElementById('camp-secret-btn').onclick = ()=>{
+    el.style.display = 'none';
+    campaignStage = CAMPAIGN_STAGES.findIndex(s=>s.secret);
     startCampaignFight();
   };
 }
@@ -923,19 +988,31 @@ function startCampaignFight(){
   for(let i=0;i<4;i++) drawCard(enemy);
   document.getElementById('game-layout').style.display='flex';
   document.getElementById('log').innerHTML='';
-  log(`${stage.avatar} Combat ${campaignStage+1}/4 — ${stage.name}`,'log-event');
+  const label = stage.secret ? 'Boss Secret' : `Combat ${campaignStage+1}/4`;
+  log(`${stage.avatar} ${label} — ${stage.name}`,'log-event');
   log(stage.desc,'log-event');
+  saveCampaign();
   render();
 }
 
 function handleCampaignVictory(){
-  sndVictory();
   campaignStage++;
-  if(campaignStage>=CAMPAIGN_STAGES.length){
-    setTimeout(showCampaignComplete, 900);
+  const NORMAL_STAGES = CAMPAIGN_STAGES.filter(s=>!s.secret).length; // 4
+  if(campaignStage === NORMAL_STAGES){
+    // Campagne principale terminée → débloquer le boss secret
+    localStorage.setItem('secretBossUnlocked','1');
+    localStorage.removeItem('campaignSave');
+    showCampaignComplete();
     return;
   }
-  setTimeout(()=>showRewardScreen(CAMPAIGN_STAGES[campaignStage]), 900);
+  if(campaignStage >= CAMPAIGN_STAGES.length){
+    // Boss secret vaincu
+    localStorage.removeItem('campaignSave');
+    showSecretVictory();
+    return;
+  }
+  saveCampaign();
+  showRewardScreen(CAMPAIGN_STAGES[campaignStage]);
 }
 
 function getRewardOffers(){
@@ -1001,30 +1078,53 @@ function showRewardScreen(nextStage){
   });
 }
 
+function saveCampaign(){
+  if(gameMode!=='campaign') return;
+  localStorage.setItem('campaignSave', JSON.stringify({
+    stage: campaignStage,
+    hp: player.hp,
+    deck: draftDeck.map(c=>c.name),
+  }));
+}
+
+function loadCampaignSave(){
+  try{ return JSON.parse(localStorage.getItem('campaignSave')); } catch(e){ return null; }
+}
+
 function showCampaignComplete(){
   document.getElementById('game-layout').style.display='none';
   const el = document.getElementById('reward-screen');
   el.innerHTML = `
     <div class="reward-title">🏆 Campagne Terminée !</div>
     <div class="camp-complete-emoji">🌊⚓🌊</div>
-    <div class="camp-subtitle">Votre flotte domine tous les océans !</div>
+    <div class="camp-subtitle">Votre flotte domine tous les océans !<br>Un défi secret vient de s'ouvrir…</div>
     <button id="reward-continue-btn" onclick="location.reload()">🔄 Recommencer</button>`;
   el.style.display = 'flex';
-  sndVictory();
+}
+
+function showSecretVictory(){
+  document.getElementById('game-layout').style.display='none';
+  const el = document.getElementById('reward-screen');
+  el.innerHTML = `
+    <div class="reward-title">👁️ L'Abysses Vaincue !</div>
+    <div class="camp-complete-emoji" style="font-size:64px">🌊👁️🌊</div>
+    <div class="camp-subtitle">Vous avez repoussé L'Entité des Profondeurs.<br>Les océans vous appartiennent à jamais.</div>
+    <button id="reward-continue-btn" onclick="location.reload()">🔄 Menu principal</button>`;
+  el.style.display = 'flex';
 }
 
 function showDefeatScreen(){
   sndDefeat();
-  setTimeout(()=>{
-    document.getElementById('game-layout').style.display='none';
-    const el = document.getElementById('reward-screen');
-    el.innerHTML = `
-      <div class="reward-title" style="color:#e74c3c">💀 Défaite !</div>
-      <div class="camp-complete-emoji">🌊</div>
-      <div class="camp-subtitle">Votre flotte a sombré au combat ${campaignStage+1}...</div>
-      <button id="reward-continue-btn" onclick="location.reload()">🔄 Recommencer la campagne</button>`;
-    el.style.display = 'flex';
-  }, 900);
+  localStorage.removeItem('campaignSave');
+  document.getElementById('game-layout').style.display='none';
+  const el = document.getElementById('reward-screen');
+  const isSecret = CAMPAIGN_STAGES[campaignStage]?.secret;
+  el.innerHTML = `
+    <div class="reward-title" style="color:#e74c3c">💀 Défaite !</div>
+    <div class="camp-complete-emoji">🌊</div>
+    <div class="camp-subtitle">${isSecret ? "L'Entité des Profondeurs vous a englouti..." : `Votre flotte a sombré au combat ${campaignStage+1}...`}</div>
+    <button id="reward-continue-btn" onclick="location.reload()">🔄 Recommencer la campagne</button>`;
+  el.style.display = 'flex';
 }
 
 // ── Draft de deck ──

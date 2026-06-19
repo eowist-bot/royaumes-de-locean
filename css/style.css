@@ -478,3 +478,31 @@ hr{border:none;border-top:1px solid var(--border);margin:8px 0}
 #draft-random-btn:hover{background:rgba(255,255,255,.13);color:#bcd}
 .draft-done-msg{font-family:'Pirata One',cursive;font-size:28px;color:var(--gold);
   text-align:center;padding:30px;text-shadow:0 0 20px rgba(201,168,76,.5)}
+
+/* ── Overlay résultat de combat ── */
+@keyframes combatResultIn{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.7)}
+  40%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}
+  60%{transform:translate(-50%,-50%) scale(1)}
+  85%{opacity:1}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1)}
+}
+#combat-result{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  z-index:9999;pointer-events:none;
+  font-family:'Pirata One',cursive;font-size:clamp(40px,8vw,80px);
+  padding:28px 60px;border-radius:18px;
+  text-shadow:0 4px 20px rgba(0,0,0,.8);
+  animation:combatResultIn 1.4s ease-out forwards;
+}
+#combat-result.win{background:rgba(30,80,30,.92);color:#7fff7f;border:3px solid #4caf50;box-shadow:0 0 60px rgba(76,175,80,.6)}
+#combat-result.lose{background:rgba(80,20,20,.92);color:#ff8080;border:3px solid #e74c3c;box-shadow:0 0 60px rgba(231,76,60,.6)}
+
+/* ── Boss secret ── */
+.camp-secret-boss{display:flex;align-items:center;gap:18px;
+  background:rgba(0,0,0,.3);border-radius:14px;padding:16px 22px;
+  margin-top:12px;width:100%;max-width:560px;
+  border:2px solid #5a3080;transition:border-color .2s}
+.camp-secret-boss.unlocked{border-color:#c9a84c;background:rgba(40,20,60,.5)}
+.camp-secret-boss.locked{opacity:.65;filter:grayscale(.4)}
+.camp-buttons{display:flex;flex-direction:column;gap:12px;width:100%;max-width:400px;margin-top:18px}
