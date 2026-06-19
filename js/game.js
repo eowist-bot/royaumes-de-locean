@@ -297,7 +297,24 @@ function cleanup(){
 }
 
 function checkEnd(){
-  if(enemy.hp<=0){ handleCampaignVictory(); return true; }
+  if(enemy.hp<=0){
+    if(gameMode==='quick'){
+      sndVictory();
+      setTimeout(()=>{
+        document.getElementById('game-layout').style.display='none';
+        const el=document.getElementById('reward-screen');
+        el.innerHTML=`
+          <div class="reward-title">🏆 Victoire !</div>
+          <div class="camp-complete-emoji">⚓</div>
+          <div class="camp-subtitle">L'Amiral Maelström est coulé !</div>
+          <button id="reward-continue-btn" onclick="location.reload()">🔄 Rejouer</button>`;
+        el.style.display='flex';
+      }, 900);
+    } else {
+      handleCampaignVictory();
+    }
+    return true;
+  }
   if(player.hp<=0){ showDefeatScreen(); return true; }
   return false;
 }
@@ -634,6 +651,23 @@ function startBGM(){ bgm.play().catch(()=>{}); document.removeEventListener('poi
 document.addEventListener('pointerdown',startBGM);
 document.addEventListener('keydown',startBGM);
 
+// ── Sélection de mode ──
+let gameMode = 'campaign';
+
+function showModeScreen(){
+  document.getElementById('mode-screen').style.display = 'flex';
+  document.getElementById('mode-campaign').onclick = ()=>{
+    gameMode = 'campaign';
+    document.getElementById('mode-screen').style.display = 'none';
+    startDraft();
+  };
+  document.getElementById('mode-quick').onclick = ()=>{
+    gameMode = 'quick';
+    document.getElementById('mode-screen').style.display = 'none';
+    startDraft();
+  };
+}
+
 // ── Campagne ──
 const CAMPAIGN_STAGES = [
   {
@@ -886,7 +920,6 @@ function startDraft(){
 }
 
 function startGame(){
-  // Préparer le deck joueur depuis le draft
   const deck = draftDeck.map(c=>({...c, keywords:[...c.keywords]}));
   for(let i=deck.length-1;i>0;i--){
     const j=Math.floor(Math.random()*(i+1));
@@ -894,8 +927,27 @@ function startGame(){
   }
   player.deck = deck;
   for(let i=0;i<4;i++) drawCard(player);
-  // Lancer la campagne
-  showCampaignIntro();
+  if(gameMode==='quick'){
+    startQuickFight();
+  } else {
+    showCampaignIntro();
+  }
+}
+
+function startQuickFight(){
+  campaignStage = 3; // Amiral Maelström
+  const stage = CAMPAIGN_STAGES[3];
+  document.getElementById('enemyAvatar').textContent = stage.avatar;
+  document.getElementById('enemyName').textContent = stage.name;
+  enemy.hp=MAX_HP; enemy.mana=1; enemy.maxMana=1;
+  enemy.hand=[]; enemy.board=[];
+  enemy.heroPowerUsed=false; enemy.fatigue=0;
+  enemy.deck = buildDeck();
+  for(let i=0;i<4;i++) drawCard(enemy);
+  document.getElementById('game-layout').style.display='flex';
+  document.getElementById('log').innerHTML='';
+  log('🌊 La bataille commence ! Bonne chance, Capitaine !','log-event');
+  render();
 }
 
 // ── Init ──
@@ -993,4 +1045,4 @@ document.addEventListener('mouseout', e=>{
   if(e.target.closest('.card')){ clearTimeout(tipTimeout); hideTooltip(); }
 });
 
-startDraft();
+showModeScreen();
