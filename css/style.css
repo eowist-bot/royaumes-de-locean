@@ -417,10 +417,14 @@ hr{border:none;border-top:1px solid var(--border);margin:8px 0}
 .draft-pick-badge{border:1px solid var(--border);border-radius:6px;
   padding:3px 9px;font-size:11px;color:#bcd;display:flex;align-items:center;gap:5px}
 .draft-pick-badge .dpc{font-family:'Cinzel',serif;font-size:10px}
-.dpb-creature{background:#0d2a1a;border-color:#2a6640;color:#a0e0b0}
-.dpb-creature .dpc{color:#50d080}
-.dpb-spell{background:#1a0d2a;border-color:#5a3080;color:#d0a0f0}
-.dpb-spell .dpc{color:#b060f0}
+.dpb-pirate{background:#2a0d0d;border-color:#803030;color:#f0a0a0}
+.dpb-pirate .dpc{color:#e06060}
+.dpb-bete{background:#0d1a2a;border-color:#205a90;color:#80c0f0}
+.dpb-bete .dpc{color:#50a0e0}
+.dpb-elemental{background:#2a1a0d;border-color:#906020;color:#f0c070}
+.dpb-elemental .dpc{color:#e0a030}
+.dpb-sort{background:#1a0d2a;border-color:#5a3080;color:#d0a0f0}
+.dpb-sort .dpc{color:#b060f0}
 #draft-random-btn{background:rgba(255,255,255,.07);color:#8a9bb0;
   border:1px solid #3a5068;font-size:12px;padding:7px 18px;border-radius:8px;
   cursor:pointer;letter-spacing:.5px;transition:background .15s,color .15s}

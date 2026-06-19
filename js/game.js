@@ -905,7 +905,10 @@ function showDraftPick(){
   const listEl = document.getElementById('draft-picked-list');
   listEl.innerHTML='';
   draftDeck.forEach(c=>{
-    const b=document.createElement('div'); b.className='draft-pick-badge '+(c.isSpell?'dpb-spell':'dpb-creature');
+    const typeClass = c.isSpell ? 'dpb-sort' : {
+      'Pirate':'dpb-pirate','Bête marine':'dpb-bete','Élémental':'dpb-elemental'
+    }[c.cardType] || 'dpb-creature';
+    const b=document.createElement('div'); b.className='draft-pick-badge '+typeClass;
     b.innerHTML=`<span class="dpc">${c.cost}💎</span>${c.emoji} ${c.name}`;
     listEl.appendChild(b);
   });
