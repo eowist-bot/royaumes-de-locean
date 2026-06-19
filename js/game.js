@@ -823,15 +823,13 @@ function buildEnemyDeck(stageConfig, stageIdx){
 
   let deck;
   switch(stageIdx){
-    case 0: // Corsaire — Pirates agressifs, courbe basse
+    case 0: // Corsaire — Pirates uniquement, courbe basse agressive
       deck = [
-        ...pickN(lo(P), 5), ...pickN(mi(P), 3), ...pickN(P, 2),
-        ...pickN(lo(S), 3), ...pickN(S, 2),
+        ...pickN(lo(P), 6), ...pickN(mi(P), 5), ...pickN(P, 4),
       ]; break;
-    case 1: // Sirène — Bêtes marines solides, soin
+    case 1: // Sirène des Abysses — Bêtes marines uniquement
       deck = [
-        ...pickN(lo(B), 4), ...pickN(mi(B), 5), ...pickN(hi(B).concat(rk(B)), 2),
-        ...pickN(lo(S), 2), ...pickN(mi(S), 2),
+        ...pickN(lo(B), 5), ...pickN(mi(B), 6), ...pickN(hi(B).concat(rk(B)), 4),
       ]; break;
     case 2: // Maître des Tempêtes — Élémentaux + sorts dégâts
       deck = [
