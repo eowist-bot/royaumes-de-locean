@@ -569,7 +569,8 @@ function endTurn(){
   // Nettoyer buffs temporaires du joueur
   player.board.forEach(c=>{ if(c._tempBuff){ c.atk-=2; delete c._tempBuff; }});
 
-  showTurnBanner('⚓ Tour de l\'Amiral', ()=>{
+  const curStage = CAMPAIGN_STAGES[campaignStage] || CAMPAIGN_STAGES[3];
+  showTurnBanner(`${curStage.avatar} Tour de ${curStage.name}`, ()=>{
     enemyTurn();
     if(checkEnd()) return;
 
