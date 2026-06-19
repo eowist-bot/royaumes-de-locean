@@ -726,7 +726,11 @@ function showCollection(){
   function renderCollection(){
     const pool = (activeFilter==='Tous' ? CARD_POOL
       : CARD_POOL.filter(c=> activeFilter==='Sort' ? c.isSpell : c.cardType===activeFilter))
-      .slice().sort((a,b)=>a.cost-b.cost);
+      .slice().sort((a,b)=>{
+        if(a.cost!==b.cost) return a.cost-b.cost;
+        const r={'Commune':0,'Rare':1,'Épique':2,'Légendaire':3};
+        return (r[a.rarity]??0)-(r[b.rarity]??0);
+      });
     colEl.innerHTML = `
       <div class="col-header">
         <div class="col-title">📚 Collection</div>
