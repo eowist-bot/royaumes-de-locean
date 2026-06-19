@@ -997,6 +997,7 @@ function makeDraftCardEl(card){
         <div class="stat-gem hp">${card.hp}</div>
       </div>`;
   }
+  d.dataset.cardName = card.name;
   return d;
 }
 
@@ -1014,6 +1015,27 @@ function showDraftPick(){
     b.innerHTML=`<span class="dpc">${c.cost}💎</span>${c.emoji} ${c.name}`;
     listEl.appendChild(b);
   });
+
+  // Compteur de synergies
+  const synEl = document.getElementById('draft-synergies');
+  if(synEl && draftDeck.length>0){
+    const counts = {Pirate:0,'Bête marine':0,Élémental:0};
+    draftDeck.forEach(c=>{ if(counts[c.cardType]!==undefined) counts[c.cardType]++; });
+    const entries = [
+      {type:'Pirate',      emoji:'🏴‍☠️', color:'#f08080', bonusFn: n=>n>1?`+${Math.min(n-1,3)} ATK`:null},
+      {type:'Bête marine', emoji:'🐋',   color:'#80c0f0', bonusFn: n=>n>1?`+${Math.min(n-1,3)} PV`:null},
+      {type:'Élémental',   emoji:'⚡',   color:'#f0c060', bonusFn: n=>n>1?`+${Math.min(n-1,2)}/+${Math.min(n-1,2)}`:null},
+    ].map(({type,emoji,color,bonusFn})=>{
+      const n=counts[type]; if(!n) return '';
+      const bonus=bonusFn(n);
+      return `<div class="syn-chip" style="border-color:${color}">
+        <span>${emoji} ${type}</span>
+        <span class="syn-count" style="color:${color}">${n}</span>
+        ${bonus?`<span class="syn-bonus">${bonus}</span>`:''}
+      </div>`;
+    }).filter(Boolean).join('');
+    synEl.innerHTML = entries || '';
+  } else if(synEl){ synEl.innerHTML=''; }
 
   const offersEl = document.getElementById('draft-offers');
   offersEl.innerHTML='';
@@ -1102,10 +1124,13 @@ muteBtn.onclick = ()=>{
 
 // ── Infobulle ──
 const KEYWORD_DESC = {
-  'Charge':        'Peut attaquer dès le tour où elle est posée.',
-  'Provocation':   'Les ennemis doivent obligatoirement attaquer cette unité.',
-  'Poison':        'Détruit toute unité qu\'elle touche, quelle que soit ses PV.',
-  'Bouclier divin':'Absorbe la première attaque reçue sans dégâts.',
+  'Charge':          'Peut attaquer dès le tour où elle est posée.',
+  'Provocation':     'Les ennemis doivent obligatoirement attaquer cette unité.',
+  'Poison':          'Détruit toute unité qu\'elle touche, quelle que soit ses PV.',
+  'Bouclier divin':  'Absorbe la première attaque reçue sans dégâts.',
+  'Vol de vie':      'Soigne votre héros du montant des dégâts infligés.',
+  'Double attaque':  'Peut attaquer deux fois par tour.',
+  'Rebond':          'Retourne dans votre main quand elle est détruite.',
 };
 const TYPE_DESC = {
   'Pirate':      'Synergie : +1 ATK par autre Pirate allié (max +3).',
@@ -1161,11 +1186,14 @@ document.addEventListener('mouseover', e=>{
   const cardEl = e.target.closest('.card');
   if(!cardEl){ hideTooltip(); return; }
   clearTimeout(tipTimeout);
-  // Retrouver la carte par index dans la main
+  let card = null;
+  // 1. Chercher dans la main du joueur
   const hand = document.getElementById('hand');
-  const idx  = [...hand.children].indexOf(cardEl);
-  if(idx < 0){ hideTooltip(); return; }
-  const card = player.hand[idx];
+  const idx  = hand ? [...hand.children].indexOf(cardEl) : -1;
+  if(idx >= 0) card = player.hand[idx];
+  // 2. Chercher par data-card-name (draft, collection, récompenses)
+  if(!card && cardEl.dataset.cardName)
+    card = CARD_POOL.find(c=>c.name===cardEl.dataset.cardName);
   if(!card){ hideTooltip(); return; }
   tipTimeout = setTimeout(()=>showTooltip(card, e.clientX, e.clientY), 300);
 });
