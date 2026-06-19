@@ -1011,12 +1011,23 @@ function getDraftCostRange(pick){
 
 function getDraftOffers(){
   const [minCost, maxCost] = getDraftCostRange(draftPick);
-  const pool = CARD_POOL.filter(c=>c.cost>=minCost && c.cost<=maxCost);
+  // Exclure les Légendaires déjà en main (unicité)
+  const ownedLegendaries = new Set(pickedCards.filter(c=>c.rarity==='Légendaire').map(c=>c.name));
+  let pool = CARD_POOL.filter(c=>
+    c.cost>=minCost && c.cost<=maxCost &&
+    !(c.rarity==='Légendaire' && ownedLegendaries.has(c.name))
+  );
+  // Pool trop petit → élargir au-delà de la plage de coût
+  if(pool.length < 6){
+    const wider = CARD_POOL.filter(c=>
+      !(c.rarity==='Légendaire' && ownedLegendaries.has(c.name))
+    );
+    pool = wider.length >= 6 ? wider : CARD_POOL;
+  }
   const chosen = [];
-  const attempts = pool.length > 0 ? pool : CARD_POOL; // fallback si pool vide
   while(chosen.length < 3){
-    const i = Math.floor(Math.random()*attempts.length);
-    if(!chosen.includes(attempts[i])) chosen.push(attempts[i]);
+    const i = Math.floor(Math.random()*pool.length);
+    if(!chosen.includes(pool[i])) chosen.push(pool[i]);
   }
   return chosen;
 }
