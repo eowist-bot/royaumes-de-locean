@@ -912,9 +912,12 @@ function handleCampaignVictory(){
 }
 
 function getRewardOffers(){
+  const ownedLegendaries = new Set(draftDeck.filter(c=>c.rarity==='Légendaire').map(c=>c.name));
+  const pool = CARD_POOL.filter(c=>!(c.rarity==='Légendaire' && ownedLegendaries.has(c.name)));
+  const src = pool.length >= 3 ? pool : CARD_POOL;
   const chosen = [];
   while(chosen.length < 3){
-    const c = CARD_POOL[Math.floor(Math.random()*CARD_POOL.length)];
+    const c = src[Math.floor(Math.random()*src.length)];
     if(!chosen.includes(c)) chosen.push(c);
   }
   return chosen;
