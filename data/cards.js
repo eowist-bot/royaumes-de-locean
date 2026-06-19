@@ -83,6 +83,8 @@ const CARD_POOL = [
    isSpell:false},
 
   // ═══ BÊTES MARINES — nouvelles ═══
+  {name:'Crabe Nain',           emoji:'🦀', cost:1, atk:1, hp:3, rarity:'Commune',    cardType:'Bête marine',
+   keywords:['Provocation'], battlecry:null, isSpell:false},
   {name:'Crevette Rapide',      emoji:'🦐', cost:1, atk:1, hp:1, rarity:'Commune',    cardType:'Bête marine',
    keywords:['Charge'], battlecry:null, isSpell:false},
   {name:'Hippocampe Blindé',    emoji:'🐠', cost:3, atk:2, hp:4, rarity:'Commune',    cardType:'Bête marine',
@@ -97,6 +99,12 @@ const CARD_POOL = [
    isSpell:false},
   {name:'Golem Corail',         emoji:'🪨', cost:5, atk:4, hp:6, rarity:'Rare',       cardType:'Élémental',
    keywords:['Provocation'], battlecry:null, isSpell:false},
+
+  // ═══ CARTES 0 MANA — familles ═══
+  {name:'Gamin des Quais',  emoji:'🧒', cost:0, atk:1, hp:2, rarity:'Commune', cardType:'Pirate',
+   keywords:[], battlecry:null, isSpell:false},
+  {name:'Feu Follet',       emoji:'🔆', cost:0, atk:1, hp:1, rarity:'Commune', cardType:'Élémental',
+   keywords:['Charge'], battlecry:null, isSpell:false},
 
   // ═══ PIRATES — nouvelles cartes courbe complète ═══
   {name:'Gabier Intrépide',       emoji:'🧑‍✈️', cost:1, atk:1, hp:2, rarity:'Commune',    cardType:'Pirate',
