@@ -869,6 +869,72 @@ const CARD_ART = {
 <line x1="105" y1="15" x2="102" y2="25" stroke="#8a6a40" stroke-width="1.5"/>
 </svg>`,
 
+'Matelot Naufragé': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <radialGradient id="mn1a" cx="50%" cy="70%"><stop offset="0%" stop-color="#0a2a4a"/><stop offset="100%" stop-color="#040c14"/></radialGradient>
+  <radialGradient id="mn1b" cx="50%" cy="50%"><stop offset="0%" stop-color="#3090e0" stop-opacity=".4"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+  <filter id="mn1f"><feGaussianBlur stdDeviation="1.5"/></filter>
+</defs>
+<rect width="130" height="82" fill="url(#mn1a)"/>
+<ellipse cx="65" cy="62" rx="60" ry="18" fill="#1060a0" opacity=".5" filter="url(#mn1f)"/>
+<path d="M10 58 Q30 48 50 54 Q70 60 90 52 Q110 44 125 52 L125 72 Q100 66 65 72 Q35 78 10 70Z" fill="#1a5080" opacity=".7"/>
+<path d="M10 62 Q40 54 70 60 Q100 66 125 58" stroke="#60c0f0" stroke-width="1.5" fill="none" opacity=".5"/>
+<path d="M5 67 Q35 60 65 66 Q95 72 125 64" stroke="#60c0f0" stroke-width="1" fill="none" opacity=".3"/>
+<circle cx="62" cy="44" r="9" fill="#c08040"/>
+<rect x="58" y="26" width="8" height="18" fill="#a06830" rx="1"/>
+<path d="M62 26 L55 15 L70 18Z" fill="#e03030" opacity=".9"/>
+<circle cx="62" cy="44" r="9" fill="none" stroke="#e0b060" stroke-width="1" opacity=".6"/>
+<line x1="46" y1="50" x2="50" y2="54" stroke="#c09050" stroke-width="2" stroke-linecap="round"/>
+<line x1="74" y1="50" x2="78" y2="54" stroke="#c09050" stroke-width="2" stroke-linecap="round"/>
+<circle cx="62" cy="44" r="3" fill="#e0b060" opacity=".8"/>
+</svg>`,
+
+'Méduse Transparente': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <radialGradient id="mt1a" cx="50%" cy="40%"><stop offset="0%" stop-color="#08142a"/><stop offset="100%" stop-color="#020608"/></radialGradient>
+  <radialGradient id="mt1b" cx="50%" cy="40%"><stop offset="0%" stop-color="#a0e0ff" stop-opacity=".35"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+  <filter id="mt1f"><feGaussianBlur stdDeviation="2.5"/></filter>
+  <filter id="mt1g"><feGaussianBlur stdDeviation="1"/></filter>
+</defs>
+<rect width="130" height="82" fill="url(#mt1a)"/>
+<ellipse cx="65" cy="38" rx="38" ry="28" fill="url(#mt1b)" filter="url(#mt1f)"/>
+<ellipse cx="65" cy="32" rx="26" ry="18" fill="#b0eeff" opacity=".15"/>
+<ellipse cx="65" cy="32" rx="26" ry="18" fill="none" stroke="#80d8ff" stroke-width="1.5" opacity=".6"/>
+<ellipse cx="65" cy="32" rx="20" ry="13" fill="#c8f4ff" opacity=".1"/>
+<ellipse cx="65" cy="32" rx="20" ry="13" fill="none" stroke="#a0ecff" stroke-width="1" opacity=".5"/>
+<path d="M50 46 Q48 58 45 70" stroke="#80d8ff" stroke-width="1.2" fill="none" opacity=".5"/>
+<path d="M55 48 Q54 60 52 72" stroke="#a0ecff" stroke-width="1" fill="none" opacity=".4"/>
+<path d="M65 50 Q65 63 64 75" stroke="#80d8ff" stroke-width="1.2" fill="none" opacity=".5"/>
+<path d="M75 48 Q76 60 78 72" stroke="#a0ecff" stroke-width="1" fill="none" opacity=".4"/>
+<path d="M80 46 Q82 58 85 68" stroke="#80d8ff" stroke-width="1.2" fill="none" opacity=".5"/>
+<ellipse cx="56" cy="28" rx="3" ry="2" fill="#e040fb" opacity=".7" filter="url(#mt1g)"/>
+<ellipse cx="74" cy="28" rx="3" ry="2" fill="#e040fb" opacity=".7" filter="url(#mt1g)"/>
+<path d="M58 34 Q65 38 72 34" stroke="#e040fb" stroke-width="1.5" fill="none" opacity=".6"/>
+</svg>`,
+
+'Écume de Mer': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <radialGradient id="ed1a" cx="50%" cy="60%"><stop offset="0%" stop-color="#08203a"/><stop offset="100%" stop-color="#020810"/></radialGradient>
+  <filter id="ed1f"><feGaussianBlur stdDeviation="3"/></filter>
+  <filter id="ed1g"><feGaussianBlur stdDeviation="1.2"/></filter>
+</defs>
+<rect width="130" height="82" fill="url(#ed1a)"/>
+<ellipse cx="65" cy="55" rx="55" ry="22" fill="#1a90d0" opacity=".2" filter="url(#ed1f)"/>
+<circle cx="35" cy="40" r="14" fill="white" opacity=".12" filter="url(#ed1f)"/>
+<circle cx="65" cy="30" r="18" fill="white" opacity=".14" filter="url(#ed1f)"/>
+<circle cx="95" cy="44" r="12" fill="white" opacity=".12" filter="url(#ed1f)"/>
+<circle cx="35" cy="40" r="14" fill="none" stroke="white" stroke-width="1.5" opacity=".4"/>
+<circle cx="65" cy="30" r="18" fill="none" stroke="white" stroke-width="2" opacity=".5"/>
+<circle cx="95" cy="44" r="12" fill="none" stroke="white" stroke-width="1.5" opacity=".4"/>
+<circle cx="20" cy="55" r="6" fill="none" stroke="white" stroke-width="1" opacity=".3"/>
+<circle cx="50" cy="60" r="8" fill="none" stroke="white" stroke-width="1" opacity=".3"/>
+<circle cx="80" cy="58" r="5" fill="none" stroke="white" stroke-width="1" opacity=".25"/>
+<circle cx="110" cy="52" r="7" fill="none" stroke="white" stroke-width="1" opacity=".3"/>
+<ellipse cx="65" cy="34" rx="5" ry="3" fill="white" opacity=".6" filter="url(#ed1g)"/>
+<ellipse cx="35" cy="44" rx="4" ry="2" fill="white" opacity=".5" filter="url(#ed1g)"/>
+<ellipse cx="95" cy="48" rx="3" ry="2" fill="white" opacity=".5" filter="url(#ed1g)"/>
+</svg>`,
+
 'Brume de Guerre': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
 <defs><radialGradient id="bg1a" cx="50%" cy="50%"><stop offset="0%" stop-color="#0a0a18"/><stop offset="100%" stop-color="#040408"/></radialGradient><radialGradient id="bg1b" cx="50%" cy="50%"><stop offset="0%" stop-color="#606080" stop-opacity=".6"/><stop offset="100%" stop-color="transparent"/></radialGradient><filter id="bg1f"><feGaussianBlur stdDeviation="4"/></filter></defs>
 <rect width="130" height="82" fill="url(#bg1a)"/><rect width="130" height="82" fill="url(#bg1b)"/>

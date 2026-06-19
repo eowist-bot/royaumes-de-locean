@@ -59,6 +59,17 @@ const CARD_POOL = [
   {name:'Dragon Marin',            emoji:'🐉', cost:7, atk:10, hp:8, rarity:'Légendaire', cardType:'Élémental',
    keywords:['Charge'], battlecry:null, isSpell:false},
 
+  // ═══ CARTES 0 MANA ═══
+  {name:'Matelot Naufragé', emoji:'🏊', cost:0, atk:1, hp:1, rarity:'Commune', cardType:'Pirate',
+   keywords:[],
+   battlecry:{desc:'Piochez une carte', effect:'drawCard', needsTarget:false},
+   isSpell:false},
+  {name:'Méduse Transparente', emoji:'🪼', cost:0, atk:1, hp:1, rarity:'Rare', cardType:'Bête marine',
+   keywords:['Poison'], battlecry:null, isSpell:false},
+  {name:'Écume de Mer', emoji:'🫧', cost:0, atk:0, hp:0, rarity:'Commune', cardType:'Sort', isSpell:true,
+   keywords:[], battlecry:null,
+   spellDesc:'+1/+1 à une unité alliée', spellEffect:'foamBuff', needsTarget:true, targetFilter:'ally'},
+
   // ═══ PIRATES — nouveaux ═══
   {name:'Corsaire du Nord',     emoji:'🧊', cost:2, atk:2, hp:2, rarity:'Commune',    cardType:'Pirate',
    keywords:[],

@@ -223,6 +223,10 @@ const SPELL_EFFECTS = {
     if(target){ target.atk+=2; target._tempBuff=true; sndSpell();
       log(`🌫️ Brume de Guerre : ${target.name} gagne +2 ATK ce tour !`,'log-player'); }
   },
+  foamBuff:(owner,opp,target)=>{
+    if(target){ target.atk+=1; target.hp+=1; target.currentHp+=1; sndSpell();
+      log(`🫧 Écume de Mer : ${target.name} gagne +1/+1 !`,'log-player'); }
+  },
   storm:(owner,opp)=>{
     opp.board.forEach(c=>{ c.currentHp-=2; sndHit(); }); sndSpell();
     log('🌊 Tempête des Mers : 2 dégâts à toutes les unités ennemies !','log-player'); cleanup();
