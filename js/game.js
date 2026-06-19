@@ -89,8 +89,9 @@ function showTurnBanner(text, cb){
 
 // ── Deck & pioche ──
 function buildDeck(){
+  const heroPool = CARD_POOL.filter(c=>c.cardType===selectedHero.family||c.isSpell);
   const pool = [];
-  CARD_POOL.forEach(c=>{
+  heroPool.forEach(c=>{
     const copies = (c.rarity==='Commune'||c.rarity==='Rare') ? 2 : 1;
     for(let i=0;i<copies;i++) pool.push(c);
   });
