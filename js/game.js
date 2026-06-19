@@ -908,9 +908,7 @@ function handleCampaignVictory(){
     setTimeout(showCampaignComplete, 900);
     return;
   }
-  const healAmt = 5;
-  player.hp = Math.min(MAX_HP, player.hp+healAmt);
-  setTimeout(()=>showRewardScreen(CAMPAIGN_STAGES[campaignStage], healAmt), 900);
+  setTimeout(()=>showRewardScreen(CAMPAIGN_STAGES[campaignStage]), 900);
 }
 
 function getRewardOffers(){
@@ -922,7 +920,7 @@ function getRewardOffers(){
   return chosen;
 }
 
-function showRewardContinue(el, nextStage, healAmt){
+function showRewardContinue(el, nextStage){
   el.innerHTML += `
     <div class="reward-next">
       <div class="reward-next-label">PROCHAIN ADVERSAIRE</div>
@@ -948,13 +946,12 @@ function showRewardContinue(el, nextStage, healAmt){
   };
 }
 
-function showRewardScreen(nextStage, healAmt){
+function showRewardScreen(nextStage){
   document.getElementById('game-layout').style.display='none';
   const el = document.getElementById('reward-screen');
   const offers = getRewardOffers();
   el.innerHTML = `
     <div class="reward-title">⚔️ Victoire !</div>
-    <div class="reward-heal">💊 +${healAmt} PV récupérés (${player.hp}/${MAX_HP})</div>
     <div class="reward-pick-title">🎁 Choisissez une carte à ajouter à votre deck :</div>
     <div class="reward-offers"></div>`;
   el.style.display = 'flex';
@@ -967,7 +964,7 @@ function showRewardScreen(nextStage, healAmt){
       cardEl.classList.add('reward-chosen');
       setTimeout(()=>{
         el.querySelectorAll('.reward-pick-title, .reward-offers').forEach(e=>e.remove());
-        showRewardContinue(el, nextStage, healAmt);
+        showRewardContinue(el, nextStage);
       }, 800);
     };
     offersEl.appendChild(cardEl);
