@@ -179,7 +179,8 @@ function enemyUseHeroPower(){
     t.atk+=1;
     log(`⚔️ Pouvoir héros : ${t.name} gagne +1 ATK !`,'log-enemy');
   } else if(hp.effect==='heal2'){
-    enemy.hp=Math.min(MAX_HP,enemy.hp+2);
+    const enemyMaxHp = stage.hp||MAX_HP;
+    enemy.hp=Math.min(enemyMaxHp,enemy.hp+2);
     log(`💚 Pouvoir héros : ${stage.name} récupère 2 PV !`,'log-enemy');
   } else if(hp.effect==='deal1'){
     player.hp-=1; sndHeroHit(); flashHero('playerZone',1);
