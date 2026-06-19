@@ -950,6 +950,606 @@ const HEROES = [
 ];
 let selectedHero = HEROES[0];
 
+// ══════════════════════════════════════════════════════════════
+// SYSTÈME CARRIÈRE
+// ══════════════════════════════════════════════════════════════
+let career = null;
+
+const CAREER_FAMILY   = 'Tribu des Récifs';
+const CAREER_AVATAR   = '🪬';
+const CAREER_STARTERS = CARD_POOL.filter(c=>c.isPower && c.isStarter);
+
+const STARTING_CARD_NAMES = [
+  // Low 0-2 (8 options → 6 actives)
+  'Enfant des Récifs','Éclaireur Tribal','Guerrier des Coraux',
+  'Pêcheur Tribal','Lancier des Récifs','Guérisseur du Clan',
+  // Mid 3-4 (5)
+  'Ancien du Clan','Chasseur Tribal','Gardien des Totems','Berserker Tribal','Défenseur des Récifs',
+  // High 5+ (4)
+  'Champion Tribal','Géant des Coraux','Colosse Tribal','Grand Guerrier',
+  // 2 sorts communs
+  'Écume de Mer','Filet du Pêcheur',
+];
+
+const STARTING_ACTIVE_DECK = {
+  low:  ['Enfant des Récifs','Éclaireur Tribal','Guerrier des Coraux','Pêcheur Tribal','Écume de Mer','Filet du Pêcheur'],
+  mid:  ['Ancien du Clan','Chasseur Tribal','Gardien des Totems','Berserker Tribal','Défenseur des Récifs'],
+  high: ['Champion Tribal','Géant des Coraux','Colosse Tribal','Grand Guerrier'],
+};
+
+function loadCareer(){ try{ return JSON.parse(localStorage.getItem('career'))||null; }catch(e){ return null; } }
+function saveCareer(){ if(career) localStorage.setItem('career', JSON.stringify(career)); }
+
+function createCareer(name, starterPowerName){
+  career = {
+    name,
+    credits: 0,
+    victories: 0,
+    ownedCards: [...STARTING_CARD_NAMES],
+    activeDeck: JSON.parse(JSON.stringify(STARTING_ACTIVE_DECK)),
+    ownedPowerNames: CAREER_STARTERS.map(p=>p.name),
+    activePowerName: starterPowerName,
+  };
+  saveCareer();
+}
+
+function careerHero(){
+  const pw = CARD_POOL.find(c=>c.isPower && c.name===career.activePowerName) || CAREER_STARTERS[0];
+  return {
+    id:'career', name:career.name, avatar:CAREER_AVATAR,
+    family:CAREER_FAMILY, title:'Héros de Carrière',
+    desc:`Un héros des récifs en quête de gloire.`,
+    heroPower:{ name:pw.name, desc:pw.powerDesc, cost:pw.cost, emoji:pw.emoji, effect:pw.powerEffect },
+  };
+}
+
+function careerDeckCards(){
+  const allNames = [...career.activeDeck.low, ...career.activeDeck.mid, ...career.activeDeck.high];
+  return allNames.map(n=>CARD_POOL.find(c=>c.name===n)).filter(Boolean);
+}
+
+function updateCreditsBadge(){
+  if(!career){ document.getElementById('credits-badge').style.display='none'; return; }
+  document.getElementById('credits-badge').style.display='block';
+  document.getElementById('credits-val').textContent = career.credits+'cr';
+}
+
+function awardVictoryCredits(){
+  if(!career) return;
+  let gain, label;
+  if(player.hp >= 25)       { gain=3; label='éclatante ⭐⭐⭐'; }
+  else if(player.hp >= 10)  { gain=2; label='normale ⭐⭐'; }
+  else                      { gain=1; label='piètre ⭐'; }
+  career.credits += gain;
+  career.victories++;
+  saveCareer();
+  log(`💰 Victoire ${label} — +${gain} crédit${gain>1?'s':''}. Total : ${career.credits}cr`,'log-event');
+  updateCreditsBadge();
+}
+
+// ── Écrans carrière ──
+function showCareerScreen(){
+  const existing = loadCareer();
+  const el = document.getElementById('career-screen');
+  document.getElementById('mode-screen').style.display = 'none';
+
+  if(existing){
+    career = existing;
+    el.innerHTML = `
+      <div class="career-logo">🪬</div>
+      <div class="career-title">Royaumes de l'Océan</div>
+      <div class="career-subtitle">Votre aventure vous attend</div>
+      <div class="career-existing">
+        <div class="career-existing-name">${career.name}</div>
+        <div class="career-existing-info">
+          ${career.victories} victoire${career.victories!==1?'s':''} · ${career.credits} crédit${career.credits!==1?'s':''}
+        </div>
+        <div class="career-btn-row">
+          <button class="btn-primary" id="career-resume-btn">▶ Reprendre</button>
+          <button class="btn-secondary" id="career-new-btn">✦ Nouvelle carrière</button>
+        </div>
+      </div>`;
+    el.style.display = 'flex';
+    document.getElementById('career-resume-btn').onclick = ()=>{ el.style.display='none'; updateCreditsBadge(); showModeScreen(); };
+    document.getElementById('career-new-btn').onclick   = ()=>{ career=null; showCareerCreate(); };
+  } else {
+    showCareerCreate();
+  }
+}
+
+function showCareerCreate(){
+  const el = document.getElementById('career-screen');
+  el.innerHTML = `
+    <div class="career-logo">🪬</div>
+    <div class="career-title">Nouvelle Carrière</div>
+    <div class="career-create-form">
+      <div>
+        <label>Nom de votre héros</label>
+        <input id="career-name-input" class="career-name-input" type="text" maxlength="20" placeholder="Entrez un nom…">
+      </div>
+      <div>
+        <label>Choisissez votre pouvoir de départ</label>
+        <div class="career-power-grid">
+          ${CAREER_STARTERS.map(p=>`
+            <div class="career-power-card" data-power="${p.name}">
+              <div class="career-power-emoji">${p.emoji}</div>
+              <div class="career-power-name">${p.name}</div>
+              <div class="career-power-desc">${p.powerDesc}</div>
+              <div class="career-power-cost">${p.cost}💎</div>
+            </div>`).join('')}
+        </div>
+      </div>
+      <button class="btn-primary" id="career-create-btn" disabled style="align-self:center;padding:13px 40px">
+        ⚓ Commencer l'aventure
+      </button>
+    </div>`;
+  el.style.display = 'flex';
+
+  let selectedPower = null;
+  const nameInput = document.getElementById('career-name-input');
+  const createBtn = document.getElementById('career-create-btn');
+
+  function checkReady(){ createBtn.disabled = !(nameInput.value.trim() && selectedPower); }
+
+  nameInput.addEventListener('input', checkReady);
+
+  el.querySelectorAll('.career-power-card').forEach(card=>{
+    card.onclick = ()=>{
+      el.querySelectorAll('.career-power-card').forEach(c=>c.classList.remove('selected'));
+      card.classList.add('selected');
+      selectedPower = card.dataset.power;
+      checkReady();
+    };
+  });
+
+  createBtn.onclick = ()=>{
+    const name = nameInput.value.trim();
+    if(!name || !selectedPower) return;
+    createCareer(name, selectedPower);
+    el.style.display = 'none';
+    updateCreditsBadge();
+    showModeScreen();
+  };
+}
+
+// ══════════════════════════════════════════════════════════════
+// TAVERNE
+// ══════════════════════════════════════════════════════════════
+
+const FAMILIES_PLAYABLE = ['Pirate','Bête marine','Élémental','Tribu des Récifs','Spectre','Triton'];
+
+function cardBand(c){ return c.cost<=2?'low':c.cost<=4?'mid':'high'; }
+
+function canSell(cardName){
+  const card = CARD_POOL.find(c=>c.name===cardName);
+  if(!card) return false;
+  const remaining = [...career.ownedCards];
+  const idx = remaining.indexOf(cardName);
+  if(idx===-1) return false;
+  remaining.splice(idx,1);
+  const nonPower = remaining.map(n=>CARD_POOL.find(c=>c.name===n)).filter(c=>c&&!c.isPower);
+  const low   = nonPower.filter(c=>c.cost<=2).length;
+  const mid   = nonPower.filter(c=>c.cost>=3&&c.cost<=4).length;
+  const high  = nonPower.filter(c=>c.cost>=5).length;
+  const sorts = nonPower.filter(c=>c.isSpell).length;
+  const powers = career.ownedPowerNames.length;
+  return low>=6 && mid>=5 && high>=4 && sorts>=2 && powers>=1;
+}
+
+function rollRarity(pool, guaranteeRare=false){
+  const r = Math.random();
+  let rar;
+  if(guaranteeRare){
+    rar = r<0.05?'Légendaire':r<0.20?'Épique':'Rare';
+  } else {
+    rar = r<0.03?'Légendaire':r<0.12?'Épique':r<0.35?'Rare':'Commune';
+  }
+  const sub = pool.filter(c=>c.rarity===rar);
+  const src = sub.length ? sub : pool;
+  return src[Math.floor(Math.random()*src.length)];
+}
+
+function openMixedPack(){
+  const pool = CARD_POOL.filter(c=>!c.isPower);
+  const cards = [];
+  for(let i=0;i<4;i++) cards.push(rollRarity(pool));
+  cards.push(rollRarity(pool, true));
+  return cards;
+}
+
+function openThematicPack(family){
+  const familyPool = CARD_POOL.filter(c=>c.cardType===family && !c.isPower && !c.isSpell);
+  const sortPool   = CARD_POOL.filter(c=>c.isSpell && !c.isPower);
+  const fallback   = CARD_POOL.filter(c=>!c.isPower);
+  const cards = [];
+  for(let i=0;i<4;i++) cards.push(rollRarity(familyPool.length?familyPool:fallback));
+  cards.push(rollRarity(sortPool.length?sortPool:fallback));
+  return cards;
+}
+
+function addPackToCollection(cards){
+  cards.forEach(c=>{ if(c) career.ownedCards.push(c.name); });
+  saveCareer();
+}
+
+function showPackReveal(cards, onClose){
+  const el = document.getElementById('pack-reveal-screen');
+  el.innerHTML = `
+    <div class="pack-reveal-title">✨ Votre Pack !</div>
+    <div class="pack-reveal-cards">
+      ${cards.map((c,i)=>`
+        <div class="pack-reveal-card rarity-${c?.rarity||'Commune'}" style="animation-delay:${i*0.12}s">
+          <div class="pack-card-emoji">${c?.emoji||'❓'}</div>
+          <div class="pack-card-name">${c?.name||'???'}</div>
+          <div class="pack-card-rarity">${c?.rarity||''} ${c?.isSpell?'· Sort':c?.cardType?'· '+c.cardType:''}</div>
+        </div>`).join('')}
+    </div>
+    <button class="btn-primary" id="pack-close-btn" style="margin-top:8px">✓ Continuer</button>`;
+  el.style.display = 'flex';
+  document.getElementById('pack-close-btn').onclick = ()=>{
+    el.style.display = 'none';
+    onClose();
+  };
+}
+
+function showTaverne(){
+  document.getElementById('mode-screen').style.display = 'none';
+  const el = document.getElementById('taverne-screen');
+  renderTaverne(el);
+  el.style.display = 'flex';
+}
+
+function renderTaverne(el){
+  const cr = career.credits;
+  const canMixed    = cr >= 10;
+  const canThematic = cr >= 15;
+
+  const countMap = {};
+  career.ownedCards.forEach(n=>{ countMap[n]=(countMap[n]||0)+1; });
+  const sellable = Object.entries(countMap)
+    .map(([n,cnt])=>({ card:CARD_POOL.find(c=>c.name===n), name:n, count:cnt }))
+    .filter(x=>x.card && !x.card.isPower)
+    .sort((a,b)=>creditValue(b.card)-creditValue(a.card));
+
+  el.innerHTML = `
+    <div class="taverne-header">
+      <div class="taverne-title">🏪 Taverne</div>
+      <div class="taverne-credits">💰 ${cr} crédit${cr!==1?'s':''}</div>
+      <button class="btn-secondary" id="taverne-back-btn">← Retour</button>
+    </div>
+
+    <div class="taverne-section">
+      <div class="taverne-section-title">📦 Acheter des packs</div>
+      <div class="pack-grid">
+        <div class="pack-card ${canMixed?'':'pack-disabled'}" id="buy-mixed">
+          <div class="pack-icon">🎲</div>
+          <div class="pack-name">Pack Mélangé</div>
+          <div class="pack-desc">5 cartes aléatoires toutes familles. La dernière est garantie Rare ou mieux.</div>
+          <div class="pack-cost">10 cr</div>
+        </div>
+        <div class="pack-card ${canThematic?'':'pack-disabled'}" id="buy-thematic-card">
+          <div class="pack-icon">🏷️</div>
+          <div class="pack-name">Pack Thématique</div>
+          <div class="pack-desc">4 cartes d'une famille + 1 Sort. Choisissez votre famille ci-dessous, puis cliquez.</div>
+          <div class="family-picker" id="family-picker">
+            ${FAMILIES_PLAYABLE.map(f=>`<div class="family-chip" data-family="${f}">${f}</div>`).join('')}
+          </div>
+          <div class="pack-cost" style="margin-top:10px">15 cr</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="taverne-section">
+      <div class="taverne-section-title">💸 Vendre des cartes</div>
+      <div class="sell-grid" id="sell-grid">
+        ${sellable.length===0?'<div style="color:#5a7a8a;font-size:13px">Aucune carte à vendre.</div>':
+          sellable.map(({card,name,count})=>{
+            const sv = sellValue(card);
+            const ok = canSell(name);
+            return `<div class="sell-card">
+              ${count>1?`<div class="sell-card-count">×${count}</div>`:''}
+              <div class="sell-card-emoji">${card.emoji||'🃏'}</div>
+              <div class="sell-card-name">${name}</div>
+              <div class="sell-card-type">${card.isSpell?'Sort':card.cardType} · ${card.rarity}</div>
+              <div class="sell-card-price">+${sv} cr</div>
+              <button class="sell-btn" data-sell="${name}" ${ok?'':'disabled'}>Vendre</button>
+            </div>`;
+          }).join('')}
+      </div>
+      <div style="font-size:11px;color:#4a6a7a;margin-top:10px">
+        Minimum requis : 6 cartes basses (0-2) + 5 médianes (3-4) + 4 hautes (5+) + 2 sorts + 1 pouvoir.
+      </div>
+    </div>`;
+
+  document.getElementById('taverne-back-btn').onclick = ()=>{
+    el.style.display='none'; showModeScreen();
+  };
+
+  // Pack mélangé
+  if(canMixed){
+    document.getElementById('buy-mixed').onclick = ()=>{
+      career.credits -= 10; saveCareer();
+      const cards = openMixedPack();
+      addPackToCollection(cards);
+      el.style.display='none';
+      showPackReveal(cards, ()=>{ el.style.display='flex'; renderTaverne(el); });
+    };
+  }
+
+  // Pack thématique
+  let selectedFamily = null;
+  el.querySelectorAll('.family-chip').forEach(chip=>{
+    chip.onclick = e=>{
+      e.stopPropagation();
+      el.querySelectorAll('.family-chip').forEach(c=>c.classList.remove('active'));
+      chip.classList.add('active');
+      selectedFamily = chip.dataset.family;
+    };
+  });
+  if(canThematic){
+    document.getElementById('buy-thematic-card').onclick = e=>{
+      if(e.target.classList.contains('family-chip')) return;
+      if(!selectedFamily){ return; }
+      career.credits -= 15; saveCareer();
+      const cards = openThematicPack(selectedFamily);
+      addPackToCollection(cards);
+      el.style.display='none';
+      showPackReveal(cards, ()=>{ el.style.display='flex'; renderTaverne(el); });
+    };
+  }
+
+  // Vente
+  el.querySelectorAll('.sell-btn:not([disabled])').forEach(btn=>{
+    btn.onclick = ()=>{
+      const name = btn.dataset.sell;
+      const card = CARD_POOL.find(c=>c.name===name);
+      if(!card || !canSell(name)) return;
+      const idx = career.ownedCards.indexOf(name);
+      career.ownedCards.splice(idx,1);
+      const band = cardBand(card);
+      const di = career.activeDeck[band].indexOf(name);
+      if(di!==-1) career.activeDeck[band].splice(di,1);
+      career.credits += sellValue(card);
+      saveCareer();
+      updateCreditsBadge();
+      renderTaverne(el);
+    };
+  });
+}
+
+// ══════════════════════════════════════════════════════════════
+// DECK BUILDER
+// ══════════════════════════════════════════════════════════════
+
+function showDeckBuilder(){
+  document.getElementById('mode-screen').style.display = 'none';
+  const el = document.getElementById('deckbuilder-screen');
+  renderDeckBuilder(el);
+  el.style.display = 'flex';
+}
+
+function renderDeckBuilder(el){
+  // État local : copies des listes actives (modifiées en live)
+  const draft = {
+    low:  [...career.activeDeck.low],
+    mid:  [...career.activeDeck.mid],
+    high: [...career.activeDeck.high],
+  };
+  let activePower = career.activePowerName;
+
+  // Construire un inventaire {cardName → ownedCount}
+  const owned = {};
+  career.ownedCards.forEach(n=>{ owned[n]=(owned[n]||0)+1; });
+
+  // Toutes les cartes non-pouvoir par bande, dupliquées selon la quantité possédée
+  function bandList(minCost, maxCost){
+    const result = [];
+    Object.entries(owned).forEach(([n, cnt])=>{
+      const c = CARD_POOL.find(x=>x.name===n);
+      if(!c || c.isPower) return;
+      if(c.cost<minCost || c.cost>maxCost) return;
+      for(let i=0;i<cnt;i++) result.push({card:c, copy:i});
+    });
+    result.sort((a,b)=>a.card.cost-b.card.cost || a.card.name.localeCompare(b.card.name));
+    return result;
+  }
+
+  const bands = {
+    low:  { label:'Basses (0–2)', min:0, max:2, target:6, key:'low', items: bandList(0,2) },
+    mid:  { label:'Médianes (3–4)', min:3, max:4, target:5, key:'mid', items: bandList(3,4) },
+    high: { label:'Hautes (5+)', min:5, max:99, target:4, key:'high', items: bandList(5,99) },
+  };
+
+  function countSorts(list){
+    return list.reduce((acc, key)=>{
+      const arr = draft[key];
+      return acc + arr.filter(n=>{ const c=CARD_POOL.find(x=>x.name===n); return c&&c.isSpell; }).length;
+    },['low','mid','high'].filter(()=>true));
+  }
+  function totalSorts(){
+    return ['low','mid','high'].reduce((acc,k)=>
+      acc + draft[k].filter(n=>{ const c=CARD_POOL.find(x=>x.name===n); return c&&c.isSpell; }).length, 0);
+  }
+  function isValid(){
+    return draft.low.length===6 && draft.mid.length===5 && draft.high.length===4 && totalSorts()>=2;
+  }
+
+  // Génération du HTML
+  function tabBadge(key){
+    const b = bands[key];
+    const cnt = draft[key].length;
+    const cls = cnt===b.target?'full':cnt>b.target?'over':'';
+    return `<span class="db-tab-badge ${cls}">${cnt}/${b.target}</span>`;
+  }
+
+  el.innerHTML = `
+    <div class="db-header">
+      <div class="db-title">🗂️ Mon Deck</div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button class="btn-secondary" id="db-back-btn">← Retour</button>
+        <button class="db-save-btn" id="db-save-btn" ${isValid()?'':'disabled'}>💾 Sauvegarder</button>
+      </div>
+    </div>
+
+    <div class="db-powers">
+      <div class="db-powers-title">⚡ Pouvoir héroïque actif</div>
+      <div class="db-power-grid" id="db-power-grid">
+        ${career.ownedPowerNames.map(pname=>{
+          const p = CARD_POOL.find(c=>c.name===pname);
+          if(!p) return '';
+          return `<div class="db-power-card ${pname===activePower?'active':''}" data-power="${pname}">
+            <div class="career-power-emoji">${p.emoji}</div>
+            <div class="career-power-name">${p.name}</div>
+            <div class="career-power-desc">${p.powerDesc}</div>
+            <div class="career-power-cost">${p.cost}💎</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+
+    <div class="db-tabs" id="db-tabs">
+      <button class="db-tab active" data-band="low">Basses ${tabBadge('low')}</button>
+      <button class="db-tab" data-band="mid">Médianes ${tabBadge('mid')}</button>
+      <button class="db-tab" data-band="high">Hautes ${tabBadge('high')}</button>
+    </div>
+
+    ${Object.entries(bands).map(([key,b],i)=>`
+      <div class="db-band ${i===0?'active':''}" id="db-band-${key}">
+        <div class="db-band-header">
+          <span>${b.label} — <span id="db-count-${key}">${draft[key].length}</span>/${b.target} sélectionnées</span>
+          <span style="color:#5a7a8a;font-size:11px">Sorts dans le deck : <span id="db-sorts-count">${totalSorts()}</span>/2 min</span>
+        </div>
+        <div class="db-card-grid" id="db-grid-${key}">
+          ${b.items.map(({card,copy})=>{
+            // Combien de copies de ce nom sont sélectionnées ?
+            const selCount = draft[key].filter(n=>n===card.name).length;
+            const isSelected = copy < selCount;
+            return `<div class="db-card ${isSelected?'selected':''} ${card.isSpell?'sort-card':''}"
+              data-name="${card.name}" data-band="${key}" data-copy="${copy}">
+              <div class="db-card-cost">${card.cost}💎</div>
+              <div class="db-card-emoji">${card.emoji||'🃏'}</div>
+              <div class="db-card-name">${card.name}</div>
+              <div class="db-card-meta">${card.isSpell?'Sort':card.cardType} · ${card.rarity}</div>
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="db-hint">${b.items.length===0?'Aucune carte dans cette bande de coût. Achetez des packs à la Taverne !':''}</div>
+      </div>`).join('')}
+    <div id="db-validity-hint" style="font-size:12px;color:#5a7a8a;text-align:center">
+      ${isValid()?'✓ Deck valide — prêt à jouer':'Complétez 6 basses + 5 médianes + 4 hautes avec min 2 sorts pour sauvegarder.'}
+    </div>`;
+
+  // Événements — sélection de pouvoir
+  el.querySelectorAll('.db-power-card').forEach(card=>{
+    card.onclick = ()=>{
+      el.querySelectorAll('.db-power-card').forEach(c=>c.classList.remove('active'));
+      card.classList.add('active');
+      activePower = card.dataset.power;
+    };
+  });
+
+  // Événements — onglets
+  el.querySelectorAll('.db-tab').forEach(tab=>{
+    tab.onclick = ()=>{
+      el.querySelectorAll('.db-tab').forEach(t=>t.classList.remove('active'));
+      el.querySelectorAll('.db-band').forEach(b=>b.classList.remove('active'));
+      tab.classList.add('active');
+      el.querySelector(`#db-band-${tab.dataset.band}`)?.classList.add('active');
+    };
+  });
+
+  // Événements — toggle carte
+  function refreshUI(){
+    // Mettre à jour les badges d'onglets
+    el.querySelectorAll('.db-tab').forEach(tab=>{
+      const key = tab.dataset.band;
+      const b = bands[key];
+      const cnt = draft[key].length;
+      const cls = cnt===b.target?'full':cnt>b.target?'over':'';
+      tab.innerHTML = `${b.label.split(' ')[0]} <span class="db-tab-badge ${cls}">${cnt}/${b.target}</span>`;
+    });
+    // Compteurs
+    ['low','mid','high'].forEach(key=>{
+      const el2 = document.getElementById(`db-count-${key}`);
+      if(el2) el2.textContent = draft[key].length;
+    });
+    document.querySelectorAll('#db-sorts-count').forEach(e=>e.textContent=totalSorts());
+    // Bouton sauvegarder
+    document.getElementById('db-save-btn').disabled = !isValid();
+    document.getElementById('db-validity-hint').textContent =
+      isValid()?'✓ Deck valide — prêt à jouer':'Complétez 6 basses + 5 médianes + 4 hautes avec min 2 sorts pour sauvegarder.';
+  }
+
+  el.querySelectorAll('.db-card').forEach(card=>{
+    card.onclick = ()=>{
+      const name = card.dataset.name;
+      const band = card.dataset.band;
+      const copy = parseInt(card.dataset.copy);
+      const selCount = draft[band].filter(n=>n===name).length;
+      const isSelected = copy < selCount;
+      if(isSelected){
+        // Désélectionner une copie
+        const idx = draft[band].lastIndexOf(name);
+        draft[band].splice(idx,1);
+        card.classList.remove('selected');
+      } else {
+        // Sélectionner si pas encore au max de la bande
+        const b = bands[band];
+        if(draft[band].length >= b.target) return; // bande pleine
+        draft[band].push(name);
+        card.classList.add('selected');
+      }
+      refreshUI();
+    };
+  });
+
+  // Sauvegarder
+  document.getElementById('db-save-btn').onclick = ()=>{
+    if(!isValid()) return;
+    career.activeDeck = { low:[...draft.low], mid:[...draft.mid], high:[...draft.high] };
+    career.activePowerName = activePower;
+    saveCareer();
+    // Feedback visuel
+    const btn = document.getElementById('db-save-btn');
+    btn.textContent = '✓ Sauvegardé !';
+    btn.style.background = '#3a9a3a';
+    setTimeout(()=>{ btn.textContent='💾 Sauvegarder'; btn.style.background=''; },1500);
+  };
+
+  document.getElementById('db-back-btn').onclick = ()=>{
+    el.style.display='none'; showModeScreen();
+  };
+}
+
+// Aperçu rapide du deck depuis le combat
+function showDeckPreview(){
+  const modal = document.getElementById('deck-preview-modal');
+  const handNames  = new Set(player.hand.map(c=>c.name));
+  const boardNames = new Set(player.board.map(c=>c.name));
+  const allCards = careerDeckCards ? careerDeckCards() : draftDeck;
+
+  modal.innerHTML = `<div class="deck-preview-box">
+    <div class="deck-preview-title">
+      <span>🗂️ Deck de ${career?.name||selectedHero.name}</span>
+      <button class="btn-secondary" id="deck-preview-close" style="padding:4px 14px">✕</button>
+    </div>
+    <div style="font-size:11px;color:#5a7a8a;margin-bottom:10px">
+      🟡 En jeu · 🟢 En main · ⬜ Dans le deck
+    </div>
+    <div class="deck-preview-grid">
+      ${allCards.map(c=>`
+        <div class="deck-preview-card ${boardNames.has(c.name)?'on-board':handNames.has(c.name)?'in-hand':''}">
+          <div style="font-size:18px">${c.emoji||'🃏'}</div>
+          <div style="font-size:10px;color:#cde">${c.name}</div>
+          <div style="font-size:10px;color:#5a7a8a">${c.cost}💎</div>
+        </div>`).join('')}
+    </div>
+  </div>`;
+  modal.style.display = 'flex';
+  document.getElementById('deck-preview-close').onclick = ()=>{ modal.style.display='none'; };
+  modal.onclick = e=>{ if(e.target===modal) modal.style.display='none'; };
+}
+
 // ── Sélection de mode ──
 let gameMode = 'campaign';
 
@@ -957,17 +1557,53 @@ function showModeScreen(){
   document.getElementById('mode-screen').style.display = 'flex';
   document.getElementById('collection-screen').style.display = 'none';
   document.getElementById('hero-select-screen').style.display = 'none';
+  document.getElementById('career-screen').style.display = 'none';
+  updateCreditsBadge();
+
+  // Afficher le nom du héros de carrière sous le titre
+  const modeTitle = document.querySelector('.mode-title');
+  if(modeTitle && career){
+    modeTitle.textContent = `Bienvenue, ${career.name} !`;
+  } else if(modeTitle){
+    modeTitle.textContent = 'Choisissez votre mode';
+  }
+
   document.getElementById('mode-campaign').onclick = ()=>{
     gameMode = 'campaign';
     document.getElementById('mode-screen').style.display = 'none';
-    showHeroSelect();
+    if(career){ applyCareeerHero(); startDraft(); }
+    else showHeroSelect();
   };
   document.getElementById('mode-quick').onclick = ()=>{
     gameMode = 'quick';
     document.getElementById('mode-screen').style.display = 'none';
-    showHeroSelect();
+    if(career){ applyCareeerHero(); startDraft(); }
+    else showHeroSelect();
   };
   document.getElementById('mode-collection').onclick = showCollection;
+  // Taverne + Deck Builder : visibles seulement avec une carrière active
+  const taverneBtn = document.getElementById('mode-taverne');
+  if(taverneBtn){ taverneBtn.style.display = career ? 'flex' : 'none'; taverneBtn.onclick = showTaverne; }
+  const dbBtn = document.getElementById('mode-deckbuilder');
+  if(dbBtn){ dbBtn.style.display = career ? 'flex' : 'none'; dbBtn.onclick = showDeckBuilder; }
+}
+
+function applyCareeerHero(){
+  selectedHero = careerHero();
+  draftDeck = careerDeckCards();
+  // Réinitialiser le deck joueur directement (pas de draft)
+  const deck = draftDeck.map(c=>({...c, keywords:[...c.keywords]}));
+  for(let i=deck.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [deck[i],deck[j]]=[deck[j],deck[i]];
+  }
+  player.hp=MAX_HP; player.mana=1; player.maxMana=1;
+  player.hand=[]; player.board=[]; player.deck=deck; player.fatigue=0;
+  player.heroPowerUsed=false;
+  for(let i=0;i<4;i++) drawCard(player);
+  // Mettre à jour l'avatar/nom du joueur
+  document.getElementById('playerAvatar').textContent = selectedHero.avatar;
+  document.getElementById('playerName').textContent   = selectedHero.name;
 }
 
 function showHeroSelect(){
@@ -991,7 +1627,12 @@ function showHeroSelect(){
     card.querySelector('.hero-select-btn').onclick = ()=>{
       selectedHero = HEROES.find(h=>h.id===card.dataset.hero);
       el.style.display = 'none';
-      startDraft();
+      // Héros fixes : deck complet (toute la famille + tous les sorts), pas de draft
+      draftDeck = [
+        ...CARD_POOL.filter(c=>c.cardType===selectedHero.family && !c.isPower),
+        ...CARD_POOL.filter(c=>c.isSpell && !c.isPower),
+      ];
+      startFixedHeroGame();
     };
   });
 }
@@ -1210,6 +1851,8 @@ function startCampaignFight(){
   for(let i=0;i<4;i++) drawCard(enemy);
   document.getElementById('game-layout').style.display='flex';
   document.getElementById('log').innerHTML='';
+  const sdb = document.getElementById('sidebar-deck-btn');
+  if(sdb){ sdb.style.display = career ? 'block' : 'none'; sdb.onclick = showDeckPreview; }
   const label = stage.secret ? 'Boss Secret' : `Combat ${campaignStage+1}/4`;
   log(`${stage.avatar} ${label} — ${stage.name}`,'log-event');
   log(stage.desc,'log-event');
@@ -1218,6 +1861,7 @@ function startCampaignFight(){
 }
 
 function handleCampaignVictory(){
+  awardVictoryCredits();
   campaignStage++;
   const NORMAL_STAGES = CAMPAIGN_STAGES.filter(s=>!s.secret).length; // 4
   if(campaignStage === NORMAL_STAGES){
@@ -1276,29 +1920,65 @@ function showRewardContinue(el, nextStage){
   };
 }
 
+function startFixedHeroGame(){
+  document.getElementById('draft-screen').style.display = 'none';
+  document.getElementById('playerAvatar').textContent = selectedHero.avatar;
+  document.getElementById('playerName').textContent   = selectedHero.name;
+  const sdb = document.getElementById('sidebar-deck-btn');
+  if(sdb) sdb.style.display = 'none';
+  const deck = draftDeck.map(c=>({...c, keywords:[...c.keywords]}));
+  for(let i=deck.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [deck[i],deck[j]]=[deck[j],deck[i]];
+  }
+  player.hp=MAX_HP; player.mana=1; player.maxMana=1;
+  player.hand=[]; player.board=[]; player.deck=deck; player.fatigue=0;
+  player.heroPowerUsed=false;
+  for(let i=0;i<4;i++) drawCard(player);
+  if(gameMode==='quick') startQuickFight();
+  else showCampaignIntro();
+}
+
 function showRewardScreen(nextStage){
   document.getElementById('game-layout').style.display='none';
   const el = document.getElementById('reward-screen');
-  const offers = getRewardOffers();
-  el.innerHTML = `
-    <div class="reward-title">⚔️ Victoire !</div>
-    <div class="reward-pick-title">🎁 Choisissez une carte à ajouter à votre deck :</div>
-    <div class="reward-offers"></div>`;
   el.style.display = 'flex';
-  const offersEl = el.querySelector('.reward-offers');
-  offers.forEach(card=>{
-    const cardEl = makeDraftCardEl(card);
-    cardEl.onclick = ()=>{
-      draftDeck.push({...card, keywords:[...card.keywords]});
-      offersEl.querySelectorAll('.card').forEach(c=>c.style.pointerEvents='none');
-      cardEl.classList.add('reward-chosen');
-      setTimeout(()=>{
-        el.querySelectorAll('.reward-pick-title, .reward-offers').forEach(e=>e.remove());
-        showRewardContinue(el, nextStage);
-      }, 800);
-    };
-    offersEl.appendChild(cardEl);
-  });
+
+  if(career){
+    // Mode carrière : afficher les crédits gagnés, pas de choix de carte
+    const gain = player.hp>=25?3:player.hp>=10?2:1;
+    const quality = player.hp>=25?'Victoire Éclatante ⭐⭐⭐':player.hp>=10?'Victoire Normale ⭐⭐':'Victoire Piètre ⭐';
+    el.innerHTML = `
+      <div class="reward-title">⚔️ Victoire !</div>
+      <div class="reward-career-info">
+        <div class="reward-quality">${quality}</div>
+        <div class="reward-credits-earned">+${gain} crédit${gain>1?'s':''} gagnés</div>
+        <div class="reward-credits-total">💰 Total : ${career.credits} cr</div>
+        <div class="reward-hp-info">PV restants : ${player.hp}/${MAX_HP}</div>
+      </div>`;
+    showRewardContinue(el, nextStage);
+  } else {
+    // Mode classique : choix d'une carte récompense
+    const offers = getRewardOffers();
+    el.innerHTML = `
+      <div class="reward-title">⚔️ Victoire !</div>
+      <div class="reward-pick-title">🎁 Choisissez une carte à ajouter à votre deck :</div>
+      <div class="reward-offers"></div>`;
+    const offersEl = el.querySelector('.reward-offers');
+    offers.forEach(card=>{
+      const cardEl = makeDraftCardEl(card);
+      cardEl.onclick = ()=>{
+        draftDeck.push({...card, keywords:[...card.keywords]});
+        offersEl.querySelectorAll('.card').forEach(c=>c.style.pointerEvents='none');
+        cardEl.classList.add('reward-chosen');
+        setTimeout(()=>{
+          el.querySelectorAll('.reward-pick-title, .reward-offers').forEach(e=>e.remove());
+          showRewardContinue(el, nextStage);
+        }, 800);
+      };
+      offersEl.appendChild(cardEl);
+    });
+  }
 }
 
 function saveCampaign(){
@@ -1317,23 +1997,37 @@ function loadCampaignSave(){
 function showCampaignComplete(){
   document.getElementById('game-layout').style.display='none';
   const el = document.getElementById('reward-screen');
+  const careerInfo = career ? `<div class="reward-credits-total" style="margin-top:8px">💰 Crédits : ${career.credits} cr · ${career.victories} victoire${career.victories!==1?'s':''}</div>` : '';
+  const taverneBtn = career ? `<button class="btn-primary" id="goto-taverne-btn" style="margin-top:8px">🏪 Aller à la Taverne</button>` : '';
   el.innerHTML = `
     <div class="reward-title">🏆 Campagne Terminée !</div>
     <div class="camp-complete-emoji">🌊⚓🌊</div>
     <div class="camp-subtitle">Votre flotte domine tous les océans !<br>Un défi secret vient de s'ouvrir…</div>
-    <button id="reward-continue-btn" onclick="location.reload()">🔄 Recommencer</button>`;
+    ${careerInfo}
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:12px">
+      <button class="btn-secondary" onclick="location.reload()">🔄 Menu principal</button>
+      ${taverneBtn}
+    </div>`;
   el.style.display = 'flex';
+  if(career) document.getElementById('goto-taverne-btn').onclick = ()=>{ el.style.display='none'; showTaverne(); };
 }
 
 function showSecretVictory(){
   document.getElementById('game-layout').style.display='none';
   const el = document.getElementById('reward-screen');
+  const careerInfo = career ? `<div class="reward-credits-total" style="margin-top:8px">💰 Crédits : ${career.credits} cr · ${career.victories} victoire${career.victories!==1?'s':''}</div>` : '';
+  const taverneBtn = career ? `<button class="btn-primary" id="goto-taverne-btn2" style="margin-top:8px">🏪 Aller à la Taverne</button>` : '';
   el.innerHTML = `
     <div class="reward-title">👁️ L'Abysses Vaincue !</div>
     <div class="camp-complete-emoji" style="font-size:64px">🌊👁️🌊</div>
     <div class="camp-subtitle">Vous avez repoussé L'Entité des Profondeurs.<br>Les océans vous appartiennent à jamais.</div>
-    <button id="reward-continue-btn" onclick="location.reload()">🔄 Menu principal</button>`;
+    ${careerInfo}
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:12px">
+      <button class="btn-secondary" onclick="location.reload()">🔄 Menu principal</button>
+      ${taverneBtn}
+    </div>`;
   el.style.display = 'flex';
+  if(career) document.getElementById('goto-taverne-btn2').onclick = ()=>{ el.style.display='none'; showTaverne(); };
 }
 
 function showDefeatScreen(){
@@ -1486,14 +2180,22 @@ function finishDraft(){
 }
 
 function startDraft(){
+  // En mode carrière : deck déjà prêt, sauter le draft
+  if(career && selectedHero.id==='career'){
+    if(gameMode==='quick') startQuickFight();
+    else showCampaignIntro();
+    return;
+  }
   document.getElementById('draft-screen').style.display='flex';
   showDraftPick();
 }
 
 function startGame(){
-  // Appliquer le héros choisi
   document.getElementById('playerAvatar').textContent = selectedHero.avatar;
   document.getElementById('playerName').textContent   = selectedHero.name;
+  // Bouton aperçu deck (carrière uniquement)
+  const sdb = document.getElementById('sidebar-deck-btn');
+  if(sdb){ sdb.style.display = career ? 'block' : 'none'; sdb.onclick = showDeckPreview; }
 
   const deck = draftDeck.map(c=>({...c, keywords:[...c.keywords]}));
   for(let i=deck.length-1;i>0;i--){
@@ -1626,4 +2328,4 @@ document.addEventListener('mouseout', e=>{
   if(e.target.closest('.card')){ clearTimeout(tipTimeout); hideTooltip(); }
 });
 
-showModeScreen();
+showCareerScreen();
