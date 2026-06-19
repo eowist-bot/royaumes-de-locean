@@ -894,6 +894,17 @@ function buildEnemyDeck(stageConfig, stageIdx){
         ...pickN(lo(E), 3), ...pickN(mi(E), 4), ...pickN(hi(E).concat(rk(E)), 3),
         ...pickN(lo(S), 2), ...pickN(mi(S).concat(rk(S)), 3),
       ]; break;
+    case 4: { // L'Entité des Profondeurs — toutes les légendaires + épiques meurtrières
+      const leg  = CARD_POOL.filter(c=>c.rarity==='Légendaire');
+      const epic = CARD_POOL.filter(c=>c.rarity==='Épique');
+      const dmgS = S.filter(c=>['storm','maelstrom','cannonade','frozenWind'].includes(c.spellEffect));
+      deck = [
+        ...leg,                                   // toutes les légendaires (5 cartes)
+        ...pickN(epic.filter(c=>!c.isSpell), 7),  // épiques créatures
+        ...pickN(dmgS, 4),                        // sorts offensifs
+        ...pickN(epic.filter(c=>c.isSpell), 4),   // sorts épiques
+      ]; break;
+    }
     default: // Amiral — meilleur deck mixte, épiques/légendaires
       const elite = CARD_POOL.filter(c=>c.rarity==='Épique'||c.rarity==='Légendaire');
       deck = [
