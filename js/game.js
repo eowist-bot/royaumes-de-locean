@@ -429,17 +429,45 @@ function enemyTurn(){
     }
   }
 
-  // Attaques IA — cible les unités les plus faibles ou le héros
+  // Attaques IA — ciblage intelligent
   const attackers = enemy.board.filter(c=>!c.justPlayed||has(c,'Charge'));
   attackers.forEach(attacker=>{
-    const taunts  = player.board.filter(c=>has(c,'Provocation'));
-    const targets = (taunts.length?taunts:player.board)
-      .slice().sort((a,b)=>a.currentHp-b.currentHp);
-    if(targets.length){
-      log(`🤖 ${attacker.name} attaque ${targets[0].name}`,'log-enemy');
-      dealDamage(attacker, enemy.board, targets[0], false, player.board, enemy, player);
+    const atk = attacker.currentAtk||attacker.atk||0;
+    const taunts = player.board.filter(c=>has(c,'Provocation'));
+
+    // Obligation : attaquer une Provocation si présente
+    if(taunts.length){
+      const t = taunts.slice().sort((a,b)=>a.currentHp-b.currentHp)[0];
+      log(`🤖 ${attacker.name} attaque ${t.name}`,'log-enemy');
+      dealDamage(attacker, enemy.board, t, false, player.board, enemy, player);
+      cleanup(); return;
+    }
+
+    // Priorité 1 : coup fatal sur le héros joueur
+    if(atk >= player.hp){
+      log(`🤖 ${attacker.name} attaque votre héros !`,'log-enemy');
+      dealDamage(attacker, enemy.board, player, true, [], enemy, player);
+      cleanup(); return;
+    }
+
+    if(player.board.length){
+      // Priorité 2 : trade avantageux — tuer une unité sans mourir
+      const killable = player.board.filter(u=>(u.currentHp||u.hp)<=atk && (u.currentAtk||u.atk||0)<(attacker.currentHp||attacker.hp));
+      if(killable.length){
+        // Parmi les kills propres, cibler la plus menaçante (ATK la plus haute)
+        killable.sort((a,b)=>(b.currentAtk||b.atk)-(a.currentAtk||a.atk));
+        log(`🤖 ${attacker.name} attaque ${killable[0].name}`,'log-enemy');
+        dealDamage(attacker, enemy.board, killable[0], false, player.board, enemy, player);
+        cleanup(); return;
+      }
+
+      // Priorité 3 : éliminer la plus menaçante (ATK la plus haute)
+      const byThreat = player.board.slice().sort((a,b)=>(b.currentAtk||b.atk)-(a.currentAtk||a.atk));
+      log(`🤖 ${attacker.name} attaque ${byThreat[0].name}`,'log-enemy');
+      dealDamage(attacker, enemy.board, byThreat[0], false, player.board, enemy, player);
       cleanup();
-    } else if(!player.board.some(c=>has(c,'Provocation'))){
+    } else {
+      // Plateau vide → attaque directe au héros
       log(`🤖 ${attacker.name} attaque votre héros !`,'log-enemy');
       dealDamage(attacker, enemy.board, player, true, [], enemy, player);
     }
