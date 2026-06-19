@@ -597,8 +597,9 @@ function render(){
   document.getElementById('playerHpBar').style.width  = Math.max(0,player.hp/MAX_HP*100)+'%';
   document.getElementById('manaVal').textContent       = player.mana+'/'+player.maxMana;
   document.getElementById('manaBar').style.width       = player.maxMana?Math.max(0,player.mana/player.maxMana*100)+'%':'0%';
-  document.getElementById('enemyHpVal').textContent    = enemy.hp+'/'+MAX_HP;
-  document.getElementById('enemyHpBar').style.width   = Math.max(0,enemy.hp/MAX_HP*100)+'%';
+  const enemyMaxHp = (CAMPAIGN_STAGES[campaignStage]||{}).hp||MAX_HP;
+  document.getElementById('enemyHpVal').textContent    = enemy.hp+'/'+enemyMaxHp;
+  document.getElementById('enemyHpBar').style.width   = Math.max(0,enemy.hp/enemyMaxHp*100)+'%';
   document.getElementById('enemyManaVal').textContent  = enemy.mana+'/'+enemy.maxMana;
   document.getElementById('enemyManaBar').style.width  = enemy.maxMana?Math.max(0,enemy.mana/enemy.maxMana*100)+'%':'0%';
 
@@ -781,25 +782,25 @@ const CAMPAIGN_STAGES = [
     name:'Le Corsaire Volant', avatar:'🏴‍☠️', title:'Étape 1',
     desc:'Un corsaire redoutable commandant une flotte de pirates.',
     heroPower:{name:'Pillage', desc:'+1 ATK à une unité alliée', cost:2, emoji:'⚔️', effect:'buffAlly'},
-    deckType:'Pirate',
+    deckType:'Pirate', hp:25,
   },
   {
     name:'La Sirène des Abysses', avatar:'🧜', title:'Étape 2',
     desc:'Une sirène mystique qui contrôle les créatures marines.',
     heroPower:{name:'Chant des mers', desc:'Récupère 2 PV', cost:2, emoji:'💚', effect:'heal2'},
-    deckType:'Bête marine',
+    deckType:'Bête marine', hp:28,
   },
   {
     name:'Le Maître des Tempêtes', avatar:'🌩️', title:'Étape 3',
     desc:'Un élémentaliste qui déchaîne la foudre chaque tour.',
     heroPower:{name:'Foudre', desc:'1 dégât au héros ennemi', cost:1, emoji:'⚡', effect:'deal1'},
-    deckType:'Élémental',
+    deckType:'Élémental', hp:32,
   },
   {
     name:'Amiral Maelström', avatar:'⚓', title:'Boss Final',
     desc:"Le grand Amiral, maître incontesté des Royaumes de l'Océan.",
     heroPower:{name:'Recrutement', desc:'Invoque un Matelot 1/1', cost:2, emoji:'📣', effect:'summonMatelot'},
-    deckType:null,
+    deckType:null, hp:38,
   },
 ];
 let campaignStage = 0;
@@ -887,7 +888,7 @@ function startCampaignFight(){
   const stage = CAMPAIGN_STAGES[campaignStage];
   document.getElementById('enemyAvatar').textContent = stage.avatar;
   document.getElementById('enemyName').textContent = stage.name;
-  enemy.hp=MAX_HP; enemy.mana=1; enemy.maxMana=1;
+  enemy.hp=stage.hp||MAX_HP; enemy.mana=1; enemy.maxMana=1;
   enemy.hand=[]; enemy.board=[];
   enemy.heroPowerUsed=false; enemy.fatigue=0;
   enemy.deck = buildEnemyDeck(stage, campaignStage);
@@ -1159,7 +1160,7 @@ function startQuickFight(){
   const stage = CAMPAIGN_STAGES[3];
   document.getElementById('enemyAvatar').textContent = stage.avatar;
   document.getElementById('enemyName').textContent = stage.name;
-  enemy.hp=MAX_HP; enemy.mana=1; enemy.maxMana=1;
+  enemy.hp=stage.hp||MAX_HP; enemy.mana=1; enemy.maxMana=1;
   enemy.hand=[]; enemy.board=[];
   enemy.heroPowerUsed=false; enemy.fatigue=0;
   enemy.deck = buildEnemyDeck(stage, 3);
