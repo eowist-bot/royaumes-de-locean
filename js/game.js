@@ -99,7 +99,7 @@ function buildDeck(){
     const j=Math.floor(Math.random()*(i+1));
     [pool[i],pool[j]]=[pool[j],pool[i]];
   }
-  return pool.slice(0,20);
+  return pool.slice(0,15);
 }
 function drawCard(target){
   if(target.deck.length===0){
@@ -155,19 +155,45 @@ function useHeroPower(){
   render();
 }
 function enemyUseHeroPower(){
-  if(enemy.heroPowerUsed || enemy.mana < HERO_POWERS.enemy.cost) return;
-  if(enemy.board.length >= MAX_BOARD) return;
-  enemy.mana -= HERO_POWERS.enemy.cost;
+  const stage = CAMPAIGN_STAGES[campaignStage] || CAMPAIGN_STAGES[CAMPAIGN_STAGES.length-1];
+  const hp = stage.heroPower;
+  if(enemy.heroPowerUsed || enemy.mana < hp.cost) return;
+  enemy.mana -= hp.cost;
   enemy.heroPowerUsed = true;
-  const matelot = {name:'Matelot',emoji:'⚓',cost:1,atk:1,hp:1,rarity:'Commune',
-    cardType:'Pirate',keywords:[],battlecry:null,isSpell:false,
-    currentHp:1,attacked:false,justPlayed:true,hasShield:false,_uid:++_uidCounter};
-  enemy.board.push(matelot);
-  log('📣 Pouvoir héros : l\'Amiral invoque un Matelot !','log-enemy');
+  if(hp.effect==='summonMatelot'){
+    if(enemy.board.length>=MAX_BOARD) return;
+    const matelot={name:'Matelot',emoji:'⚓',cost:1,atk:1,hp:1,rarity:'Commune',
+      cardType:'Pirate',keywords:[],battlecry:null,isSpell:false,
+      currentHp:1,attacked:false,justPlayed:true,hasShield:false,_uid:++_uidCounter};
+    enemy.board.push(matelot);
+    log(`📣 Pouvoir héros : ${stage.name} invoque un Matelot !`,'log-enemy');
+  } else if(hp.effect==='buffAlly'){
+    if(!enemy.board.length) return;
+    const t = enemy.board[Math.floor(Math.random()*enemy.board.length)];
+    t.atk+=1;
+    log(`⚔️ Pouvoir héros : ${t.name} gagne +1 ATK !`,'log-enemy');
+  } else if(hp.effect==='heal2'){
+    enemy.hp=Math.min(MAX_HP,enemy.hp+2);
+    log(`💚 Pouvoir héros : ${stage.name} récupère 2 PV !`,'log-enemy');
+  } else if(hp.effect==='deal1'){
+    player.hp-=1; sndHeroHit(); flashHero('playerZone',1);
+    log(`⚡ Pouvoir héros : ${stage.name} inflige 1 dégât !`,'log-enemy');
+  }
 }
 
 // ── Battlecry effects ──
 const BATTLECRY_EFFECTS = {
+  pirateAtkBuff:(owner, ownerBoard)=>{
+    const pirates = ownerBoard.filter(u=>u.cardType==='Pirate');
+    pirates.forEach(u=>{ u.atk+=1; });
+    log(`⚡ Battlecry : ${pirates.length} Pirate(s) reçoivent +1 ATK !`,'log-event');
+  },
+  elementalBuffAll:(owner, ownerBoard)=>{
+    const eles = ownerBoard.filter(u=>u.cardType==='Élémental');
+    eles.forEach(u=>{ u.atk+=1; u.hp+=1; u.currentHp+=1; });
+    log(`⚡ Battlecry : ${eles.length} Élémental(aux) reçoivent +1/+1 !`,'log-event');
+  },
+  draw2Cards:(owner)=>{ drawCard(owner); drawCard(owner); log('🃏 Battlecry : vous piochez 2 cartes !','log-event'); },
   captainBuff:(owner, ownerBoard, target)=>{
     if(!target) return;
     target.atk+=1; target.hp+=1; target.currentHp+=1;
@@ -205,6 +231,20 @@ const SPELL_EFFECTS = {
     opp.hp-=4; sndHeroHit();
     flashHero(opp===enemy?'enemyZone':'playerZone',4);
     log('🌪️ Maelström : 4 dégâts directs au héros ennemi !','log-player');
+  },
+  frozenWind:(owner,opp,target)=>{
+    if(!target) return;
+    target.justPlayed=true; target.attacked=true; sndSpell();
+    log(`❄️ Vent de Givre : ${target.name} est étourdi(e) et passe son tour !`,'log-player');
+  },
+  cannonade:(owner,opp,target)=>{
+    if(!target) return;
+    target.currentHp-=3; sndHit();
+    log(`💥 Cannonade : 3 dégâts à ${target.name} !`,'log-player');
+  },
+  reefShield:(owner,opp)=>{
+    owner.board.forEach(u=>{ u.hasShield=true; }); sndSpell();
+    log('🪸 Récif Enchanté : Bouclier divin sur toutes vos unités !','log-player');
   },
 };
 
@@ -257,8 +297,8 @@ function cleanup(){
 }
 
 function checkEnd(){
-  if(enemy.hp<=0){  sndVictory(); setTimeout(()=>{ alert('🏆 Victoire ! L\'Amiral est coulé !'); location.reload(); },800); return true; }
-  if(player.hp<=0){ sndDefeat();  setTimeout(()=>{ alert('💀 Défaite ! Votre flotte est perdue !'); location.reload(); },800); return true; }
+  if(enemy.hp<=0){ handleCampaignVictory(); return true; }
+  if(player.hp<=0){ showDefeatScreen(); return true; }
   return false;
 }
 
@@ -594,16 +634,279 @@ function startBGM(){ bgm.play().catch(()=>{}); document.removeEventListener('poi
 document.addEventListener('pointerdown',startBGM);
 document.addEventListener('keydown',startBGM);
 
-// ── Init ──
-player.deck = buildDeck();
-enemy.deck  = buildDeck();
-for(let i=0;i<4;i++){ drawCard(player); drawCard(enemy); }
+// ── Campagne ──
+const CAMPAIGN_STAGES = [
+  {
+    name:'Le Corsaire Volant', avatar:'🏴‍☠️', title:'Étape 1',
+    desc:'Un corsaire redoutable commandant une flotte de pirates.',
+    heroPower:{name:'Pillage', desc:'+1 ATK à une unité alliée', cost:2, emoji:'⚔️', effect:'buffAlly'},
+    deckType:'Pirate',
+  },
+  {
+    name:'La Sirène des Abysses', avatar:'🧜', title:'Étape 2',
+    desc:'Une sirène mystique qui contrôle les créatures marines.',
+    heroPower:{name:'Chant des mers', desc:'Récupère 2 PV', cost:2, emoji:'💚', effect:'heal2'},
+    deckType:'Bête marine',
+  },
+  {
+    name:'Le Maître des Tempêtes', avatar:'🌩️', title:'Étape 3',
+    desc:'Un élémentaliste qui déchaîne la foudre chaque tour.',
+    heroPower:{name:'Foudre', desc:'1 dégât au héros ennemi', cost:1, emoji:'⚡', effect:'deal1'},
+    deckType:'Élémental',
+  },
+  {
+    name:'Amiral Maelström', avatar:'⚓', title:'Boss Final',
+    desc:"Le grand Amiral, maître incontesté des Royaumes de l'Océan.",
+    heroPower:{name:'Recrutement', desc:'Invoque un Matelot 1/1', cost:2, emoji:'📣', effect:'summonMatelot'},
+    deckType:null,
+  },
+];
+let campaignStage = 0;
 
+function buildEnemyDeck(stageConfig){
+  let pool;
+  if(stageConfig.deckType){
+    const typed = CARD_POOL.filter(c=>c.cardType===stageConfig.deckType||c.isSpell);
+    pool = [...typed,...typed,...CARD_POOL.filter(c=>c.isSpell)];
+  } else {
+    pool = [...CARD_POOL];
+    CARD_POOL.forEach(c=>{ if(c.rarity==='Rare'||c.rarity==='Épique'||c.rarity==='Légendaire') pool.push(c); });
+  }
+  for(let i=pool.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [pool[i],pool[j]]=[pool[j],pool[i]];
+  }
+  return pool.slice(0,15);
+}
+
+function showCampaignIntro(){
+  const el = document.getElementById('campaign-screen');
+  el.innerHTML = `
+    <div class="camp-title">⚓ Les Océans en Guerre</div>
+    <div class="camp-subtitle">4 combats vous attendent, Capitaine !</div>
+    <div class="camp-stages">
+      ${CAMPAIGN_STAGES.map((s,i)=>`
+        <div class="camp-stage">
+          <div class="camp-avatar-big">${s.avatar}</div>
+          <div class="camp-stage-info">
+            <div class="camp-stage-num">${s.title.toUpperCase()}</div>
+            <div class="camp-stage-name">${s.name}</div>
+            <div class="camp-stage-desc">${s.desc}</div>
+          </div>
+        </div>`).join('')}
+    </div>
+    <button id="camp-start-btn">⚔️ Partir en campagne !</button>`;
+  el.style.display = 'flex';
+  document.getElementById('camp-start-btn').onclick = ()=>{
+    el.style.display = 'none';
+    campaignStage = 0;
+    startCampaignFight();
+  };
+}
+
+function startCampaignFight(){
+  const stage = CAMPAIGN_STAGES[campaignStage];
+  document.getElementById('enemyAvatar').textContent = stage.avatar;
+  document.getElementById('enemyName').textContent = stage.name;
+  enemy.hp=MAX_HP; enemy.mana=1; enemy.maxMana=1;
+  enemy.hand=[]; enemy.board=[];
+  enemy.heroPowerUsed=false; enemy.fatigue=0;
+  enemy.deck = buildEnemyDeck(stage);
+  for(let i=0;i<4;i++) drawCard(enemy);
+  document.getElementById('game-layout').style.display='flex';
+  document.getElementById('log').innerHTML='';
+  log(`${stage.avatar} Combat ${campaignStage+1}/4 — ${stage.name}`,'log-event');
+  log(stage.desc,'log-event');
+  render();
+}
+
+function handleCampaignVictory(){
+  sndVictory();
+  campaignStage++;
+  if(campaignStage>=CAMPAIGN_STAGES.length){
+    setTimeout(showCampaignComplete, 900);
+    return;
+  }
+  const healAmt = 5;
+  player.hp = Math.min(MAX_HP, player.hp+healAmt);
+  setTimeout(()=>showRewardScreen(CAMPAIGN_STAGES[campaignStage], healAmt), 900);
+}
+
+function showRewardScreen(nextStage, healAmt){
+  document.getElementById('game-layout').style.display='none';
+  const el = document.getElementById('reward-screen');
+  el.innerHTML = `
+    <div class="reward-title">⚔️ Victoire !</div>
+    <div class="reward-heal">💊 +${healAmt} PV récupérés (${player.hp}/${MAX_HP})</div>
+    <div class="reward-next">
+      <div class="reward-next-label">PROCHAIN ADVERSAIRE</div>
+      <div class="reward-next-avatar">${nextStage.avatar}</div>
+      <div class="reward-next-name">${nextStage.name}</div>
+      <div class="reward-next-desc">${nextStage.desc}</div>
+    </div>
+    <button id="reward-continue-btn">⚔️ Continuer !</button>`;
+  el.style.display = 'flex';
+  document.getElementById('reward-continue-btn').onclick = ()=>{
+    el.style.display = 'none';
+    player.mana=1; player.maxMana=1;
+    player.hand=[]; player.board=[];
+    player.heroPowerUsed=false;
+    selectedUnit=null; pendingAction=null;
+    const deck = draftDeck.map(c=>({...c, keywords:[...c.keywords]}));
+    for(let i=deck.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [deck[i],deck[j]]=[deck[j],deck[i]];
+    }
+    player.deck = deck;
+    for(let i=0;i<4;i++) drawCard(player);
+    startCampaignFight();
+  };
+}
+
+function showCampaignComplete(){
+  document.getElementById('game-layout').style.display='none';
+  const el = document.getElementById('reward-screen');
+  el.innerHTML = `
+    <div class="reward-title">🏆 Campagne Terminée !</div>
+    <div class="camp-complete-emoji">🌊⚓🌊</div>
+    <div class="camp-subtitle">Votre flotte domine tous les océans !</div>
+    <button id="reward-continue-btn" onclick="location.reload()">🔄 Recommencer</button>`;
+  el.style.display = 'flex';
+  sndVictory();
+}
+
+function showDefeatScreen(){
+  sndDefeat();
+  setTimeout(()=>{
+    document.getElementById('game-layout').style.display='none';
+    const el = document.getElementById('reward-screen');
+    el.innerHTML = `
+      <div class="reward-title" style="color:#e74c3c">💀 Défaite !</div>
+      <div class="camp-complete-emoji">🌊</div>
+      <div class="camp-subtitle">Votre flotte a sombré au combat ${campaignStage+1}...</div>
+      <button id="reward-continue-btn" onclick="location.reload()">🔄 Recommencer la campagne</button>`;
+    el.style.display = 'flex';
+  }, 900);
+}
+
+// ── Draft de deck ──
+let draftDeck = [];
+let draftPick = 0;
+const DRAFT_SIZE = 15;
+
+function getDraftOffers(){
+  const indices = [];
+  while(indices.length < 3){
+    const i = Math.floor(Math.random()*CARD_POOL.length);
+    if(!indices.includes(i)) indices.push(i);
+  }
+  return indices.map(i=>CARD_POOL[i]);
+}
+
+function makeDraftCardEl(card){
+  const rk = rarityKey(card.rarity);
+  const d = document.createElement('div');
+  if(card.isSpell){
+    d.className='card spell r-'+rk;
+    d.innerHTML=`
+      <div class="card-cost">${card.cost}</div>
+      <div class="card-art">${CARD_ART[card.name]||`<span style="font-size:44px;display:flex;align-items:center;justify-content:center;height:100%">${card.emoji}</span>`}</div>
+      <div class="card-divider"></div>
+      <div class="card-name-bar"><div class="card-name">${card.name}</div></div>
+      <div class="card-textbox">
+        <div class="card-rarity-gem rarity-${rk}">${card.rarity.toUpperCase()}</div>
+        <div class="card-keywords spell-desc">${card.spellDesc}</div>
+      </div>
+      <div class="card-footer spell-footer"><span class="spell-type">SORT</span></div>`;
+  } else {
+    d.className='card r-'+rk;
+    d.innerHTML=`
+      <div class="card-cost">${card.cost}</div>
+      <div class="card-art">${CARD_ART[card.name]||`<span style="font-size:44px;display:flex;align-items:center;justify-content:center;height:100%">${card.emoji}</span>`}</div>
+      <div class="card-divider"></div>
+      <div class="card-name-bar"><div class="card-name">${card.name}</div></div>
+      <div class="card-textbox">
+        <div class="card-rarity-gem rarity-${rk}">${card.rarity.toUpperCase()}</div>
+        ${card.battlecry?`<div class="card-keywords battlecry-desc">★ ${card.battlecry.desc}</div>`:
+          card.keywords.length?`<div class="card-keywords">${card.keywords.join(' · ')}</div>`:
+          '<div class="card-keywords" style="color:#555">—</div>'}
+        ${card.cardType&&card.cardType!=='Sort'?`<div class="card-type-badge type-${card.cardType.replace(' ','-')}">${card.cardType}</div>`:''}
+      </div>
+      <div class="card-footer">
+        <div class="stat-gem atk">${card.atk}</div>
+        <div class="stat-gem hp">${card.hp}</div>
+      </div>`;
+  }
+  return d;
+}
+
+function showDraftPick(){
+  document.getElementById('draft-count').textContent = draftPick+1;
+  document.getElementById('draft-bar').style.width = (draftPick/DRAFT_SIZE*100)+'%';
+
+  const listEl = document.getElementById('draft-picked-list');
+  listEl.innerHTML='';
+  draftDeck.forEach(c=>{
+    const b=document.createElement('div'); b.className='draft-pick-badge';
+    b.innerHTML=`<span class="dpc">${c.cost}💎</span>${c.emoji} ${c.name}`;
+    listEl.appendChild(b);
+  });
+
+  const offersEl = document.getElementById('draft-offers');
+  offersEl.innerHTML='';
+  getDraftOffers().forEach(card=>{
+    const el=makeDraftCardEl(card);
+    el.onclick=()=>pickDraftCard(card);
+    offersEl.appendChild(el);
+  });
+}
+
+function pickDraftCard(card){
+  draftDeck.push({...card, keywords:[...card.keywords]});
+  draftPick++;
+  if(draftPick>=DRAFT_SIZE) finishDraft();
+  else showDraftPick();
+}
+
+function finishDraft(){
+  document.getElementById('draft-count').textContent='15';
+  document.getElementById('draft-bar').style.width='100%';
+  document.getElementById('draft-offers').innerHTML=
+    '<div class="draft-done-msg">⚓ Deck complet ! Bon vent, Capitaine !</div>';
+  setTimeout(()=>{
+    document.getElementById('draft-screen').style.display='none';
+    document.getElementById('game-layout').style.display='flex';
+    startGame();
+  }, 1200);
+}
+
+function startDraft(){
+  document.getElementById('draft-screen').style.display='flex';
+  showDraftPick();
+}
+
+function startGame(){
+  // Préparer le deck joueur depuis le draft
+  const deck = draftDeck.map(c=>({...c, keywords:[...c.keywords]}));
+  for(let i=deck.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [deck[i],deck[j]]=[deck[j],deck[i]];
+  }
+  player.deck = deck;
+  for(let i=0;i<4;i++) drawCard(player);
+  // Lancer la campagne
+  showCampaignIntro();
+}
+
+// ── Init ──
 document.getElementById('endTurn').onclick    = endTurn;
 document.getElementById('cancelBtn').onclick  = ()=>{ selectedUnit=null; pendingAction=null; render(); };
 document.getElementById('heroPowerBtn').onclick = useHeroPower;
-
-log('🌊 La bataille commence ! Bonne chance, Capitaine !','log-event');
+document.getElementById('draft-random-btn').onclick = ()=>{
+  draftDeck = buildDeck();
+  draftPick = DRAFT_SIZE;
+  finishDraft();
+};
 
 // ── Bouton son ──
 let globalMuted = false;
@@ -689,4 +992,5 @@ document.addEventListener('mouseover', e=>{
 document.addEventListener('mouseout', e=>{
   if(e.target.closest('.card')){ clearTimeout(tipTimeout); hideTooltip(); }
 });
-render();
+
+startDraft();

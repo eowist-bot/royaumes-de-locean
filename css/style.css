@@ -344,3 +344,67 @@ hr{border:none;border-top:1px solid var(--border);margin:8px 0}
 
 /* Battlecry star sur unité */
 .u-bc{position:absolute;top:2px;right:3px;font-size:9px;color:#ffe080;line-height:1}
+
+/* ── Campagne ── */
+#campaign-screen,#reward-screen{display:none;flex-direction:column;align-items:center;
+  gap:18px;padding:14px 0 30px;text-align:center}
+.camp-title,.reward-title{font-family:'Pirata One',cursive;font-size:36px;color:var(--gold);
+  text-shadow:0 0 24px rgba(201,168,76,.5);margin-bottom:2px}
+.camp-subtitle,.reward-sub{font-family:'Cinzel',serif;font-size:13px;color:#bcd;letter-spacing:1px}
+.camp-stages{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:6px 0}
+.camp-stage{display:flex;align-items:center;gap:12px;background:var(--surface);
+  border:1px solid var(--border);border-radius:12px;padding:12px 18px;
+  width:220px;text-align:left}
+.camp-stage.defeated{opacity:.45;filter:grayscale(.7)}
+.camp-stage.current{border-color:var(--gold);box-shadow:0 0 12px rgba(201,168,76,.3)}
+.camp-avatar-big{font-size:38px;flex-shrink:0;width:52px;text-align:center}
+.camp-stage-info{flex:1;min-width:0}
+.camp-stage-num{font-family:'Cinzel',serif;font-size:10px;color:var(--gold);letter-spacing:1px}
+.camp-stage-name{font-family:'Cinzel',serif;font-size:13px;color:#e8edf2;margin:2px 0}
+.camp-stage-desc{font-size:10px;color:#7a9ab0;line-height:1.4}
+#camp-start-btn,#reward-continue-btn{background:linear-gradient(135deg,#c0392b,#e74c3c);
+  color:#fff;border:none;border-radius:9px;padding:11px 30px;font-size:14px;
+  font-weight:700;letter-spacing:.5px;cursor:pointer;margin-top:6px;
+  box-shadow:0 4px 12px rgba(231,76,60,.3);transition:background .15s,transform .1s}
+#camp-start-btn:hover,#reward-continue-btn:hover{background:linear-gradient(135deg,#e74c3c,#ff6b6b)}
+#camp-start-btn:active,#reward-continue-btn:active{transform:scale(.97)}
+.reward-heal{font-family:'Cinzel',serif;font-size:20px;color:#27ae60;
+  text-shadow:0 0 12px rgba(39,174,96,.4)}
+.reward-next{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:16px 24px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.reward-next-label{font-family:'Cinzel',serif;font-size:11px;color:#7a9ab0;letter-spacing:1px}
+.reward-next-avatar{font-size:44px}
+.reward-next-name{font-family:'Cinzel',serif;font-size:16px;color:var(--gold)}
+.reward-next-desc{font-size:11px;color:#7a9ab0;max-width:260px}
+.camp-complete-emoji{font-size:60px;margin:10px 0}
+
+/* ── Draft de deck ── */
+#draft-screen{display:none;flex-direction:column;align-items:center;gap:20px;padding:10px 0 30px}
+#draft-header{text-align:center}
+#draft-title{font-family:'Pirata One',cursive;font-size:36px;color:var(--gold);
+  text-shadow:0 0 24px rgba(201,168,76,.5);margin-bottom:6px}
+#draft-progress{font-family:'Cinzel',serif;font-size:14px;color:#bcd;letter-spacing:1px}
+#draft-bar-wrap{width:320px;height:8px;background:rgba(0,0,0,.4);border-radius:4px;
+  margin:10px auto 0;border:1px solid rgba(255,255,255,.1)}
+#draft-bar{height:100%;width:0%;background:linear-gradient(90deg,#1a5a8a,#27ae60);
+  border-radius:4px;transition:width .35s ease}
+#draft-offers{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;min-height:220px;
+  align-items:center}
+#draft-offers .card{cursor:pointer}
+#draft-offers .card:hover:not(.unaffordable){
+  transform:translateY(-20px) scale(1.1) rotate(-1deg);
+  box-shadow:0 28px 52px rgba(0,0,0,.85),0 0 28px var(--card-glow,rgba(255,255,255,.15))}
+#draft-footer{width:100%;max-width:760px;text-align:center}
+.draft-picked-title{font-family:'Cinzel',serif;font-size:11px;color:var(--gold);
+  letter-spacing:1.5px;margin-bottom:8px}
+#draft-picked-list{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;
+  min-height:28px;margin-bottom:12px}
+.draft-pick-badge{background:var(--surface);border:1px solid var(--border);border-radius:6px;
+  padding:3px 9px;font-size:11px;color:#bcd;display:flex;align-items:center;gap:5px}
+.draft-pick-badge .dpc{font-family:'Cinzel',serif;font-size:10px;color:#5ba8ff}
+#draft-random-btn{background:rgba(255,255,255,.07);color:#8a9bb0;
+  border:1px solid #3a5068;font-size:12px;padding:7px 18px;border-radius:8px;
+  cursor:pointer;letter-spacing:.5px;transition:background .15s,color .15s}
+#draft-random-btn:hover{background:rgba(255,255,255,.13);color:#bcd}
+.draft-done-msg{font-family:'Pirata One',cursive;font-size:28px;color:var(--gold);
+  text-align:center;padding:30px;text-shadow:0 0 20px rgba(201,168,76,.5)}

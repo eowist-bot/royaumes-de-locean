@@ -5,14 +5,30 @@
 <div id='turn-banner'></div>
 <h1>Royaumes de l'Océan</h1>
 
-<div id='game-layout'>
+<div id='campaign-screen' style='display:none'></div>
+<div id='reward-screen' style='display:none'></div>
+<div id='draft-screen'>
+  <div id='draft-header'>
+    <div id='draft-title'>🧭 Draft de Deck</div>
+    <div id='draft-progress'>Choisissez votre carte — <span id='draft-count'>1</span> / 15</div>
+    <div id='draft-bar-wrap'><div id='draft-bar'></div></div>
+  </div>
+  <div id='draft-offers'></div>
+  <div id='draft-footer'>
+    <div class='draft-picked-title'>Cartes choisies :</div>
+    <div id='draft-picked-list'></div>
+    <button id='draft-random-btn'>🎲 Deck aléatoire (ignorer le draft)</button>
+  </div>
+</div>
+
+<div id='game-layout' style='display:none'>
   <div id='game-main'>
 
     <div class='hero-zone' id='enemyZone'>
       <div class='hero-header' id='enemyHeader'>
-        <div class='hero-avatar enemy'>⚓</div>
+        <div class='hero-avatar enemy' id='enemyAvatar'>⚓</div>
         <div style='flex:1'>
-          <div class='hero-name'>Amiral Maelström</div>
+          <div class='hero-name' id='enemyName'>Amiral Maelström</div>
           <div class='stats-row'>
             <div class='stat-line'><span class='stat-icon'>❤️</span><span class='stat-val' id='enemyHpVal'></span><div class='bar-wrap'><div class='bar-hp' id='enemyHpBar'></div></div></div>
             <div class='stat-line'><span class='stat-icon'>💎</span><span class='stat-val' id='enemyManaVal'></span><div class='bar-wrap'><div class='bar-mana' id='enemyManaBar'></div></div></div>
@@ -62,7 +78,7 @@
 
 <div id='tooltip'></div>
 <audio id='bgm' src='audio/musique-ambiance.mp3' loop preload='auto'></audio>
-<script src='data/cards.js'></script>
-<script src='data/card-art.js'></script>
-<script src='js/game.js'></script>
+<script src='data/cards.js?v=2'></script>
+<script src='data/card-art.js?v=2'></script>
+<script src='js/game.js?v=2'></script>
 </body></html>

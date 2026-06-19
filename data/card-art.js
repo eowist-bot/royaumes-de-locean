@@ -534,7 +534,281 @@ const CARD_ART = {
 <circle cx="20" cy="14" r="2" fill="#60ffb0" opacity=".35"/><circle cx="108" cy="12" r="1.5" fill="#60ffb0" opacity=".3"/>
 </svg>`,
 
-/* ── Sorts ── */
+/* ── Nouvelles cartes ── */
+'Corsaire du Nord': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <linearGradient id="cno1a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0a1e38"/><stop offset="100%" stop-color="#050e22"/></linearGradient>
+  <radialGradient id="cno1b" cx="55%" cy="35%"><stop offset="0%" stop-color="#80e0ff" stop-opacity=".4"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+  <filter id="cno1f"><feGaussianBlur stdDeviation="2"/></filter>
+</defs>
+<rect width="130" height="82" fill="url(#cno1a)"/>
+<rect width="130" height="82" fill="url(#cno1b)"/>
+<path d="M0 58 Q32 50 65 56 Q98 62 130 54 L130 82 L0 82Z" fill="#04080e"/>
+<ellipse cx="60" cy="38" rx="14" ry="17" fill="#a0c8e0"/>
+<path d="M48 26 L72 26 L70 20 L50 20Z" fill="#c0e0ff"/>
+<path d="M50 20 L52 12 L54 20Z" fill="#80c0ff"/>
+<rect x="58" y="43" width="4" height="16" fill="#1a3a60"/>
+<path d="M56 46 L50 52 L54 54 L58 48Z" fill="#1a3a60"/>
+<path d="M62 46 L68 52 L64 54 L62 48Z" fill="#162a50"/>
+<rect x="56" y="59" width="4" height="12" fill="#1a3a60"/>
+<rect x="60" y="59" width="4" height="12" fill="#162a50"/>
+<ellipse cx="60" cy="30" rx="6" ry="7" fill="#d0e8ff"/>
+<circle cx="57" cy="28" r="1.5" fill="#1a2a40"/>
+<circle cx="63" cy="28" r="1.5" fill="#1a2a40"/>
+<path d="M57 32 Q60 30 63 32" stroke="#1a2a40" stroke-width=".8" fill="none"/>
+<path d="M30 18 Q45 12 55 20" stroke="#80c0ff" stroke-width="1.2" fill="none" opacity=".6" stroke-dasharray="3,2"/>
+<circle cx="28" cy="17" r="3" fill="#a0d0ff" opacity=".5" filter="url(#cno1f)"/>
+<path d="M10 38 L18 28 L22 38 L18 48Z" fill="#80c0ff" opacity=".5"/>
+<path d="M100 30 L108 20 L112 30 L108 40Z" fill="#80c0ff" opacity=".4"/>
+</svg>`,
+
+'Boucanier Féroce': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <radialGradient id="bou1a" cx="45%" cy="40%"><stop offset="0%" stop-color="#2a0a08"/><stop offset="100%" stop-color="#0a0404"/></radialGradient>
+  <radialGradient id="bou1b" cx="45%" cy="35%"><stop offset="0%" stop-color="#c04010" stop-opacity=".5"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+  <filter id="bou1f"><feGaussianBlur stdDeviation="1.5"/></filter>
+</defs>
+<rect width="130" height="82" fill="url(#bou1a)"/>
+<rect width="130" height="82" fill="url(#bou1b)"/>
+<path d="M0 60 Q32 52 65 58 Q98 64 130 56 L130 82 L0 82Z" fill="#080404"/>
+<ellipse cx="52" cy="34" rx="11" ry="13" fill="#d4905a"/>
+<path d="M43 24 L61 24 L59 18 L45 18Z" fill="#1a0808"/>
+<path d="M45 18 L43 10 L47 11 L46 18Z" fill="#e0c030" opacity=".8"/>
+<circle cx="50" cy="24" r="2" fill="#e0c030"/>
+<rect x="50" y="47" width="3.5" height="14" fill="#1a1a2a"/>
+<path d="M48 50 L42 56 L46 58 L50 52Z" fill="#2a2a3a"/>
+<rect x="53.5" y="47" width="3.5" height="14" fill="#141420"/>
+<path d="M57 48 L66 34 L72 38 L62 48Z" fill="#3a3a4a" stroke="#aaa" stroke-width="1"/>
+<path d="M66 34 L80 28 L82 32 L72 38Z" fill="#505060" stroke="#ddd" stroke-width=".8"/>
+<path d="M34 40 L18 28 L20 22 L36 36Z" fill="#504040" stroke="#888" stroke-width="1"/>
+<path d="M18 28 L10 16 L14 14 L20 22Z" fill="#403030"/>
+<circle cx="16" cy="12" r="2" fill="#c04010" opacity=".4" filter="url(#bou1f)"/>
+</svg>`,
+
+'Navigatrice des Brumes': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <linearGradient id="nav1a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0a0a20"/><stop offset="100%" stop-color="#060610"/></linearGradient>
+  <radialGradient id="nav1b" cx="55%" cy="45%"><stop offset="0%" stop-color="#8060c0" stop-opacity=".45"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+  <filter id="nav1f"><feGaussianBlur stdDeviation="3"/></filter>
+</defs>
+<rect width="130" height="82" fill="url(#nav1a)"/>
+<rect width="130" height="82" fill="url(#nav1b)"/>
+<ellipse cx="65" cy="45" rx="50" ry="28" fill="#4030a0" opacity=".12" filter="url(#nav1f)"/>
+<ellipse cx="60" cy="34" rx="11" ry="14" fill="#c49a70"/>
+<path d="M51 22 L69 22 L67 16 L53 16Z" fill="#6040a0"/>
+<path d="M53 16 L55 8 L57 16Z" fill="#a080d0"/>
+<rect x="58" y="48" width="4" height="15" fill="#2a1a4a"/>
+<path d="M56 52 L49 58 L54 60 L58 54Z" fill="#2a1a4a"/>
+<path d="M62 52 L69 58 L64 60 L62 54Z" fill="#221440"/>
+<rect x="56" y="63" width="4" height="10" fill="#2a1a4a"/>
+<rect x="60" y="63" width="4" height="10" fill="#221440"/>
+<ellipse cx="60" cy="27" rx="6.5" ry="7.5" fill="#d4a880"/>
+<circle cx="57" cy="25" r="1.5" fill="#2a1040"/>
+<circle cx="63" cy="25" r="1.5" fill="#2a1040"/>
+<path d="M56 29 Q60 27 64 29" stroke="#2a1040" stroke-width=".8" fill="none"/>
+<path d="M20 38 Q40 28 60 34" stroke="#8060c0" stroke-width="1.5" fill="none" opacity=".3" filter="url(#nav1f)"/>
+<path d="M80 32 Q100 24 120 30" stroke="#8060c0" stroke-width="1.5" fill="none" opacity=".3" filter="url(#nav1f)"/>
+<circle cx="95" cy="14" r="2" fill="#a080d0" opacity=".5"/>
+<circle cx="18" cy="18" r="2.5" fill="#8060c0" opacity=".4"/>
+</svg>`,
+
+'Crevette Rapide': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <linearGradient id="cre1a" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#061828"/><stop offset="100%" stop-color="#0a1e30"/></linearGradient>
+  <radialGradient id="cre1b" cx="55%" cy="45%"><stop offset="0%" stop-color="#ff8040" stop-opacity=".4"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+</defs>
+<rect width="130" height="82" fill="url(#cre1a)"/>
+<rect width="130" height="82" fill="url(#cre1b)"/>
+<path d="M0 60 Q32 52 65 58 Q98 64 130 56 L130 82 L0 82Z" fill="#040c14"/>
+<path d="M30 48 Q50 30 80 36 Q95 40 100 48 Q90 52 70 50 Q55 48 45 52 Q36 56 30 48Z" fill="#e05020" opacity=".9"/>
+<path d="M30 48 Q50 30 80 36 Q95 40 100 48" fill="none" stroke="#ff8040" stroke-width="1.5"/>
+<path d="M80 36 Q100 30 110 38 L106 46 Q95 46 80 36Z" fill="#c03010"/>
+<circle cx="34" cy="47" r="3.5" fill="#1a0a04"/>
+<circle cx="34" cy="47" r="1.5" fill="#ffaa60" opacity=".9"/>
+<path d="M40 34 L32 26 M46 30 L40 22 M52 28 L48 20" stroke="#ff8040" stroke-width="1" fill="none" opacity=".7"/>
+<path d="M30 46 L18 40 L14 46 M30 50 L16 50 L14 56" stroke="#c03010" stroke-width="2" fill="none" stroke-linecap="round"/>
+<path d="M44 52 L38 60 M55 54 L52 62 M66 52 L65 62" stroke="#c03010" stroke-width="2" fill="none" stroke-linecap="round"/>
+<path d="M70 42 L76 34 L80 42" fill="#ff6030" stroke="#ff8040" stroke-width=".8"/>
+</svg>`,
+
+'Hippocampe Blindé': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <linearGradient id="hib1a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#061a2e"/><stop offset="100%" stop-color="#03080e"/></linearGradient>
+  <radialGradient id="hib1b" cx="50%" cy="45%"><stop offset="0%" stop-color="#40c0a0" stop-opacity=".4"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+  <filter id="hib1f"><feGaussianBlur stdDeviation="2"/></filter>
+</defs>
+<rect width="130" height="82" fill="url(#hib1a)"/>
+<rect width="130" height="82" fill="url(#hib1b)"/>
+<path d="M60 14 Q68 12 72 20 Q74 28 68 36 Q62 44 58 52 Q54 60 56 68" stroke="#40c0a0" stroke-width="7" fill="none" stroke-linecap="round"/>
+<path d="M60 14 Q68 12 72 20 Q74 28 68 36 Q62 44 58 52 Q54 60 56 68" stroke="#80e0c0" stroke-width="3" fill="none" stroke-linecap="round" opacity=".5"/>
+<ellipse cx="65" cy="16" rx="8" ry="7" fill="#3ab090"/>
+<circle cx="62" cy="14" r="2.5" fill="#081a14"/>
+<circle cx="62" cy="14" r="1" fill="#60ffc0" opacity=".9"/>
+<path d="M68 12 L78 8 L76 14 L70 14Z" fill="#30a080"/>
+<path d="M74 22 L86 18 L84 26 L74 26Z" fill="#30a080" opacity=".8"/>
+<path d="M72 32 L82 30 L80 36 L72 36Z" fill="#30a080" opacity=".7"/>
+<path d="M56 68 Q50 74 52 78 Q58 74 62 78 Q60 74 56 68Z" fill="#30a080"/>
+<ellipse cx="65" cy="35" rx="18" ry="20" fill="#30a080" opacity=".1" filter="url(#hib1f)"/>
+<circle cx="20" cy="14" r="2" fill="#40c0a0" opacity=".4"/>
+<circle cx="108" cy="12" r="1.5" fill="#60e0c0" opacity=".35"/>
+</svg>`,
+
+'Pieuvre Géante': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <radialGradient id="pie1a" cx="50%" cy="55%"><stop offset="0%" stop-color="#1a0428"/><stop offset="100%" stop-color="#04020c"/></radialGradient>
+  <radialGradient id="pie1b" cx="50%" cy="50%"><stop offset="0%" stop-color="#8000d0" stop-opacity=".6"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+  <filter id="pie1f"><feGaussianBlur stdDeviation="3.5"/></filter>
+</defs>
+<rect width="130" height="82" fill="url(#pie1a)"/>
+<rect width="130" height="82" fill="url(#pie1b)"/>
+<ellipse cx="65" cy="50" rx="55" ry="38" fill="#3a0080" opacity=".3" filter="url(#pie1f)"/>
+<ellipse cx="65" cy="38" rx="30" ry="24" fill="#3a0060" opacity=".95"/>
+<ellipse cx="65" cy="38" rx="30" ry="24" fill="none" stroke="#8020c0" stroke-width="2.5"/>
+<ellipse cx="65" cy="30" rx="20" ry="14" fill="#5000a0" opacity=".9"/>
+<circle cx="52" cy="30" r="7" fill="#200040"/>
+<circle cx="78" cy="30" r="7" fill="#200040"/>
+<circle cx="52" cy="30" r="3.5" fill="#e040ff" opacity=".9"/>
+<circle cx="78" cy="30" r="3.5" fill="#e040ff" opacity=".9"/>
+<path d="M42 56 Q28 66 20 78 Q32 68 38 60 Q32 70 28 80" stroke="#5a00a0" stroke-width="5" fill="none" stroke-linecap="round" opacity=".9"/>
+<path d="M54 60 Q44 70 42 80" stroke="#5a00a0" stroke-width="4" fill="none" stroke-linecap="round" opacity=".85"/>
+<path d="M65 62 Q65 72 65 82" stroke="#6000b0" stroke-width="5" fill="none" stroke-linecap="round" opacity=".9"/>
+<path d="M76 60 Q86 70 88 80" stroke="#5a00a0" stroke-width="4" fill="none" stroke-linecap="round" opacity=".85"/>
+<path d="M88 56 Q102 66 110 78 Q98 68 92 60 Q98 70 102 80" stroke="#5a00a0" stroke-width="5" fill="none" stroke-linecap="round" opacity=".9"/>
+<path d="M36 52 Q20 54 10 64" stroke="#4a0090" stroke-width="3.5" fill="none" stroke-linecap="round" opacity=".8"/>
+<path d="M94 52 Q110 54 120 64" stroke="#4a0090" stroke-width="3.5" fill="none" stroke-linecap="round" opacity=".8"/>
+<circle cx="15" cy="10" r="2" fill="#8020c0" opacity=".5"/>
+</svg>`,
+
+'Lutin des Eaux': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <radialGradient id="lut1a" cx="50%" cy="45%"><stop offset="0%" stop-color="#041828"/><stop offset="100%" stop-color="#020810"/></radialGradient>
+  <radialGradient id="lut1b" cx="50%" cy="40%"><stop offset="0%" stop-color="#20c0c0" stop-opacity=".45"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+  <filter id="lut1f"><feGaussianBlur stdDeviation="2.5"/></filter>
+</defs>
+<rect width="130" height="82" fill="url(#lut1a)"/>
+<rect width="130" height="82" fill="url(#lut1b)"/>
+<ellipse cx="65" cy="38" rx="18" ry="22" fill="#10a0a0" opacity=".25" filter="url(#lut1f)"/>
+<ellipse cx="65" cy="38" rx="10" ry="14" fill="#10a090"/>
+<ellipse cx="65" cy="30" rx="8" ry="9" fill="#20c0b0"/>
+<circle cx="61" cy="28" r="2.5" fill="#041418"/>
+<circle cx="69" cy="28" r="2.5" fill="#041418"/>
+<circle cx="61" cy="28" r="1" fill="#80ffee" opacity=".9"/>
+<circle cx="69" cy="28" r="1" fill="#80ffee" opacity=".9"/>
+<path d="M60 33 Q65 31 70 33" stroke="#041418" stroke-width=".8" fill="none"/>
+<path d="M58 24 L54 16 L62 20Z" fill="#10a090"/>
+<path d="M72 24 L76 16 L68 20Z" fill="#10a090"/>
+<path d="M57 40 L48 50 L52 52 L58 44Z" fill="#0e9080" stroke="#20c0b0" stroke-width=".8"/>
+<path d="M73 40 L82 50 L78 52 L72 44Z" fill="#0e9080" stroke="#20c0b0" stroke-width=".8"/>
+<path d="M61 52 L58 64 M65 54 L65 66 M69 52 L72 64" stroke="#0e9080" stroke-width="3" fill="none" stroke-linecap="round"/>
+<circle cx="40" cy="18" r="5" fill="#20c0c0" opacity=".3" filter="url(#lut1f)"/>
+<circle cx="92" cy="15" r="4" fill="#20c0c0" opacity=".25" filter="url(#lut1f)"/>
+<circle cx="18" cy="40" r="2.5" fill="#40e0d0" opacity=".4"/>
+</svg>`,
+
+'Golem Corail': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <radialGradient id="gco1a" cx="50%" cy="55%"><stop offset="0%" stop-color="#0a1008"/><stop offset="100%" stop-color="#040804"/></radialGradient>
+  <radialGradient id="gco1b" cx="50%" cy="50%"><stop offset="0%" stop-color="#e06040" stop-opacity=".4"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+  <filter id="gco1f"><feGaussianBlur stdDeviation="2"/></filter>
+</defs>
+<rect width="130" height="82" fill="url(#gco1a)"/>
+<rect width="130" height="82" fill="url(#gco1b)"/>
+<ellipse cx="65" cy="52" rx="28" ry="14" fill="#605040" opacity=".9"/>
+<rect x="50" y="32" width="30" height="22" rx="4" fill="#706050"/>
+<rect x="50" y="32" width="30" height="22" rx="4" fill="none" stroke="#908070" stroke-width="1.5"/>
+<rect x="55" y="18" width="20" height="16" rx="3" fill="#605040"/>
+<rect x="55" y="18" width="20" height="16" rx="3" fill="none" stroke="#907060" stroke-width="1.2"/>
+<circle cx="60" cy="24" r="4" fill="#302010"/>
+<circle cx="70" cy="24" r="4" fill="#302010"/>
+<circle cx="60" cy="24" r="2" fill="#ff8040" opacity=".8"/>
+<circle cx="70" cy="24" r="2" fill="#ff8040" opacity=".8"/>
+<path d="M42 36 L28 46 L26 54 L36 52 L40 44Z" fill="#604030" stroke="#807060" stroke-width="1"/>
+<path d="M88 36 L102 46 L104 54 L94 52 L90 44Z" fill="#604030" stroke="#807060" stroke-width="1"/>
+<path d="M57 54 L52 66 L60 64 L62 54Z" fill="#605040"/>
+<path d="M73 54 L78 66 L70 64 L68 54Z" fill="#605040"/>
+<path d="M55 32 L50 24 L48 30 L52 34Z" fill="#c05020" opacity=".8"/>
+<path d="M64 18 L62 8 L66 8 L68 18Z" fill="#e07030" opacity=".8"/>
+<path d="M75 32 L80 24 L82 30 L78 34Z" fill="#c05020" opacity=".8"/>
+<circle cx="18" cy="14" r="2" fill="#e07030" opacity=".4" filter="url(#gco1f)"/>
+</svg>`,
+
+/* ── Sorts — nouveaux ── */
+'Vent de Givre': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <radialGradient id="vgf1a" cx="50%" cy="50%"><stop offset="0%" stop-color="#060e20"/><stop offset="100%" stop-color="#020810"/></radialGradient>
+  <radialGradient id="vgf1b" cx="50%" cy="40%"><stop offset="0%" stop-color="#80e0ff" stop-opacity=".5"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+  <filter id="vgf1f"><feGaussianBlur stdDeviation="3"/></filter>
+</defs>
+<rect width="130" height="82" fill="url(#vgf1a)"/>
+<rect width="130" height="82" fill="url(#vgf1b)"/>
+<ellipse cx="65" cy="38" rx="35" ry="25" fill="#40a0d0" opacity=".15" filter="url(#vgf1f)"/>
+<line x1="65" y1="8" x2="65" y2="72" stroke="#c0e8ff" stroke-width="2" opacity=".8"/>
+<line x1="30" y1="26" x2="100" y2="54" stroke="#c0e8ff" stroke-width="2" opacity=".8"/>
+<line x1="100" y1="26" x2="30" y2="54" stroke="#c0e8ff" stroke-width="2" opacity=".8"/>
+<line x1="65" y1="8" x2="50" y2="20" stroke="#c0e8ff" stroke-width="1.5" opacity=".6"/>
+<line x1="65" y1="8" x2="80" y2="20" stroke="#c0e8ff" stroke-width="1.5" opacity=".6"/>
+<line x1="65" y1="72" x2="50" y2="60" stroke="#c0e8ff" stroke-width="1.5" opacity=".6"/>
+<line x1="65" y1="72" x2="80" y2="60" stroke="#c0e8ff" stroke-width="1.5" opacity=".6"/>
+<line x1="30" y1="26" x2="38" y2="32" stroke="#c0e8ff" stroke-width="1.5" opacity=".6"/>
+<line x1="30" y1="26" x2="22" y2="34" stroke="#c0e8ff" stroke-width="1.5" opacity=".6"/>
+<line x1="100" y1="54" x2="108" y2="48" stroke="#c0e8ff" stroke-width="1.5" opacity=".6"/>
+<line x1="100" y1="54" x2="108" y2="60" stroke="#c0e8ff" stroke-width="1.5" opacity=".6"/>
+<circle cx="65" cy="38" r="8" fill="#80d0ff" opacity=".9"/>
+<circle cx="65" cy="38" r="4" fill="#ffffff" opacity=".7"/>
+<circle cx="65" cy="38" r="14" fill="none" stroke="#80d0ff" stroke-width="1.5" opacity=".5" stroke-dasharray="3,3"/>
+<circle cx="30" cy="15" r="2" fill="#c0e8ff" opacity=".4"/>
+<circle cx="15" cy="55" r="2.5" fill="#c0e8ff" opacity=".3"/>
+</svg>`,
+
+'Cannonade': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <radialGradient id="can1a" cx="50%" cy="50%"><stop offset="0%" stop-color="#1e0a04"/><stop offset="100%" stop-color="#080404"/></radialGradient>
+  <radialGradient id="can1b" cx="50%" cy="40%"><stop offset="0%" stop-color="#ff8000" stop-opacity=".6"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+  <filter id="can1f"><feGaussianBlur stdDeviation="3"/></filter>
+</defs>
+<rect width="130" height="82" fill="url(#can1a)"/>
+<rect width="130" height="82" fill="url(#can1b)"/>
+<ellipse cx="55" cy="44" rx="30" ry="22" fill="#ff6000" opacity=".2" filter="url(#can1f)"/>
+<rect x="18" y="44" width="55" height="16" rx="8" fill="#3a3a3a" stroke="#606060" stroke-width="1.5"/>
+<rect x="10" y="48" width="8" height="8" rx="2" fill="#2a2a2a" stroke="#505050" stroke-width="1"/>
+<ellipse cx="73" cy="52" rx="6" ry="7" fill="#2a2a2a" stroke="#505050" stroke-width="1.2"/>
+<circle cx="85" cy="30" r="10" fill="#404040" stroke="#606060" stroke-width="1.5"/>
+<circle cx="85" cy="30" r="6" fill="#303030" stroke="#505050" stroke-width="1"/>
+<path d="M90 22 L108 8 L112 14 L94 28Z" fill="#ff8000" opacity=".9"/>
+<path d="M108 8 L120 6 L116 14 L112 14Z" fill="#ffaa00" opacity=".9"/>
+<ellipse cx="100" cy="16" r="8" fill="#ff6000" opacity=".3" filter="url(#can1f)"/>
+<path d="M108 8 L118 2 M112 6 L122 4" stroke="#ff8000" stroke-width="1" fill="none" opacity=".5"/>
+<circle cx="15" cy="18" r="2" fill="#ff8000" opacity=".3"/>
+</svg>`,
+
+'Récif Enchanté': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <radialGradient id="ren1a" cx="50%" cy="60%"><stop offset="0%" stop-color="#04101a"/><stop offset="100%" stop-color="#020810"/></radialGradient>
+  <radialGradient id="ren1b" cx="50%" cy="55%"><stop offset="0%" stop-color="#ff6080" stop-opacity=".4"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+  <filter id="ren1f"><feGaussianBlur stdDeviation="2.5"/></filter>
+</defs>
+<rect width="130" height="82" fill="url(#ren1a)"/>
+<rect width="130" height="82" fill="url(#ren1b)"/>
+<path d="M0 65 Q32 58 65 63 Q98 68 130 61 L130 82 L0 82Z" fill="#030c12"/>
+<path d="M30 65 L30 44 L34 38 L38 44 L38 65Z" fill="#e05060"/>
+<path d="M34 38 L30 28 L34 32 L38 28Z" fill="#ff8090"/>
+<path d="M38 42 L44 38 L46 44Z" fill="#e05060"/>
+<path d="M28 42 L22 38 L20 44Z" fill="#e05060"/>
+<path d="M55 65 L55 40 L60 34 L65 40 L65 65Z" fill="#c03060"/>
+<path d="M60 34 L55 22 L60 26 L65 22Z" fill="#ff6080"/>
+<path d="M65 38 L72 34 L74 40Z" fill="#c03060"/>
+<path d="M55 38 L48 32 L46 38Z" fill="#c03060"/>
+<path d="M88 65 L88 48 L92 42 L96 48 L96 65Z" fill="#e06080"/>
+<path d="M92 42 L88 30 L92 34 L96 30Z" fill="#ff80a0"/>
+<path d="M96 46 L102 42 L104 48Z" fill="#e06080"/>
+<path d="M88 46 L82 42 L80 48Z" fill="#e06080"/>
+<ellipse cx="65" cy="50" rx="45" ry="18" fill="#ff8090" opacity=".12" filter="url(#ren1f)"/>
+<path d="M0 70 Q32 64 65 69 Q98 74 130 67" stroke="#40c0e0" stroke-width="1.2" fill="none" opacity=".5"/>
+<circle cx="20" cy="38" r="2.5" fill="#ff80a0" opacity=".5" filter="url(#ren1f)"/>
+<circle cx="110" cy="32" r="2" fill="#ff80a0" opacity=".4" filter="url(#ren1f)"/>
+</svg>`,
+
+/* ── Sorts — originaux ── */
 'Tempête des Mers': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
 <defs><linearGradient id="ts1a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0a1428"/><stop offset="100%" stop-color="#061020"/></linearGradient><radialGradient id="ts1b" cx="50%" cy="30%"><stop offset="0%" stop-color="#204880" stop-opacity=".8"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs>
 <rect width="130" height="82" fill="url(#ts1a)"/><rect width="130" height="82" fill="url(#ts1b)"/>

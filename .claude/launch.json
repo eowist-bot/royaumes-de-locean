@@ -1,0 +1,29 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "jardinerie",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "5500", "--directory", "D:\\Claude-projet Jardinerie"],
+      "port": 5500
+    },
+    {
+      "name": "immo",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "5501", "--directory", "D:\\Claude-projet immo"],
+      "port": 5501
+    },
+    {
+      "name": "eowist-enquete",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "5502", "--directory", "D:\\Eowist-Enquete"],
+      "port": 5502
+    },
+    {
+      "name": "cgg",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "5503", "--directory", "D:\\Claude-projet CGG"],
+      "port": 5503
+    }
+  ]
+}

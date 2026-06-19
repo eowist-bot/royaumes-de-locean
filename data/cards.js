@@ -59,6 +59,34 @@ const CARD_POOL = [
   {name:'Dragon Marin',            emoji:'🐉', cost:7, atk:10, hp:8, rarity:'Légendaire', cardType:'Élémental',
    keywords:['Charge'], battlecry:null, isSpell:false},
 
+  // ═══ PIRATES — nouveaux ═══
+  {name:'Corsaire du Nord',     emoji:'🧊', cost:2, atk:2, hp:2, rarity:'Commune',    cardType:'Pirate',
+   keywords:[],
+   battlecry:{desc:'+1 ATK à tous les Pirates alliés', effect:'pirateAtkBuff', needsTarget:false},
+   isSpell:false},
+  {name:'Boucanier Féroce',     emoji:'⚔️', cost:4, atk:5, hp:3, rarity:'Rare',       cardType:'Pirate',
+   keywords:['Charge'], battlecry:null, isSpell:false},
+  {name:'Navigatrice des Brumes',emoji:'🌫️',cost:6, atk:4, hp:4, rarity:'Légendaire', cardType:'Pirate',
+   keywords:[],
+   battlecry:{desc:'Piochez 2 cartes', effect:'draw2Cards', needsTarget:false},
+   isSpell:false},
+
+  // ═══ BÊTES MARINES — nouvelles ═══
+  {name:'Crevette Rapide',      emoji:'🦐', cost:1, atk:1, hp:1, rarity:'Commune',    cardType:'Bête marine',
+   keywords:['Charge'], battlecry:null, isSpell:false},
+  {name:'Hippocampe Blindé',    emoji:'🐠', cost:3, atk:2, hp:4, rarity:'Commune',    cardType:'Bête marine',
+   keywords:['Bouclier divin'], battlecry:null, isSpell:false},
+  {name:'Pieuvre Géante',       emoji:'🐙', cost:7, atk:5, hp:8, rarity:'Épique',     cardType:'Bête marine',
+   keywords:['Provocation'], battlecry:null, isSpell:false},
+
+  // ═══ ÉLÉMENTAUX — nouveaux ═══
+  {name:'Lutin des Eaux',       emoji:'💧', cost:2, atk:1, hp:3, rarity:'Rare',       cardType:'Élémental',
+   keywords:[],
+   battlecry:{desc:'+1/+1 à tous les Élémentaux alliés', effect:'elementalBuffAll', needsTarget:false},
+   isSpell:false},
+  {name:'Golem Corail',         emoji:'🪨', cost:5, atk:4, hp:6, rarity:'Rare',       cardType:'Élémental',
+   keywords:['Provocation'], battlecry:null, isSpell:false},
+
   // ═══ SORTS ═══
   {name:'Eaux Guérisseuses', emoji:'💧', cost:2, atk:0, hp:0, rarity:'Commune', cardType:'Sort', isSpell:true,
    keywords:[], battlecry:null,
@@ -75,4 +103,13 @@ const CARD_POOL = [
   {name:'Maelström',         emoji:'🌪️', cost:5, atk:0, hp:0, rarity:'Légendaire', cardType:'Sort', isSpell:true,
    keywords:[], battlecry:null,
    spellDesc:'4 dégâts directs au héros ennemi', spellEffect:'maelstrom', needsTarget:false},
+  {name:'Vent de Givre',    emoji:'❄️', cost:2, atk:0, hp:0, rarity:'Rare',       cardType:'Sort', isSpell:true,
+   keywords:[], battlecry:null,
+   spellDesc:'Étourdit une unité ennemie (elle passe son tour)', spellEffect:'frozenWind', needsTarget:true, targetFilter:'enemy'},
+  {name:'Cannonade',        emoji:'💥', cost:4, atk:0, hp:0, rarity:'Épique',     cardType:'Sort', isSpell:true,
+   keywords:[], battlecry:null,
+   spellDesc:'3 dégâts à une unité ennemie', spellEffect:'cannonade', needsTarget:true, targetFilter:'enemy'},
+  {name:'Récif Enchanté',   emoji:'🪸', cost:3, atk:0, hp:0, rarity:'Rare',       cardType:'Sort', isSpell:true,
+   keywords:[], battlecry:null,
+   spellDesc:'Donne Bouclier divin à toutes vos unités', spellEffect:'reefShield', needsTarget:false},
 ];
