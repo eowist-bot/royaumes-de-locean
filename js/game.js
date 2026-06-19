@@ -838,13 +838,23 @@ let draftDeck = [];
 let draftPick = 0;
 const DRAFT_SIZE = 15;
 
+function getDraftCostRange(pick){
+  if(pick < 3)  return [1,2];
+  if(pick < 7)  return [3,4];
+  if(pick < 11) return [5,6];
+  return [5,99]; // 5+ pour les 4 derniers
+}
+
 function getDraftOffers(){
-  const indices = [];
-  while(indices.length < 3){
-    const i = Math.floor(Math.random()*CARD_POOL.length);
-    if(!indices.includes(i)) indices.push(i);
+  const [minCost, maxCost] = getDraftCostRange(draftPick);
+  const pool = CARD_POOL.filter(c=>c.cost>=minCost && c.cost<=maxCost);
+  const chosen = [];
+  const attempts = pool.length > 0 ? pool : CARD_POOL; // fallback si pool vide
+  while(chosen.length < 3){
+    const i = Math.floor(Math.random()*attempts.length);
+    if(!chosen.includes(attempts[i])) chosen.push(attempts[i]);
   }
-  return indices.map(i=>CARD_POOL[i]);
+  return chosen;
 }
 
 function makeDraftCardEl(card){
