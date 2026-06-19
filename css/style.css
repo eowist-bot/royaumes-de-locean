@@ -25,6 +25,10 @@ body{background:var(--bg);color:#e8edf2;font-family:'Open Sans',sans-serif;
 .hand-title{font-family:'Cinzel',serif;font-size:15px;color:var(--gold);
   letter-spacing:2px;margin:14px 0 4px}
 
+/* ── Barre du haut ── */
+#top-bar{display:flex;align-items:center;justify-content:center;position:relative;margin-bottom:0}
+#top-bar #muteBtn{position:absolute;right:0;top:50%;transform:translateY(-50%)}
+
 h1{text-align:center;font-family:'Pirata One',cursive;font-size:48px;
   color:var(--gold);letter-spacing:4px;
   text-shadow:0 0 30px rgba(201,168,76,.5),0 2px 6px rgba(0,0,0,.8);
