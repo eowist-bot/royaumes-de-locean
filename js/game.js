@@ -724,31 +724,22 @@ function showCollection(){
   let activeFilter = 'Tous';
 
   function renderCollection(){
-    const pool = activeFilter==='Tous' ? CARD_POOL
-      : CARD_POOL.filter(c=> activeFilter==='Sort' ? c.isSpell : c.cardType===activeFilter);
+    const pool = (activeFilter==='Tous' ? CARD_POOL
+      : CARD_POOL.filter(c=> activeFilter==='Sort' ? c.isSpell : c.cardType===activeFilter))
+      .slice().sort((a,b)=>a.cost-b.cost);
     colEl.innerHTML = `
       <div class="col-header">
         <div class="col-title">📚 Collection</div>
         <div class="col-filters">${filters.map(f=>`<button class="col-filter${f===activeFilter?' active':''}" data-f="${f}">${f} ${f==='Tous'?'('+CARD_POOL.length+')':''}</button>`).join('')}</div>
         <button class="col-back" id="col-back-btn">← Retour</button>
       </div>
-      <div class="col-grid">${pool.map(card=>{
-        const rk = rarityKey(card.rarity);
-        const art = CARD_ART[card.name]||'';
-        const kwHtml = card.keywords.length ? `<div class="card-keywords">${card.keywords.join(' · ')}</div>` : '';
-        const descHtml = card.isSpell
-          ? `<div class="card-spell-desc">${card.spellDesc||''}</div>`
-          : (card.battlecry ? `<div class="card-bc-desc">⚡ ${card.battlecry.desc}</div>` : '');
-        const statsHtml = card.isSpell ? '' : `<div class="col-stats"><span class="u-atk">${card.atk}</span><span class="u-hp">${card.hp}</span></div>`;
-        const typeLabel = `<div class="card-type-label type-${(card.isSpell?'Sort':card.cardType).replace(' ','-')}">${card.isSpell?'SORT':card.cardType.toUpperCase()}</div>`;
-        return `<div class="card r-${rk}${card.isSpell?' spell':''}">
-          <div class="card-cost">${card.cost}</div>
-          <div class="card-art">${art}</div>
-          <div class="card-name">${card.name}</div>
-          <div class="card-rarity">${card.rarity}</div>
-          ${typeLabel}${kwHtml}${descHtml}${statsHtml}
-        </div>`;
-      }).join('')}</div>`;
+      <div class="col-grid"></div>`;
+    const grid = colEl.querySelector('.col-grid');
+    pool.forEach(card=>{
+      const el = makeDraftCardEl(card);
+      el.style.cursor = 'default';
+      grid.appendChild(el);
+    });
     colEl.querySelectorAll('.col-filter').forEach(btn=>{
       btn.onclick = ()=>{ activeFilter=btn.dataset.f; renderCollection(); };
     });
