@@ -1,4 +1,4 @@
-
+﻿
 /* Illustrations SVG pour chaque carte — viewBox 130×82 */
 const CARD_ART = {
 
@@ -1045,6 +1045,1020 @@ const CARD_ART = {
 <path d="M65 55 Q75 50 85 55 Q95 60 105 55" stroke="#8080a0" stroke-width="1.5" fill="none" opacity=".4"/>
 <path d="M10 35 Q20 30 30 35" stroke="#9090b0" stroke-width="1.5" fill="none" opacity=".4"/>
 <path d="M95 28 Q108 22 118 28" stroke="#9090b0" stroke-width="1" fill="none" opacity=".3"/>
+</svg>`,
+
+
+// === TRIBU DES RÉCIFS ===
+'Enfant des Récifs': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="er_bg" cx="50%" cy="60%" r="70%"><stop offset="0%" stop-color="#0a2818"/><stop offset="100%" stop-color="#051a0a"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#er_bg)"/>
+<ellipse cx="65" cy="68" rx="35" ry="10" fill="#0d3a1a" opacity=".7"/>
+<path d="M48 55 Q55 38 65 35 Q75 38 82 55 L78 62 L52 62 Z" fill="#2a5030" opacity=".8"/>
+<ellipse cx="65" cy="32" rx="9" ry="10" fill="#3a6040"/>
+<path d="M56 30 Q52 20 55 15 Q60 18 60 22" fill="#e8a050" opacity=".6"/>
+<path d="M74 30 Q78 20 75 15 Q70 18 70 22" fill="#e8a050" opacity=".6"/>
+<path d="M30 58 Q45 50 60 55" stroke="#2ea84c" stroke-width="2" fill="none" opacity=".5"/>
+<path d="M70 55 Q85 50 100 58" stroke="#2ea84c" stroke-width="2" fill="none" opacity=".5"/>
+<ellipse cx="65" cy="70" rx="28" ry="6" fill="#1a4025" opacity=".5"/>
+<path d="M20 65 Q35 60 50 65 Q65 70 80 65 Q95 60 110 65" stroke="#2ea84c" stroke-width="1.5" fill="none" opacity=".4"/>
+</svg>`,
+
+'Éclaireur Tribal': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="et_bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#051a0a"/><stop offset="100%" stop-color="#0a2818"/></linearGradient></defs>
+<rect width="130" height="82" fill="url(#et_bg)"/>
+<path d="M55 65 L60 40 L65 65 Z" fill="#2a5030"/>
+<ellipse cx="62" cy="36" rx="8" ry="9" fill="#3a6040"/>
+<path d="M67 42 L90 30 L88 28 L65 40" fill="#c87030" opacity=".9"/>
+<path d="M88 28 L95 22 L92 30 Z" fill="#e8a050"/>
+<path d="M55 65 L45 72 M65 65 L75 72" stroke="#2a5030" stroke-width="3" stroke-linecap="round"/>
+<path d="M20 70 Q40 62 60 68 Q80 74 110 68" stroke="#2ea84c" stroke-width="1.5" fill="none" opacity=".4"/>
+<circle cx="100" cy="18" r="3" fill="#e8a050" opacity=".6"/>
+<path d="M10 55 Q25 48 40 55" stroke="#1a6030" stroke-width="2" fill="none" opacity=".5"/>
+</svg>`,
+
+'Guerrier des Coraux': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="gc_bg" cx="40%" cy="50%" r="70%"><stop offset="0%" stop-color="#0a2818"/><stop offset="100%" stop-color="#051a0a"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#gc_bg)"/>
+<path d="M50 70 L58 42 L65 70 Z" fill="#2a4a28"/>
+<path d="M58 42 L62 30 L66 42 Z" fill="#3a5a38"/>
+<ellipse cx="62" cy="27" rx="9" ry="10" fill="#3a6040"/>
+<path d="M66 35 L82 18 L85 22 L70 38" fill="#c07028" opacity=".9"/>
+<path d="M82 18 L92 10 L90 20 Z" fill="#e8b060" opacity=".9"/>
+<path d="M82 18 L88 12 L84 22" fill="#2ea84c" opacity=".7"/>
+<path d="M42 50 L55 44 L52 56 Z" fill="#2a8040" opacity=".8"/>
+<path d="M42 50 Q38 48 35 42 Q38 46 45 48" stroke="#2ea84c" stroke-width="1.5" fill="none"/>
+<path d="M20 72 Q45 64 70 70 Q95 76 110 70" stroke="#1a6030" stroke-width="1.5" fill="none" opacity=".4"/>
+</svg>`,
+
+'Pêcheur Tribal': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="pt_bg" x1="0%" y1="30%" x2="0%" y2="100%"><stop offset="0%" stop-color="#051a0a"/><stop offset="100%" stop-color="#082010"/></linearGradient></defs>
+<rect width="130" height="82" fill="url(#pt_bg)"/>
+<path d="M10 58 Q40 52 70 56 Q100 60 120 56 L120 82 L10 82 Z" fill="#061e0c" opacity=".8"/>
+<path d="M10 60 Q40 54 70 58 Q100 62 120 58" stroke="#2ea84c" stroke-width="1.5" fill="none" opacity=".6"/>
+<path d="M52 58 L56 38 L62 58 Z" fill="#2a4a28"/>
+<ellipse cx="58" cy="34" rx="8" ry="9" fill="#3a6040"/>
+<path d="M62 36 Q80 25 100 30" stroke="#c8a060" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/>
+<path d="M100 30 Q108 35 105 45 Q102 40 98 38" stroke="#c8a060" stroke-width="1.5" fill="none"/>
+<ellipse cx="103" cy="48" rx="5" ry="3" fill="#2ea84c" opacity=".7"/>
+<path d="M30 52 Q50 46 70 52" stroke="#2ea84c" stroke-width="1" fill="none" opacity=".4"/>
+</svg>`,
+
+'Lancier des Récifs': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="lr_bg" cx="60%" cy="70%" r="80%"><stop offset="0%" stop-color="#0a2818"/><stop offset="100%" stop-color="#051a0a"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#lr_bg)"/>
+<path d="M80 75 Q90 60 100 40 L85 42 Z" fill="#2a3a22" opacity=".6"/>
+<path d="M55 70 L62 44 L68 70 Z" fill="#2a4a28"/>
+<ellipse cx="63" cy="40" rx="9" ry="10" fill="#3a6040"/>
+<path d="M63 38 L70 10 L74 14 L67 40" stroke="#c07028" stroke-width="2.5" fill="none"/>
+<path d="M70 10 L78 5 L73 16 Z" fill="#e8b060"/>
+<path d="M70 10 Q74 7 76 10" fill="#2ea84c" opacity=".8"/>
+<path d="M20 65 Q35 58 55 65" stroke="#1a6030" stroke-width="2" fill="none" opacity=".5"/>
+<path d="M90 50 Q105 44 120 50" stroke="#1a6030" stroke-width="1.5" fill="none" opacity=".4"/>
+<circle cx="78" cy="5" r="2" fill="#e8a050" opacity=".8"/>
+</svg>`,
+
+'Guérisseur du Clan': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="gdc_bg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#0a2818"/><stop offset="100%" stop-color="#051a0a"/></radialGradient><radialGradient id="gdc_glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#2ea84c" stop-opacity=".4"/><stop offset="100%" stop-color="#2ea84c" stop-opacity="0"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#gdc_bg)"/>
+<ellipse cx="65" cy="55" rx="30" ry="20" fill="url(#gdc_glow)"/>
+<path d="M52 70 L58 46 L65 70 Z" fill="#2a4a28"/>
+<ellipse cx="62" cy="42" rx="9" ry="10" fill="#3a6040"/>
+<path d="M62 48 L58 55 M62 48 L66 55" stroke="#2ea84c" stroke-width="2" stroke-linecap="round"/>
+<circle cx="52" cy="52" r="4" fill="#2ea84c" opacity=".5"/>
+<circle cx="72" cy="52" r="4" fill="#2ea84c" opacity=".5"/>
+<circle cx="46" cy="44" r="2.5" fill="#2ea84c" opacity=".4"/>
+<circle cx="78" cy="44" r="2.5" fill="#2ea84c" opacity=".4"/>
+<path d="M55 35 L62 28 L69 35" stroke="#2ea84c" stroke-width="1.5" fill="none" opacity=".7"/>
+</svg>`,
+
+'Ancien du Clan': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="adc_bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#051a0a"/><stop offset="100%" stop-color="#0a2818"/></linearGradient></defs>
+<rect width="130" height="82" fill="url(#adc_bg)"/>
+<path d="M85 75 L85 20 L87 20 L87 75 Z" fill="#4a3018"/>
+<path d="M86 20 L80 15 L86 18 L92 15 Z" fill="#e8a050" opacity=".8"/>
+<circle cx="86" cy="30" r="4" fill="#e8a050" opacity=".7"/>
+<circle cx="86" cy="42" r="3" fill="#2ea84c" opacity=".6"/>
+<circle cx="86" cy="53" r="3" fill="#e8a050" opacity=".6"/>
+<path d="M50 72 L55 58 L60 72 Z" fill="#2a3a28"/>
+<ellipse cx="57" cy="54" rx="8" ry="8" fill="#3a5038"/>
+<path d="M52 60 L45 65" stroke="#4a3018" stroke-width="2" stroke-linecap="round"/>
+<path d="M25 68 Q40 62 55 68" stroke="#2ea84c" stroke-width="1" fill="none" opacity=".4"/>
+<path d="M65 65 Q80 60 95 65" stroke="#2ea84c" stroke-width="1" fill="none" opacity=".4"/>
+</svg>`,
+
+'Chasseur Tribal': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="cht_bg" cx="30%" cy="70%" r="80%"><stop offset="0%" stop-color="#082010"/><stop offset="100%" stop-color="#051a0a"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#cht_bg)"/>
+<path d="M48 72 L58 50 L65 58 L62 72 Z" fill="#2a4a28" opacity=".9"/>
+<ellipse cx="56" cy="46" rx="8" ry="9" fill="#3a5a38"/>
+<path d="M60 48 L85 35 L87 38 L62 50" fill="#8a5020" opacity=".9"/>
+<path d="M56 46 L52 52 L48 48 Z" fill="#2a3a22"/>
+<path d="M85 35 L95 30 L93 37 Z" fill="#c8a060"/>
+<path d="M20 65 Q35 58 50 65" stroke="#1a5025" stroke-width="2" fill="none" opacity=".5"/>
+<path d="M35 58 Q42 54 50 58" stroke="#2ea84c" stroke-width="1" fill="none" opacity=".4"/>
+<circle cx="95" cy="30" r="2" fill="#e8a050" opacity=".7"/>
+</svg>`,
+
+'Gardien des Totems': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="gdt_bg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#0a2818"/><stop offset="100%" stop-color="#051a0a"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#gdt_bg)"/>
+<rect x="82" y="12" width="8" height="60" fill="#3a2810" rx="2"/>
+<ellipse cx="86" cy="18" rx="8" ry="7" fill="#2a4018"/>
+<circle cx="84" cy="17" r="2.5" fill="#e8a050" opacity=".9"/>
+<circle cx="88" cy="17" r="2.5" fill="#e8a050" opacity=".9"/>
+<path d="M78 25 L94 25" stroke="#e8a050" stroke-width="1.5" opacity=".6"/>
+<circle cx="86" cy="35" r="4" fill="#2ea84c" opacity=".7"/>
+<path d="M78 45 L94 45" stroke="#2ea84c" stroke-width="1.5" opacity=".5"/>
+<path d="M45 72 L53 44 L60 72 Z" fill="#2a4a28"/>
+<ellipse cx="55" cy="40" rx="10" ry="11" fill="#3a6040"/>
+<path d="M45 55 L36 52 L38 58 Z" fill="#2a4a28"/>
+<path d="M20 68 Q38 62 55 68" stroke="#2ea84c" stroke-width="1.5" fill="none" opacity=".4"/>
+</svg>`,
+
+'Berserker Tribal': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="bt_bg" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#1a0808"/><stop offset="100%" stop-color="#051a0a"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#bt_bg)"/>
+<path d="M50 72 L58 40 L68 72 Z" fill="#2a3a20"/>
+<ellipse cx="62" cy="36" rx="11" ry="12" fill="#3a5030"/>
+<path d="M58 40 L38 30 L40 36 L56 44" fill="#8a4010" opacity=".9"/>
+<path d="M38 30 L28 24 L32 32 Z" fill="#c06020"/>
+<path d="M66 40 L88 28 L86 34 L68 44" fill="#8a4010" opacity=".9"/>
+<path d="M88 28 L98 22 L94 32 Z" fill="#c06020"/>
+<path d="M55 34 L60 28 L65 34" stroke="#e85030" stroke-width="2" fill="none" opacity=".7"/>
+<ellipse cx="62" cy="38" rx="14" ry="8" fill="#e84020" opacity=".08"/>
+<path d="M20 68 Q40 60 62 66 Q84 72 110 66" stroke="#e85030" stroke-width="1" fill="none" opacity=".3"/>
+</svg>`,
+
+'Défenseur des Récifs': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="dr_bg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#0a2818"/><stop offset="100%" stop-color="#051a0a"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#dr_bg)"/>
+<path d="M48 72 L55 42 L70 72 Z" fill="#2a4a28"/>
+<ellipse cx="60" cy="38" rx="11" ry="12" fill="#3a6040"/>
+<path d="M38 70 L38 38 Q38 28 50 28 Q50 38 45 42 L45 70 Z" fill="#1a4020" opacity=".9"/>
+<path d="M38 38 Q38 28 50 28" stroke="#e8a050" stroke-width="2" fill="none"/>
+<path d="M38 50 L45 50" stroke="#e8a050" stroke-width="1.5" opacity=".7"/>
+<path d="M38 60 L45 60" stroke="#2ea84c" stroke-width="1.5" opacity=".6"/>
+<path d="M35 28 Q30 22 32 18 Q36 22 40 18 Q40 24 38 28" fill="#2ea84c" opacity=".7"/>
+<path d="M20 70 Q40 64 60 70 Q80 76 110 70" stroke="#2ea84c" stroke-width="1.5" fill="none" opacity=".4"/>
+</svg>`,
+
+'Champion Tribal': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="ct_bg" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#0c2a10"/><stop offset="100%" stop-color="#051a0a"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#ct_bg)"/>
+<path d="M50 72 L58 38 L68 72 Z" fill="#2a4a28"/>
+<ellipse cx="62" cy="34" rx="12" ry="13" fill="#3a6040"/>
+<path d="M62 36 L68 12 L72 16 L66 38" stroke="#e8a050" stroke-width="2.5" fill="none"/>
+<path d="M68 12 L78 5 L74 16 Z" fill="#ffd060"/>
+<path d="M45 50 L35 40 L40 55 Z" fill="#2a4a28"/>
+<path d="M45 55 Q30 62 25 75" stroke="#3a6040" stroke-width="8" fill="none" stroke-linecap="round" opacity=".6"/>
+<path d="M20 70 Q42 62 65 68 Q88 74 110 68" stroke="#e8a050" stroke-width="1.5" fill="none" opacity=".4"/>
+<circle cx="78" cy="5" r="3" fill="#ffd060" opacity=".9"/>
+</svg>`,
+
+'Géant des Coraux': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="gec_bg" cx="50%" cy="60%" r="80%"><stop offset="0%" stop-color="#0a2818"/><stop offset="100%" stop-color="#051a0a"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#gec_bg)"/>
+<path d="M10 68 Q30 58 50 62 Q70 66 90 62 Q110 58 120 65 L120 82 L10 82 Z" fill="#082010"/>
+<path d="M40 68 L52 28 L78 68 Z" fill="#1a4a22" opacity=".9"/>
+<ellipse cx="65" cy="24" rx="16" ry="17" fill="#2a5a30"/>
+<path d="M52 28 L30 22 L34 32 L50 36" fill="#1a3a18"/>
+<path d="M78 28 L100 20 L96 30 L80 36" fill="#1a3a18"/>
+<path d="M55 22 Q58 14 62 12 Q66 14 69 22" stroke="#2ea84c" stroke-width="2" fill="none"/>
+<path d="M62 12 L64 5 L68 10 L62 12" fill="#e8a050" opacity=".8"/>
+<path d="M58 26 Q62 20 66 26" stroke="#e8a050" stroke-width="1.5" fill="none" opacity=".6"/>
+</svg>`,
+
+'Colosse Tribal': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="colt_bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#051a0a"/><stop offset="100%" stop-color="#0c2a12"/></linearGradient></defs>
+<rect width="130" height="82" fill="url(#colt_bg)"/>
+<path d="M35 75 L50 30 L80 75 Z" fill="#1a3a20" opacity=".9"/>
+<ellipse cx="65" cy="25" rx="18" ry="19" fill="#2a5030"/>
+<path d="M50 30 L22 22 L28 38 L46 42" fill="#1a3020"/>
+<path d="M80 30 L108 22 L102 38 L84 42" fill="#1a3020"/>
+<path d="M58 22 L62 8 L68 22" stroke="#e8a050" stroke-width="2" fill="none"/>
+<path d="M62 8 L66 2 L70 8 L62 8" fill="#ffd060" opacity=".8"/>
+<path d="M20 72 Q48 62 65 68 Q82 74 110 70" stroke="#2ea84c" stroke-width="2" fill="none" opacity=".4"/>
+<ellipse cx="65" cy="68" rx="30" ry="8" fill="#2ea84c" opacity=".06"/>
+</svg>`,
+
+'Grand Guerrier': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="gg_bg" cx="50%" cy="45%" r="70%"><stop offset="0%" stop-color="#0c2a10"/><stop offset="100%" stop-color="#051a0a"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#gg_bg)"/>
+<path d="M47 72 L57 36 L73 72 Z" fill="#2a4a28"/>
+<ellipse cx="63" cy="32" rx="13" ry="14" fill="#3a6040"/>
+<path d="M63 34 L70 6 L75 10 L68 36" stroke="#ffd060" stroke-width="3" fill="none"/>
+<path d="M70 6 L82 0 L78 12 Z" fill="#ffd060"/>
+<path d="M44 52 L30 44 L34 56 Z" fill="#2a4a28" opacity=".9"/>
+<path d="M44 55 Q28 62 22 72" stroke="#3a6040" stroke-width="10" fill="none" stroke-linecap="round" opacity=".5"/>
+<path d="M40 35 Q50 28 60 32" stroke="#e8a050" stroke-width="1.5" fill="none" opacity=".5"/>
+<path d="M20 70 Q44 62 65 68 Q86 74 110 68" stroke="#ffd060" stroke-width="1.5" fill="none" opacity=".4"/>
+<circle cx="82" cy="0" r="3" fill="#ffd060" opacity=".9"/>
+</svg>`,
+
+'Totem de Guerre': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="ta_bg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#0a2818"/><stop offset="100%" stop-color="#051a0a"/></radialGradient><radialGradient id="ta_glow" cx="50%" cy="40%" r="40%"><stop offset="0%" stop-color="#e8a050" stop-opacity=".5"/><stop offset="100%" stop-color="#e8a050" stop-opacity="0"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#ta_bg)"/>
+<ellipse cx="65" cy="35" rx="25" ry="35" fill="url(#ta_glow)"/>
+<rect x="61" y="15" width="8" height="65" fill="#2a1a08" rx="2"/>
+<ellipse cx="65" cy="20" rx="12" ry="10" fill="#1a3020"/>
+<circle cx="61" cy="18" r="3" fill="#e8a050" opacity=".9"/>
+<circle cx="69" cy="18" r="3" fill="#e8a050" opacity=".9"/>
+<path d="M55 28 L75 28" stroke="#e8a050" stroke-width="1.5" opacity=".7"/>
+<circle cx="65" cy="38" r="5" fill="#2ea84c" opacity=".8"/>
+<path d="M56 48 L74 48" stroke="#2ea84c" stroke-width="1.5" opacity=".6"/>
+<path d="M58 58 L72 58" stroke="#e8a050" stroke-width="1" opacity=".5"/>
+<path d="M52 12 L60 8 L65 14 L70 8 L78 12" stroke="#e8a050" stroke-width="1.5" fill="none" opacity=".6"/>
+</svg>`,
+
+'Matriarche des Récifs': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="cheft_bg" cx="50%" cy="45%" r="70%"><stop offset="0%" stop-color="#0c2a10"/><stop offset="100%" stop-color="#051a0a"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#cheft_bg)"/>
+<path d="M48 72 L56 40 L72 72 Z" fill="#2a4a28"/>
+<ellipse cx="63" cy="36" rx="12" ry="12" fill="#3a6040"/>
+<path d="M52 30 L48 20 L56 26 L63 16 L70 26 L78 20 L74 30" fill="#e8a050" opacity=".9"/>
+<path d="M63 16 L65 10 L67 16" fill="#ffd060"/>
+<path d="M56 26 Q54 22 52 20 Q58 22 60 26" fill="#ffd060" opacity=".6"/>
+<path d="M70 26 Q72 22 74 20 Q68 22 66 26" fill="#ffd060" opacity=".6"/>
+<path d="M63 40 L70 14 L74 18 L67 42" stroke="#c07028" stroke-width="2.5" fill="none"/>
+<path d="M70 14 L78 8 L74 18 Z" fill="#e8a050"/>
+<path d="M20 68 Q42 62 65 68 Q88 74 110 68" stroke="#e8a050" stroke-width="1.5" fill="none" opacity=".4"/>
+</svg>`,
+
+'Grand Chef Korag': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="gdr_bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#051a0a"/><stop offset="100%" stop-color="#0a2818"/></linearGradient></defs>
+<rect width="130" height="82" fill="url(#gdr_bg)"/>
+<path d="M48 72 L56 40 L70 72 Z" fill="#2a4a28"/>
+<ellipse cx="62" cy="36" rx="11" ry="12" fill="#3a6040"/>
+<path d="M32 72 L32 28 Q32 12 50 12 Q52 28 46 35 L46 72 Z" fill="#1a4020" opacity=".95"/>
+<path d="M32 28 Q32 12 50 12" stroke="#e8a050" stroke-width="2.5" fill="none"/>
+<path d="M32 40 L46 40" stroke="#e8a050" stroke-width="2" opacity=".7"/>
+<path d="M32 52 L46 52" stroke="#2ea84c" stroke-width="1.5" opacity=".6"/>
+<path d="M32 63 L46 63" stroke="#2ea84c" stroke-width="1" opacity=".5"/>
+<path d="M36 12 Q30 6 32 2 Q38 6 44 2 Q44 8 40 12" fill="#2ea84c" opacity=".8"/>
+<path d="M20 68 Q38 62 60 68 Q82 74 110 68" stroke="#2ea84c" stroke-width="1.5" fill="none" opacity=".4"/>
+</svg>`,
+
+'Chaman des Récifs': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="cha_bg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#082010"/><stop offset="100%" stop-color="#051a0a"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#cha_bg)"/>
+<path d="M50 72 L56 46 L65 72 Z" fill="#2a3a28"/>
+<ellipse cx="60" cy="42" rx="9" ry="10" fill="#3a5038"/>
+<path d="M60 46 L52 16 L56 18 L60 48" stroke="#6a3a10" stroke-width="2.5" fill="none"/>
+<path d="M52 16 L46 8 L54 14 Q52 10 56 8 Q58 12 54 16" fill="#e8a050" opacity=".8"/>
+<circle cx="40" cy="38" r="3" fill="#2ea84c" opacity=".6"/>
+<circle cx="35" cy="28" r="2" fill="#2ea84c" opacity=".5"/>
+<circle cx="44" cy="22" r="2" fill="#2ea84c" opacity=".4"/>
+<circle cx="80" cy="36" r="3" fill="#2ea84c" opacity=".6"/>
+<circle cx="85" cy="26" r="2" fill="#2ea84c" opacity=".5"/>
+<circle cx="76" cy="22" r="2" fill="#2ea84c" opacity=".4"/>
+<path d="M42 38 Q38 30 40 22 Q44 26 42 30 Q44 35 46 38" stroke="#2ea84c" stroke-width="1" fill="none" opacity=".4"/>
+<path d="M78 36 Q82 28 80 20 Q76 24 78 28 Q76 33 74 36" stroke="#2ea84c" stroke-width="1" fill="none" opacity=".4"/>
+</svg>`,
+
+'Esprit Protecteur': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="edr_bg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#082010"/><stop offset="100%" stop-color="#051a0a"/></radialGradient><radialGradient id="edr_glow" cx="50%" cy="45%" r="45%"><stop offset="0%" stop-color="#2ea84c" stop-opacity=".4"/><stop offset="100%" stop-color="#2ea84c" stop-opacity="0"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#edr_bg)"/>
+<ellipse cx="65" cy="40" rx="30" ry="38" fill="url(#edr_glow)"/>
+<path d="M52 72 Q55 45 65 30 Q75 45 78 72" fill="#1a4a28" opacity=".4"/>
+<path d="M52 72 Q55 45 65 30 Q75 45 78 72" stroke="#2ea84c" stroke-width="1.5" fill="none" opacity=".6"/>
+<ellipse cx="65" cy="28" rx="12" ry="14" fill="#1a4a28" opacity=".5"/>
+<ellipse cx="65" cy="28" rx="10" ry="12" fill="none" stroke="#2ea84c" stroke-width="1.5" opacity=".7"/>
+<circle cx="60" cy="25" r="2.5" fill="#2ea84c" opacity=".8"/>
+<circle cx="70" cy="25" r="2.5" fill="#2ea84c" opacity=".8"/>
+<path d="M40 50 Q50 42 60 48" stroke="#2ea84c" stroke-width="1" fill="none" opacity=".4" stroke-dasharray="2,2"/>
+<path d="M70 48 Q80 42 90 50" stroke="#2ea84c" stroke-width="1" fill="none" opacity=".4" stroke-dasharray="2,2"/>
+<circle cx="35" cy="35" r="2" fill="#2ea84c" opacity=".3"/>
+<circle cx="95" cy="32" r="2" fill="#2ea84c" opacity=".3"/>
+<circle cx="42" cy="22" r="1.5" fill="#2ea84c" opacity=".3"/>
+<circle cx="88" cy="20" r="1.5" fill="#2ea84c" opacity=".3"/>
+</svg>`,
+
+// === SPECTRES ===
+'Larve Spectrale': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="ae_bg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#180a30"/><stop offset="100%" stop-color="#080520"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#ae_bg)"/>
+<path d="M52 72 Q55 48 65 32 Q75 48 78 72" fill="#2a1848" opacity=".4"/>
+<path d="M52 72 Q55 48 65 32 Q75 48 78 72" stroke="#b8a0ff" stroke-width="1" fill="none" opacity=".5" stroke-dasharray="3,3"/>
+<ellipse cx="65" cy="28" rx="10" ry="12" fill="#2a1848" opacity=".5"/>
+<ellipse cx="65" cy="28" rx="8" ry="10" fill="none" stroke="#b8a0ff" stroke-width="1" opacity=".6"/>
+<circle cx="61" cy="25" r="2" fill="#b8a0ff" opacity=".7"/>
+<circle cx="69" cy="25" r="2" fill="#b8a0ff" opacity=".7"/>
+<circle cx="30" cy="40" r="1.5" fill="#b8a0ff" opacity=".3"/>
+<circle cx="100" cy="35" r="1.5" fill="#b8a0ff" opacity=".3"/>
+<circle cx="45" cy="22" r="1" fill="#b8a0ff" opacity=".25"/>
+<path d="M20 65 Q40 58 65 64 Q90 70 110 64" stroke="#6030c0" stroke-width="1" fill="none" opacity=".3"/>
+</svg>`,
+
+'Matelot Fantôme': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="saf_bg" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#180a30"/><stop offset="100%" stop-color="#080520"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#saf_bg)"/>
+<path d="M48 72 Q52 44 65 28 Q78 44 82 72" fill="#2a1040" opacity=".5"/>
+<path d="M48 72 Q52 44 65 28 Q78 44 82 72" stroke="#b8a0ff" stroke-width="1.5" fill="none" opacity=".6"/>
+<ellipse cx="65" cy="24" rx="12" ry="14" fill="#2a1040" opacity=".6"/>
+<circle cx="59" cy="20" r="3" fill="#b8a0ff" opacity=".9"/>
+<circle cx="71" cy="20" r="3" fill="#b8a0ff" opacity=".9"/>
+<path d="M57 30 Q62 35 68 30" stroke="#b8a0ff" stroke-width="2" fill="none" opacity=".7"/>
+<path d="M56 35 L50 42 L54 40 L52 48" stroke="#b8a0ff" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".6"/>
+<path d="M74 35 L80 42 L76 40 L78 48" stroke="#b8a0ff" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".6"/>
+<ellipse cx="65" cy="35" rx="20" ry="12" fill="#6030c0" opacity=".08"/>
+</svg>`,
+
+'Officier Damné': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="og_bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#080520"/><stop offset="100%" stop-color="#100830"/></linearGradient></defs>
+<rect width="130" height="82" fill="url(#og_bg)"/>
+<path d="M10 60 Q30 55 55 58 Q80 61 110 56 Q95 65 70 63 Q45 61 20 66 Z" fill="#180a38" opacity=".7"/>
+<path d="M10 62 Q30 57 55 60 Q80 63 110 58" stroke="#6030c0" stroke-width="1.5" fill="none" opacity=".5"/>
+<path d="M55 60 L60 35 L65 58 Z" fill="#2a1048" opacity=".6"/>
+<ellipse cx="62" cy="32" rx="9" ry="10" fill="#1a0838" opacity=".7"/>
+<ellipse cx="62" cy="32" rx="7" ry="8" fill="none" stroke="#b8a0ff" stroke-width="1" opacity=".5"/>
+<circle cx="58" cy="30" r="2" fill="#b8a0ff" opacity=".7"/>
+<circle cx="66" cy="30" r="2" fill="#b8a0ff" opacity=".7"/>
+<path d="M22 58 Q40 52 60 57" stroke="#b8a0ff" stroke-width="1" fill="none" opacity=".3" stroke-dasharray="2,3"/>
+<path d="M70 55 Q90 50 108 55" stroke="#b8a0ff" stroke-width="1" fill="none" opacity=".3" stroke-dasharray="2,3"/>
+</svg>`,
+
+'Canonnier Maudit': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="fv_bg" cx="50%" cy="45%" r="70%"><stop offset="0%" stop-color="#180a30"/><stop offset="100%" stop-color="#080520"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#fv_bg)"/>
+<path d="M48 72 Q52 42 65 26 Q78 42 82 72" fill="#2a1040" opacity=".5"/>
+<path d="M48 72 Q52 42 65 26 Q78 42 82 72" stroke="#b8a0ff" stroke-width="1.5" fill="none" opacity=".6"/>
+<ellipse cx="65" cy="22" rx="13" ry="15" fill="#2a1040" opacity=".6"/>
+<circle cx="59" cy="18" r="3.5" fill="#b8a0ff" opacity=".9"/>
+<circle cx="71" cy="18" r="3.5" fill="#b8a0ff" opacity=".9"/>
+<path d="M55 30 L40 45 Q38 48 42 50 L48 42" stroke="#8060b0" stroke-width="3" fill="none" stroke-linecap="round" opacity=".7"/>
+<path d="M75 30 L90 45 Q92 48 88 50 L82 42" stroke="#8060b0" stroke-width="3" fill="none" stroke-linecap="round" opacity=".7"/>
+<path d="M48 42 L36 55 L40 56 L30 68" stroke="#b8a0ff" stroke-width="1.5" fill="none" opacity=".5"/>
+<path d="M82 42 L94 55 L90 56 L100 68" stroke="#b8a0ff" stroke-width="1.5" fill="none" opacity=".5"/>
+</svg>`,
+
+'Amiral Fantôme': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="sh_bg" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#180a30"/><stop offset="100%" stop-color="#080520"/></radialGradient><radialGradient id="sh_glow" cx="50%" cy="35%" r="40%"><stop offset="0%" stop-color="#b8a0ff" stop-opacity=".3"/><stop offset="100%" stop-color="#b8a0ff" stop-opacity="0"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#sh_bg)"/>
+<ellipse cx="65" cy="30" rx="25" ry="30" fill="url(#sh_glow)"/>
+<path d="M50 72 Q54 44 65 28 Q76 44 80 72" fill="#2a1040" opacity=".5"/>
+<path d="M50 72 Q54 44 65 28 Q76 44 80 72" stroke="#b8a0ff" stroke-width="1.5" fill="none" opacity=".7"/>
+<ellipse cx="65" cy="24" rx="13" ry="14" fill="#2a1040" opacity=".7"/>
+<circle cx="59" cy="20" r="3.5" fill="#fff" opacity=".8"/>
+<circle cx="71" cy="20" r="3.5" fill="#fff" opacity=".8"/>
+<ellipse cx="65" cy="31" rx="6" ry="8" fill="#080520"/>
+<path d="M59 31 L71 31" stroke="#b8a0ff" stroke-width="1" fill="none" opacity=".5"/>
+<path d="M35 25 Q48 20 58 24" stroke="#b8a0ff" stroke-width="1.5" fill="none" opacity=".4" stroke-dasharray="3,2"/>
+<path d="M72 24 Q82 20 95 25" stroke="#b8a0ff" stroke-width="1.5" fill="none" opacity=".4" stroke-dasharray="3,2"/>
+<path d="M20 35 Q35 28 48 34" stroke="#6030c0" stroke-width="1" fill="none" opacity=".3"/>
+<path d="M82 34 Q95 28 110 35" stroke="#6030c0" stroke-width="1" fill="none" opacity=".3"/>
+</svg>`,
+
+'Capitaine Maudit': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="ldm_bg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#180a30"/><stop offset="100%" stop-color="#080520"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#ldm_bg)"/>
+<path d="M10 62 Q35 54 65 58 Q95 62 120 56 L120 82 L10 82 Z" fill="#100530" opacity=".7"/>
+<path d="M10 63 Q35 55 65 59 Q95 63 120 57" stroke="#6030c0" stroke-width="1.5" fill="none" opacity=".5"/>
+<path d="M52 62 L58 36 L65 62 Z" fill="#2a1040" opacity=".7"/>
+<ellipse cx="62" cy="32" rx="10" ry="11" fill="#180838"/>
+<path d="M55 30 L60 24 L65 30 L70 24 L75 30" stroke="#b8a0ff" stroke-width="1.5" fill="none" opacity=".8"/>
+<circle cx="58" cy="29" r="2.5" fill="#b8a0ff" opacity=".9"/>
+<circle cx="66" cy="29" r="2.5" fill="#b8a0ff" opacity=".9"/>
+<path d="M60 36 L50 14 L54 16 L60 38" stroke="#6030c0" stroke-width="2" fill="none"/>
+<path d="M50 14 L44 6 L52 12 Q48 8 52 6 Q54 10 52 14" fill="#b8a0ff" opacity=".7"/>
+<circle cx="40" cy="50" r="4" fill="#6030c0" opacity=".4"/>
+<circle cx="90" cy="46" r="3" fill="#6030c0" opacity=".3"/>
+</svg>`,
+
+'Galion Fantôme': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="nda_bg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#180a30"/><stop offset="100%" stop-color="#080520"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#nda_bg)"/>
+<path d="M50 72 L56 40 L65 72 Z" fill="#200a3a" opacity=".8"/>
+<ellipse cx="61" cy="36" rx="10" ry="11" fill="#1a0832"/>
+<ellipse cx="61" cy="36" rx="8" ry="9" fill="none" stroke="#b8a0ff" stroke-width="1" opacity=".5"/>
+<circle cx="57" cy="33" r="2.5" fill="#b8a0ff" opacity=".9"/>
+<circle cx="65" cy="33" r="2.5" fill="#b8a0ff" opacity=".9"/>
+<path d="M61 40 L50 12 L54 14 L61 42" stroke="#8040e0" stroke-width="2.5" fill="none"/>
+<path d="M50 12 L44 4 L52 10 Q48 6 52 4 Q55 8 52 12" fill="#b8a0ff" opacity=".7"/>
+<path d="M54 14 L38 22 Q32 26 34 32 L42 28" stroke="#6030c0" stroke-width="1.5" fill="none" opacity=".6"/>
+<circle cx="30" cy="36" r="5" fill="#6030c0" opacity=".4"/>
+<circle cx="26" cy="30" r="3" fill="#6030c0" opacity=".3"/>
+<path d="M68 40 L85 30 Q92 26 90 20 L82 24" stroke="#6030c0" stroke-width="1.5" fill="none" opacity=".6"/>
+<circle cx="94" cy="18" r="4" fill="#6030c0" opacity=".4"/>
+</svg>`,
+
+'Spectre Vengeur': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="san_bg" cx="50%" cy="45%" r="70%"><stop offset="0%" stop-color="#180a30"/><stop offset="100%" stop-color="#080520"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#san_bg)"/>
+<path d="M48 72 Q52 45 65 30 Q78 45 82 72" fill="#1a0838" opacity=".5"/>
+<path d="M48 72 Q52 45 65 30 Q78 45 82 72" stroke="#b8a0ff" stroke-width="1" fill="none" opacity=".5"/>
+<ellipse cx="65" cy="26" rx="13" ry="14" fill="#1a0838" opacity=".7"/>
+<path d="M54 22 Q58 16 65 18 Q72 16 76 22" stroke="#b8a0ff" stroke-width="1.5" fill="none" opacity=".7"/>
+<circle cx="59" cy="23" r="2.5" fill="#b8a0ff" opacity=".8"/>
+<circle cx="71" cy="23" r="2.5" fill="#b8a0ff" opacity=".8"/>
+<path d="M52 35 L35 42 Q28 46 30 54 L38 50" stroke="#8060b0" stroke-width="3" fill="none" stroke-linecap="round" opacity=".6"/>
+<path d="M38 50 Q32 58 36 65" stroke="#8060b0" stroke-width="2" fill="none" stroke-linecap="round" opacity=".5"/>
+<path d="M78 35 L95 42 Q102 46 100 54 L92 50" stroke="#8060b0" stroke-width="3" fill="none" stroke-linecap="round" opacity=".6"/>
+<path d="M92 50 Q98 58 94 65" stroke="#8060b0" stroke-width="2" fill="none" stroke-linecap="round" opacity=".5"/>
+<path d="M56 18 L46 8 L58 14" stroke="#b8a0ff" stroke-width="1" fill="none" opacity=".4" stroke-dasharray="2,2"/>
+<path d="M74 18 L84 8 L72 14" stroke="#b8a0ff" stroke-width="1" fill="none" opacity=".4" stroke-dasharray="2,2"/>
+</svg>`,
+
+'Vaisseau Maudit': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="bdr_bg" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#180a30"/><stop offset="100%" stop-color="#080520"/></radialGradient><radialGradient id="bdr_glow" cx="50%" cy="35%" r="50%"><stop offset="0%" stop-color="#b8a0ff" stop-opacity=".3"/><stop offset="100%" stop-color="#b8a0ff" stop-opacity="0"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#bdr_bg)"/>
+<ellipse cx="65" cy="32" rx="30" ry="36" fill="url(#bdr_glow)"/>
+<path d="M48 72 Q52 46 65 28 Q78 46 82 72" fill="#2a1040" opacity=".4"/>
+<path d="M48 72 Q52 46 65 28 Q78 46 82 72" stroke="#b8a0ff" stroke-width="1.5" fill="none" opacity=".7"/>
+<ellipse cx="65" cy="24" rx="14" ry="16" fill="#2a1040" opacity=".6"/>
+<circle cx="58" cy="20" r="3" fill="#fff" opacity=".7"/>
+<circle cx="72" cy="20" r="3" fill="#fff" opacity=".7"/>
+<ellipse cx="65" cy="32" rx="7" ry="9" fill="#080520" opacity=".9"/>
+<path d="M58 32 L72 32" stroke="#b8a0ff" stroke-width="1" fill="none" opacity=".5"/>
+<path d="M35 20 Q48 14 58 18" stroke="#b8a0ff" stroke-width="2" fill="none" opacity=".5" stroke-dasharray="2,2"/>
+<path d="M72 18 Q82 14 95 20" stroke="#b8a0ff" stroke-width="2" fill="none" opacity=".5" stroke-dasharray="2,2"/>
+<path d="M20 30 Q35 22 48 28" stroke="#6030c0" stroke-width="1" fill="none" opacity=".3"/>
+<path d="M82 28 Q95 22 110 30" stroke="#6030c0" stroke-width="1" fill="none" opacity=".3"/>
+</svg>`,
+
+'Le Hollandais Noir': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="mds_bg" cx="50%" cy="45%" r="70%"><stop offset="0%" stop-color="#200a38"/><stop offset="100%" stop-color="#080520"/></radialGradient><radialGradient id="mds_glow" cx="50%" cy="40%" r="50%"><stop offset="0%" stop-color="#6030c0" stop-opacity=".4"/><stop offset="100%" stop-color="#6030c0" stop-opacity="0"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#mds_bg)"/>
+<ellipse cx="65" cy="35" rx="32" ry="38" fill="url(#mds_glow)"/>
+<path d="M46 72 Q52 42 65 24 Q78 42 84 72" fill="#2a1040" opacity=".5"/>
+<path d="M46 72 Q52 42 65 24 Q78 42 84 72" stroke="#b8a0ff" stroke-width="2" fill="none" opacity=".7"/>
+<ellipse cx="65" cy="20" rx="14" ry="15" fill="#2a1040" opacity=".7"/>
+<path d="M54 14 Q58 8 65 10 Q72 8 76 14" stroke="#b8a0ff" stroke-width="2" fill="none" opacity=".8"/>
+<path d="M58 10 L60 4 L65 8 L70 4 L72 10" stroke="#b8a0ff" stroke-width="1.5" fill="none" opacity=".7"/>
+<circle cx="59" cy="18" r="3.5" fill="#b8a0ff" opacity=".9"/>
+<circle cx="71" cy="18" r="3.5" fill="#b8a0ff" opacity=".9"/>
+<path d="M52 30 L35 25 Q28 22 28 16 L36 20" stroke="#b8a0ff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".7"/>
+<path d="M78 30 L95 25 Q102 22 102 16 L94 20" stroke="#b8a0ff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".7"/>
+<circle cx="24" cy="14" r="5" fill="#6030c0" opacity=".6"/>
+<circle cx="106" cy="14" r="5" fill="#6030c0" opacity=".6"/>
+</svg>`,
+
+// === TRITONS ===
+'Recrue Triton': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="jtr_bg" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#040e1e"/><stop offset="100%" stop-color="#081a34"/></linearGradient></defs>
+<rect width="130" height="82" fill="url(#jtr_bg)"/>
+<path d="M10 62 Q35 54 65 58 Q95 62 120 56 L120 82 L10 82 Z" fill="#061228" opacity=".7"/>
+<path d="M10 63 Q35 55 65 59 Q95 63 120 57" stroke="#06c8e8" stroke-width="1.5" fill="none" opacity=".4"/>
+<path d="M54 62 L60 42 L68 62 Z" fill="#0a2040"/>
+<ellipse cx="63" cy="38" rx="9" ry="10" fill="#1a3a5a"/>
+<path d="M54 50 L44 46 L46 54 Z" fill="#0a2040" opacity=".8"/>
+<path d="M44 46 L36 42 L40 50 Z" fill="#1a4060" opacity=".7"/>
+<path d="M40 50 Q35 54 32 60" stroke="#1a5080" stroke-width="4" fill="none" stroke-linecap="round" opacity=".6"/>
+<path d="M20 60 Q38 54 58 60" stroke="#06c8e8" stroke-width="1" fill="none" opacity=".4"/>
+<path d="M80 56 Q98 50 115 56" stroke="#06c8e8" stroke-width="1" fill="none" opacity=".3"/>
+</svg>`,
+
+'Fantassin Triton': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="ectr_bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#040e1e"/><stop offset="100%" stop-color="#081a34"/></linearGradient></defs>
+<rect width="130" height="82" fill="url(#ectr_bg)"/>
+<path d="M10 64 Q40 56 70 60 Q100 64 120 58 L120 82 L10 82 Z" fill="#06101e" opacity=".7"/>
+<path d="M52 64 L58 40 L66 64 Z" fill="#0a2040"/>
+<ellipse cx="62" cy="36" rx="9" ry="10" fill="#1a3a5a"/>
+<path d="M62 38 L70 8 L74 12 L66 40" stroke="#1a4060" stroke-width="2.5" fill="none"/>
+<path d="M70 8 L76 2 L74 14 Z" fill="#06c8e8"/>
+<path d="M70 8 L72 5 Q76 4 74 8" fill="#06c8e8" opacity=".6"/>
+<path d="M56 38 L40 28 L44 38" fill="#0a2040" opacity=".8"/>
+<path d="M40 28 L32 22 L36 32 Z" fill="#1a4060" opacity=".7"/>
+<path d="M20 60 Q38 54 58 60" stroke="#06c8e8" stroke-width="1.5" fill="none" opacity=".4"/>
+</svg>`,
+
+'Garde Triton': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="gtr_bg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#081a34"/><stop offset="100%" stop-color="#040e1e"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#gtr_bg)"/>
+<path d="M50 72 L57 42 L68 72 Z" fill="#0a1e3a"/>
+<ellipse cx="62" cy="38" rx="10" ry="11" fill="#1a3a5a"/>
+<path d="M38 72 L38 30 Q38 14 55 14 Q56 28 50 36 L50 72 Z" fill="#0a2040" opacity=".9"/>
+<path d="M38 30 Q38 14 55 14" stroke="#06c8e8" stroke-width="2.5" fill="none"/>
+<path d="M38 44 L50 44" stroke="#06c8e8" stroke-width="1.5" opacity=".7"/>
+<path d="M38 56 L50 56" stroke="#1a5080" stroke-width="1.5" opacity=".6"/>
+<path d="M38 66 L50 66" stroke="#1a5080" stroke-width="1" opacity=".5"/>
+<path d="M40 14 Q34 8 36 4 Q42 8 48 4 Q47 10 43 14" fill="#06c8e8" opacity=".7"/>
+<path d="M20 68 Q40 62 62 68 Q84 74 110 68" stroke="#06c8e8" stroke-width="1.5" fill="none" opacity=".4"/>
+</svg>`,
+
+'Chevalier Triton': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="trc_bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#040e1e"/><stop offset="100%" stop-color="#081a34"/></linearGradient></defs>
+<rect width="130" height="82" fill="url(#trc_bg)"/>
+<path d="M48 72 L56 40 L66 72 Z" fill="#0a1e3a"/>
+<ellipse cx="60" cy="36" rx="10" ry="11" fill="#1a3a5a"/>
+<path d="M60 38 L68 12 L72 16 L64 40" stroke="#1a4060" stroke-width="2.5" fill="none"/>
+<path d="M68 12 L76 5 L73 16 Z" fill="#06c8e8"/>
+<path d="M68 12 L70 8 Q74 7 72 12" fill="#06c8e8" opacity=".6"/>
+<path d="M52 48 L38 40 L40 50 Z" fill="#0a2040"/>
+<path d="M38 40 L28 34 L32 44 Z" fill="#1a5080" opacity=".8"/>
+<path d="M20 66 Q38 60 60 66 Q82 72 110 66" stroke="#06c8e8" stroke-width="1.5" fill="none" opacity=".4"/>
+</svg>`,
+
+'Sentinelle Triton': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="prot_bg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#081a34"/><stop offset="100%" stop-color="#040e1e"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#prot_bg)"/>
+<path d="M52 72 L60 38 L72 72 Z" fill="#0a1e3a"/>
+<ellipse cx="65" cy="34" rx="11" ry="12" fill="#1a3a5a"/>
+<path d="M32 72 L32 26 Q32 8 55 8 Q56 24 48 34 L48 72 Z" fill="#0a2040" opacity=".95"/>
+<path d="M32 26 Q32 8 55 8" stroke="#06c8e8" stroke-width="3" fill="none"/>
+<path d="M32 38 L48 38" stroke="#06c8e8" stroke-width="2" opacity=".7"/>
+<path d="M32 50 L48 50" stroke="#06c8e8" stroke-width="2" opacity=".6"/>
+<path d="M32 62 L48 62" stroke="#1a5080" stroke-width="1.5" opacity=".5"/>
+<path d="M34 8 Q28 2 30 -2 Q38 2 46 -2 Q45 6 40 8" fill="#06c8e8" opacity=".8"/>
+<ellipse cx="40" cy="36" rx="16" ry="30" fill="#06c8e8" opacity=".04"/>
+<path d="M20 68 Q40 62 65 68 Q90 74 110 68" stroke="#06c8e8" stroke-width="1.5" fill="none" opacity=".4"/>
+</svg>`,
+
+'Lancier Triton': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="trs_bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#040e1e"/><stop offset="100%" stop-color="#081a34"/></linearGradient></defs>
+<rect width="130" height="82" fill="url(#trs_bg)"/>
+<path d="M50 72 L56 44 L64 72 Z" fill="#0a1e3a"/>
+<ellipse cx="60" cy="40" rx="9" ry="10" fill="#1a3a5a"/>
+<rect x="68" y="30" width="30" height="20" rx="2" fill="#0a2040" opacity=".8"/>
+<rect x="70" y="32" width="26" height="16" rx="1" fill="#061228"/>
+<path d="M72 36 L90 36" stroke="#06c8e8" stroke-width="1" opacity=".6"/>
+<path d="M72 40 L85 40" stroke="#06c8e8" stroke-width="1" opacity=".5"/>
+<path d="M72 44 L88 44" stroke="#06c8e8" stroke-width="1" opacity=".4"/>
+<circle cx="92" cy="36" r="2" fill="#06c8e8" opacity=".7"/>
+<path d="M60 44 L68 38" stroke="#1a4060" stroke-width="1.5" fill="none" opacity=".6"/>
+<path d="M20 66 Q38 60 58 66" stroke="#06c8e8" stroke-width="1" fill="none" opacity=".3"/>
+</svg>`,
+
+'Paladin Triton': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="batr_bg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#081a34"/><stop offset="100%" stop-color="#040e1e"/></radialGradient><radialGradient id="batr_glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#06c8e8" stop-opacity=".3"/><stop offset="100%" stop-color="#06c8e8" stop-opacity="0"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#batr_bg)"/>
+<ellipse cx="65" cy="41" rx="38" ry="36" fill="url(#batr_glow)"/>
+<path d="M28 72 Q28 20 65 12 Q102 20 102 72" fill="none" stroke="#06c8e8" stroke-width="2" opacity=".6"/>
+<path d="M35 72 Q35 25 65 18 Q95 25 95 72" fill="none" stroke="#06c8e8" stroke-width="1.5" opacity=".4"/>
+<path d="M42 72 Q42 30 65 24 Q88 30 88 72" fill="none" stroke="#1a5080" stroke-width="1" opacity=".3"/>
+<path d="M52 72 L58 44 L68 72 Z" fill="#0a2040" opacity=".7"/>
+<ellipse cx="63" cy="40" rx="10" ry="11" fill="#1a3a5a"/>
+<path d="M58 46 L52 50 M68 46 L74 50" stroke="#06c8e8" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+</svg>`,
+
+'Commandant Triton': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="comt_bg" cx="50%" cy="45%" r="70%"><stop offset="0%" stop-color="#081a34"/><stop offset="100%" stop-color="#040e1e"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#comt_bg)"/>
+<path d="M48 72 L56 38 L70 72 Z" fill="#0a1e3a"/>
+<ellipse cx="62" cy="34" rx="12" ry="13" fill="#1a3a5a"/>
+<path d="M52 28 Q55 18 62 20 Q69 18 72 28" stroke="#06c8e8" stroke-width="1.5" fill="none" opacity=".8"/>
+<path d="M56 20 L54 12 L62 18 L70 12 L68 20" fill="#06c8e8" opacity=".7"/>
+<path d="M62 38 L70 10 L74 14 L66 40" stroke="#1a5080" stroke-width="2.5" fill="none"/>
+<path d="M70 10 L80 4 L76 14 Z" fill="#06c8e8"/>
+<path d="M44 50 L30 44 L34 56 Z" fill="#0a2040"/>
+<path d="M30 44 L18 38 L22 48 Z" fill="#1a5080" opacity=".7"/>
+<path d="M20 68 Q42 62 65 68 Q88 74 110 68" stroke="#06c8e8" stroke-width="1.5" fill="none" opacity=".4"/>
+</svg>`,
+
+'Général Triton': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="fda_bg" x1="0%" y1="30%" x2="0%" y2="100%"><stop offset="0%" stop-color="#040e1e"/><stop offset="100%" stop-color="#081a34"/></linearGradient></defs>
+<rect width="130" height="82" fill="url(#fda_bg)"/>
+<path d="M10 64 Q40 56 70 60 Q100 64 120 58 L120 82 L10 82 Z" fill="#050e1e" opacity=".7"/>
+<path d="M10 65 Q40 57 70 61 Q100 65 120 59" stroke="#06c8e8" stroke-width="1" fill="none" opacity=".3"/>
+<path d="M52 64 L58 38 L66 64 Z" fill="#0a1e3a"/>
+<ellipse cx="62" cy="34" rx="11" ry="12" fill="#1a3a5a"/>
+<path d="M66 38 L80 28 L84 32 L70 40" fill="#3a1a06" opacity=".9"/>
+<path d="M80 28 L92 22 L90 30 Z" fill="#e87020"/>
+<ellipse cx="40" cy="52" rx="10" ry="8" fill="#0a1e3a"/>
+<path d="M34 52 L42 44 L46 52 L42 60 Z" fill="#1a3a5a"/>
+<circle cx="40" cy="52" r="5" fill="#e87020" opacity=".4"/>
+<circle cx="40" cy="52" r="3" fill="#ffa040" opacity=".3"/>
+<path d="M20 62 Q38 56 58 62" stroke="#06c8e8" stroke-width="1" fill="none" opacity=".3"/>
+</svg>`,
+
+'Roi Poséidon': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="rdt_bg" cx="50%" cy="45%" r="70%"><stop offset="0%" stop-color="#081a34"/><stop offset="100%" stop-color="#040e1e"/></radialGradient><radialGradient id="rdt_glow" cx="50%" cy="40%" r="50%"><stop offset="0%" stop-color="#06c8e8" stop-opacity=".3"/><stop offset="100%" stop-color="#06c8e8" stop-opacity="0"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#rdt_bg)"/>
+<ellipse cx="65" cy="35" rx="30" ry="36" fill="url(#rdt_glow)"/>
+<path d="M46 72 L55 36 L74 72 Z" fill="#0a1e3a"/>
+<ellipse cx="64" cy="32" rx="13" ry="14" fill="#1a3a5a"/>
+<path d="M54 24 Q58 14 64 16 Q70 14 74 24" stroke="#06c8e8" stroke-width="2" fill="none" opacity=".9"/>
+<path d="M56 16 L54 8 L64 14 L74 8 L72 16" fill="#06c8e8" opacity=".8"/>
+<path d="M64 16 L66 8 L70 14" fill="#ffd060" opacity=".7"/>
+<path d="M64 36 L72 8 L77 12 L69 38" stroke="#1a5080" stroke-width="3" fill="none"/>
+<path d="M72 8 L82 2 L78 14 Z" fill="#06c8e8"/>
+<path d="M72 8 L74 4 Q80 3 77 8" fill="#06c8e8" opacity=".6"/>
+<path d="M72 8 L76 6 Q78 10 74 12" fill="#ffd060" opacity=".5"/>
+<path d="M46 50 L28 42 L32 54 Z" fill="#0a2040"/>
+<path d="M28 42 L16 36 L20 48 Z" fill="#1a5080" opacity=".7"/>
+<path d="M20 68 Q44 60 65 66 Q86 72 110 66" stroke="#06c8e8" stroke-width="2" fill="none" opacity=".5"/>
+</svg>`,
+
+// === POWER CARDS ===
+'Veille Tribale': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="vt_bg" cx="50%" cy="60%" r="70%"><stop offset="0%" stop-color="#1e1040"/><stop offset="100%" stop-color="#100820"/></radialGradient><radialGradient id="vt_fire" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffd060" stop-opacity=".6"/><stop offset="100%" stop-color="#ffd060" stop-opacity="0"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#vt_bg)"/>
+<ellipse cx="65" cy="50" rx="30" ry="22" fill="url(#vt_fire)"/>
+<rect x="60" y="42" width="10" height="30" fill="#2a1808" rx="2"/>
+<ellipse cx="65" cy="18" rx="10" ry="9" fill="#2a1808"/>
+<circle cx="61" cy="17" r="2" fill="#ffd060" opacity=".9"/>
+<circle cx="69" cy="17" r="2" fill="#ffd060" opacity=".9"/>
+<path d="M57 24 L73 24" stroke="#ffd060" stroke-width="1" opacity=".6"/>
+<circle cx="65" cy="32" r="4" fill="#8050e0" opacity=".7"/>
+<path d="M57 38 L73 38" stroke="#8050e0" stroke-width="1.5" opacity=".5"/>
+<path d="M60 48 L56 38 L64 44 L65 30 L66 44 L74 38 L70 48" fill="#ffd060" opacity=".9"/>
+<path d="M62 45 L64 36 L66 45" fill="#ff8020" opacity=".7"/>
+<ellipse cx="65" cy="55" rx="18" ry="8" fill="#ffd060" opacity=".08"/>
+</svg>`,
+
+'Chant du Clan': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="cdc_bg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#1e1040"/><stop offset="100%" stop-color="#100820"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#cdc_bg)"/>
+<path d="M58 48 L58 28 L72 32 L72 52 Z" fill="#8050e0" opacity=".8"/>
+<circle cx="55" cy="50" r="5" fill="#8050e0" opacity=".8"/>
+<circle cx="69" cy="54" r="5" fill="#8050e0" opacity=".8"/>
+<path d="M42 35 Q48 28 55 32 Q52 38 48 36" stroke="#ffd060" stroke-width="2" fill="none" opacity=".7"/>
+<path d="M38 28 Q46 20 55 24" stroke="#ffd060" stroke-width="1.5" fill="none" opacity=".5"/>
+<path d="M78 30 Q84 23 91 27 Q88 33 84 31" stroke="#ffd060" stroke-width="2" fill="none" opacity=".7"/>
+<path d="M82 23 Q90 15 99 19" stroke="#ffd060" stroke-width="1.5" fill="none" opacity=".5"/>
+<circle cx="35" cy="42" r="3" fill="#ffd060" opacity=".5"/>
+<circle cx="95" cy="38" r="3" fill="#ffd060" opacity=".5"/>
+<circle cx="28" cy="32" r="2" fill="#ffd060" opacity=".3"/>
+<circle cx="102" cy="28" r="2" fill="#ffd060" opacity=".3"/>
+<path d="M20 65 Q40 58 65 63 Q90 68 110 63" stroke="#8050e0" stroke-width="1" fill="none" opacity=".3"/>
+</svg>`,
+
+'Offrande aux Totems': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="oat_bg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#1e1040"/><stop offset="100%" stop-color="#100820"/></radialGradient><radialGradient id="oat_glow" cx="50%" cy="40%" r="50%"><stop offset="0%" stop-color="#ffd060" stop-opacity=".5"/><stop offset="100%" stop-color="#ffd060" stop-opacity="0"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#oat_bg)"/>
+<ellipse cx="65" cy="40" rx="28" ry="38" fill="url(#oat_glow)"/>
+<ellipse cx="65" cy="58" rx="20" ry="8" fill="#1a0808"/>
+<path d="M52 58 Q55 52 65 50 Q75 52 78 58 Q75 64 65 66 Q55 64 52 58 Z" fill="#2a1010"/>
+<path d="M65 50 L62 30 L65 35 L68 30 L65 50" fill="#ffd060" opacity=".9"/>
+<path d="M65 35 L58 20 L62 28 L65 22 L68 28 L72 20 L65 35" fill="#ffa030" opacity=".8"/>
+<path d="M65 22 L63 12 L65 18 L67 12 L65 22" fill="#ff6010" opacity=".7"/>
+<circle cx="65" cy="10" r="3" fill="#ffd060" opacity=".9"/>
+<path d="M48 48 Q45 40 48 32" stroke="#ffd060" stroke-width="1" fill="none" opacity=".4" stroke-dasharray="2,2"/>
+<path d="M82 48 Q85 40 82 32" stroke="#ffd060" stroke-width="1" fill="none" opacity=".4" stroke-dasharray="2,2"/>
+<path d="M38 44 Q34 36 36 28" stroke="#ffd060" stroke-width="1" fill="none" opacity=".3" stroke-dasharray="2,2"/>
+<path d="M92 44 Q96 36 94 28" stroke="#ffd060" stroke-width="1" fill="none" opacity=".3" stroke-dasharray="2,2"/>
+</svg>`,
+
+'Frappe Tribale': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="ft_bg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#1e1040"/><stop offset="100%" stop-color="#100820"/></radialGradient><radialGradient id="ft_burst" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffd060" stop-opacity=".5"/><stop offset="100%" stop-color="#ffd060" stop-opacity="0"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#ft_bg)"/>
+<ellipse cx="72" cy="42" rx="28" ry="28" fill="url(#ft_burst)"/>
+<path d="M50 60 L56 42 L62 50 L58 60 Z" fill="#2a1030" opacity=".8"/>
+<path d="M56 42 L62 34 L68 42 L62 50 Z" fill="#3a1840"/>
+<path d="M62 34 L67 28 L72 34 L68 42 L62 34 Z" fill="#2a1030" opacity=".7"/>
+<path d="M72 42 L80 20 L86 28 L82 36 L90 30 L95 38 L85 42 Z" fill="#8050e0" opacity=".7"/>
+<path d="M72 42 L60 16 L66 24 L60 30 L68 24 L72 32 Z" fill="#ffd060" opacity=".8"/>
+<circle cx="72" cy="42" r="8" fill="#ffd060" opacity=".3"/>
+<circle cx="72" cy="42" r="4" fill="#fff" opacity=".2"/>
+<path d="M40 30 L48 38 M30 42 L42 45 M38 55 L50 52" stroke="#ffd060" stroke-width="1.5" fill="none" opacity=".4"/>
+</svg>`,
+
+'Appel du Totem': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="adt_bg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#1e1040"/><stop offset="100%" stop-color="#100820"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#adt_bg)"/>
+<rect x="61" y="28" width="8" height="50" fill="#2a1808" rx="2" opacity=".8"/>
+<ellipse cx="65" cy="32" rx="10" ry="8" fill="#1a1020"/>
+<circle cx="61" cy="30" r="2" fill="#ffd060" opacity=".9"/>
+<circle cx="69" cy="30" r="2" fill="#ffd060" opacity=".9"/>
+<path d="M57 36 L73 36" stroke="#ffd060" stroke-width="1" opacity=".6"/>
+<circle cx="65" cy="44" r="4" fill="#8050e0" opacity=".7"/>
+<path d="M40 12 L50 18 L55 12 L60 8 L65 12 L70 8 L75 12 L80 18 L90 12" stroke="#ffd060" stroke-width="2" fill="none" opacity=".7"/>
+<path d="M50 18 L52 28" stroke="#ffd060" stroke-width="1.5" fill="none" opacity=".5"/>
+<path d="M80 18 L78 28" stroke="#ffd060" stroke-width="1.5" fill="none" opacity=".5"/>
+<path d="M65 12 L65 22" stroke="#ffd060" stroke-width="1.5" fill="none" opacity=".5"/>
+<circle cx="40" cy="12" r="3" fill="#ffd060" opacity=".6"/>
+<circle cx="90" cy="12" r="3" fill="#ffd060" opacity=".6"/>
+<circle cx="65" cy="8" r="3" fill="#8050e0" opacity=".7"/>
+<ellipse cx="65" cy="18" rx="30" ry="12" fill="#ffd060" opacity=".06"/>
+</svg>`,
+
+'Bénédiction Ancestrale': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="ba_bg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#1e1040"/><stop offset="100%" stop-color="#100820"/></radialGradient><radialGradient id="ba_glow" cx="50%" cy="45%" r="50%"><stop offset="0%" stop-color="#60ff80" stop-opacity=".4"/><stop offset="100%" stop-color="#60ff80" stop-opacity="0"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#ba_bg)"/>
+<ellipse cx="65" cy="42" rx="30" ry="34" fill="url(#ba_glow)"/>
+<path d="M48 55 L52 40 L58 48 L65 32 L72 48 L78 40 L82 55" fill="none" stroke="#60ff80" stroke-width="1.5" opacity=".6"/>
+<circle cx="50" cy="36" r="8" fill="#2a1040" opacity=".7"/>
+<path d="M46 34 L54 34 M50 30 L50 38" stroke="#60ff80" stroke-width="2" stroke-linecap="round" opacity=".8"/>
+<circle cx="80" cy="36" r="8" fill="#2a1040" opacity=".7"/>
+<path d="M76 34 L84 34 M80 30 L80 38" stroke="#60ff80" stroke-width="2" stroke-linecap="round" opacity=".8"/>
+<path d="M58 25 L72 25" stroke="#ffd060" stroke-width="1.5" fill="none" opacity=".5"/>
+<path d="M54 20 L76 20" stroke="#ffd060" stroke-width="1" fill="none" opacity=".4"/>
+<path d="M50 15 L80 15" stroke="#ffd060" stroke-width="1" fill="none" opacity=".3"/>
+<ellipse cx="65" cy="42" rx="22" ry="18" fill="#60ff80" opacity=".05"/>
+</svg>`,
+
+'Furie de Guerre': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="fdg_bg" cx="50%" cy="45%" r="70%"><stop offset="0%" stop-color="#1e1040"/><stop offset="100%" stop-color="#100820"/></radialGradient><radialGradient id="fdg_fire" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#e03010" stop-opacity=".5"/><stop offset="100%" stop-color="#e03010" stop-opacity="0"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#fdg_bg)"/>
+<ellipse cx="65" cy="40" rx="32" ry="36" fill="url(#fdg_fire)"/>
+<path d="M50 70 L58 40 L68 70 Z" fill="#2a1020" opacity=".8"/>
+<ellipse cx="63" cy="36" rx="12" ry="13" fill="#2a1030"/>
+<path d="M52 38 L38 28 L42 40 Z" fill="#1a0828" opacity=".8"/>
+<path d="M74 38 L88 28 L84 40 Z" fill="#1a0828" opacity=".8"/>
+<path d="M55 24 L60 8 L64 18 L65 4 L66 18 L70 8 L75 24" fill="#e03010" opacity=".8"/>
+<path d="M58 18 L62 8 L64 14 L65 6 L66 14 L68 8 L72 18" fill="#ffa030" opacity=".7"/>
+<path d="M60 14 L63 6 L65 10 L67 6 L70 14" fill="#ffd060" opacity=".6"/>
+<ellipse cx="65" cy="38" rx="14" ry="10" fill="#e03010" opacity=".1"/>
+</svg>`,
+
+'Vision Chamanique': `<svg viewBox="0 0 130 82" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="vc_bg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#1e1040"/><stop offset="100%" stop-color="#100820"/></radialGradient><radialGradient id="vc_eye" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#8050e0" stop-opacity=".5"/><stop offset="100%" stop-color="#8050e0" stop-opacity="0"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#vc_bg)"/>
+<ellipse cx="65" cy="38" rx="32" ry="28" fill="url(#vc_eye)"/>
+<path d="M20 38 Q40 18 65 22 Q90 18 110 38 Q90 58 65 54 Q40 58 20 38 Z" fill="none" stroke="#8050e0" stroke-width="1.5" opacity=".6"/>
+<path d="M30 38 Q46 26 65 30 Q84 26 100 38 Q84 50 65 46 Q46 50 30 38 Z" fill="none" stroke="#8050e0" stroke-width="1" opacity=".4"/>
+<circle cx="65" cy="38" r="14" fill="#1a0828" opacity=".8"/>
+<circle cx="65" cy="38" r="10" fill="#2a1040"/>
+<circle cx="65" cy="38" r="6" fill="#8050e0" opacity=".9"/>
+<circle cx="65" cy="38" r="3" fill="#ffd060" opacity=".9"/>
+<circle cx="62" cy="35" r="1.5" fill="#fff" opacity=".7"/>
+<path d="M52 60 L56 48 L65 54 L74 48 L78 60" stroke="#8050e0" stroke-width="1.5" fill="none" opacity=".5"/>
+<path d="M40 65 Q52 58 65 62 Q78 58 90 65" stroke="#8050e0" stroke-width="1" fill="none" opacity=".4"/>
+<circle cx="28" cy="38" r="2" fill="#ffd060" opacity=".4"/>
+<circle cx="102" cy="38" r="2" fill="#ffd060" opacity=".4"/>
+</svg>`,
+
+
+// ── Nouveaux Pirates (Phase 1) ──
+'Crabe Nain': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs><radialGradient id="cn1a" cx="50%" cy="60%"><stop offset="0%" stop-color="#1a0e04"/><stop offset="100%" stop-color="#060408"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#cn1a)"/>
+<path d="M0 55 Q32 48 65 52 Q98 56 130 50 L130 82 L0 82Z" fill="#0d1828"/>
+<path d="M0 62 Q32 56 65 60 Q98 64 130 58 L130 82 L0 82Z" fill="#101e30"/>
+<ellipse cx="65" cy="46" rx="18" ry="12" fill="#7a3010"/>
+<ellipse cx="65" cy="46" rx="14" ry="9" fill="#a04018"/>
+<path d="M58 44 L52 38 M60 43 L54 36" stroke="#7a3010" stroke-width="2" stroke-linecap="round"/>
+<path d="M72 44 L78 38 M70 43 L76 36" stroke="#7a3010" stroke-width="2" stroke-linecap="round"/>
+<path d="M58 52 L54 58 M62 53 L58 60 M68 53 L72 60 M72 52 L76 58" stroke="#7a3010" stroke-width="1.5" stroke-linecap="round"/>
+<ellipse cx="58" cy="43" rx="3" ry="3" fill="#c06020"/><ellipse cx="72" cy="43" rx="3" ry="3" fill="#c06020"/>
+<circle cx="58" cy="43" r="1.5" fill="#201008"/><circle cx="72" cy="43" r="1.5" fill="#201008"/>
+<path d="M60 48 Q65 52 70 48" stroke="#c06020" stroke-width="1.2" fill="none"/>
+</svg>`,
+
+'Gamin des Quais': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs><linearGradient id="gq1a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0e1a2a"/><stop offset="100%" stop-color="#080c14"/></linearGradient></defs>
+<rect width="130" height="82" fill="url(#gq1a)"/>
+<rect x="0" y="60" width="130" height="22" fill="#0a1220"/>
+<rect x="10" y="50" width="8" height="30" fill="#1a2a40"/><rect x="22" y="45" width="8" height="35" fill="#1a2a40"/>
+<rect x="90" y="48" width="8" height="32" fill="#1a2a40"/><rect x="104" y="42" width="8" height="38" fill="#1a2a40"/>
+<path d="M0 60 L130 60" stroke="#0d3060" stroke-width="1" opacity=".6"/>
+<circle cx="65" cy="36" r="6" fill="#c89060"/>
+<rect x="62" y="30" width="6" height="3" fill="#4a3010" rx="1"/>
+<rect x="62" y="42" width="6" height="18" fill="#3a4a6a"/>
+<path d="M62 45 L54 50 L56 56 L62 52Z" fill="#3a4a6a"/>
+<path d="M68 45 L76 50 L74 56 L68 52Z" fill="#3a4a6a"/>
+<rect x="62" y="60" width="3" height="12" fill="#2a3a5a"/>
+<rect x="65" y="60" width="3" height="12" fill="#243260"/>
+<ellipse cx="40" cy="55" rx="12" ry="4" fill="#1a2838" opacity=".8"/>
+<path d="M35 55 L42 50 L45 55" stroke="#8a6a30" stroke-width="1.5" fill="none"/>
+</svg>`,
+
+'Feu Follet': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <radialGradient id="ff1a" cx="50%" cy="40%"><stop offset="0%" stop-color="#1e0a00"/><stop offset="100%" stop-color="#080408"/></radialGradient>
+  <radialGradient id="ff1b" cx="50%" cy="50%"><stop offset="0%" stop-color="#ffe860" stop-opacity="1"/><stop offset="60%" stop-color="#ff8000" stop-opacity=".6"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+</defs>
+<rect width="130" height="82" fill="url(#ff1a)"/>
+<path d="M0 58 Q32 52 65 56 Q98 60 130 54 L130 82 L0 82Z" fill="#0a0c10"/>
+<ellipse cx="65" cy="36" rx="16" ry="22" fill="url(#ff1b)" opacity=".9"/>
+<ellipse cx="65" cy="36" rx="7" ry="10" fill="#ffffc0" opacity=".95"/>
+<ellipse cx="65" cy="40" rx="4" ry="6" fill="#ffffff"/>
+<path d="M62 26 Q65 18 68 22 Q72 14 66 12 Q70 20 65 22 Q60 14 64 12 Q58 18 62 26Z" fill="#ffe860" opacity=".9"/>
+<circle cx="40" cy="25" r="4" fill="#ff6000" opacity=".4"/>
+<ellipse cx="40" cy="25" rx="2" ry="3" fill="#ffe860" opacity=".5"/>
+<circle cx="92" cy="30" r="3" fill="#ff6000" opacity=".3"/>
+<ellipse cx="92" cy="30" rx="1.5" ry="2" fill="#ffe860" opacity=".4"/>
+<path d="M0 65 Q32 61 65 64 Q98 67 130 62" stroke="#2a1a04" stroke-width="1" fill="none" opacity=".5"/>
+</svg>`,
+
+'Gabier Intrépide': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs><linearGradient id="gi1a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0a1830"/><stop offset="100%" stop-color="#060c1a"/></linearGradient></defs>
+<rect width="130" height="82" fill="url(#gi1a)"/>
+<path d="M0 55 Q40 48 80 52 Q110 55 130 50 L130 82 L0 82Z" fill="#08101e"/>
+<rect x="60" y="5" width="3" height="70" fill="#2a1a08"/>
+<path d="M63 8 L90 22 L63 38Z" fill="#c8a050" opacity=".85"/>
+<path d="M63 8 L36 22 L63 38Z" fill="#a07840" opacity=".7"/>
+<path d="M50 5 L80 5" stroke="#2a1a08" stroke-width="1.5"/>
+<circle cx="80" cy="32" r="5" fill="#c8904a"/>
+<rect x="77" y="32" width="3" height="16" fill="#c8904a"/>
+<path d="M77 34 L72 38 L74 42 L77 38Z" fill="#a07030"/>
+<path d="M80 34 L86 38 L84 42 L80 38Z" fill="#a07030"/>
+<rect x="77" y="48" width="3" height="12" fill="#a07030"/>
+<rect x="80" y="48" width="3" height="12" fill="#884a20"/>
+<path d="M20 52 Q32 48 44 52" stroke="#3a6aaa" stroke-width="1.5" fill="none" opacity=".6"/>
+<path d="M0 60 Q16 56 32 60" stroke="#3a6aaa" stroke-width="1.2" fill="none" opacity=".4"/>
+</svg>`,
+
+'Boucanier des Tempêtes': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs><linearGradient id="bt1a" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a1428"/><stop offset="100%" stop-color="#1a0808"/></linearGradient></defs>
+<rect width="130" height="82" fill="url(#bt1a)"/>
+<path d="M0 44 Q16 40 30 48 Q44 56 60 44 Q76 32 90 44 Q104 56 130 44" stroke="#2a4a80" stroke-width="2" fill="none" opacity=".5"/>
+<path d="M0 52 Q20 44 40 52 Q60 60 80 50 Q100 40 130 52 L130 82 L0 82Z" fill="#0a1020"/>
+<path d="M20 15 Q40 5 50 20 Q45 8 60 12" stroke="#eeeeee" stroke-width="1.5" fill="none" opacity=".4"/>
+<path d="M80 10 Q100 2 110 18 Q105 6 120 10" stroke="#eeeeee" stroke-width="1.5" fill="none" opacity=".3"/>
+<circle cx="55" cy="38" r="7" fill="#c8904a"/>
+<rect x="52" y="32" width="6" height="3" fill="#3a2010" rx="1"/>
+<rect x="52" y="45" width="6" height="20" fill="#2a3a5a"/>
+<path d="M52 48 L44 54 L46 60 L52 56Z" fill="#2a3a5a"/>
+<path d="M58 48 L66 54 L64 60 L58 56Z" fill="#2a3a5a"/>
+<path d="M40 32 Q55 28 70 32" stroke="#c8904a" stroke-width="1.5" fill="none" opacity=".6"/>
+<ellipse cx="90" cy="42" rx="20" ry="8" fill="#1a3050" opacity=".6"/>
+</svg>`,
+
+'Canonnier des Mers': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs><linearGradient id="cm1a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0e1a10"/><stop offset="100%" stop-color="#060c08"/></linearGradient></defs>
+<rect width="130" height="82" fill="url(#cm1a)"/>
+<path d="M0 56 Q32 50 65 54 Q98 58 130 52 L130 82 L0 82Z" fill="#0a1208"/>
+<ellipse cx="75" cy="50" rx="30" ry="10" fill="#1a2010"/>
+<rect x="48" y="44" width="54" height="12" fill="#2a3020" rx="4"/>
+<rect x="96" y="46" width="20" height="8" fill="#202818" rx="2"/>
+<rect x="44" y="46" width="12" height="8" fill="#202818" rx="3"/>
+<circle cx="60" cy="50" r="6" fill="#181e14"/><circle cx="60" cy="50" r="4" fill="#101408"/>
+<circle cx="90" cy="50" r="6" fill="#181e14"/><circle cx="90" cy="50" r="4" fill="#101408"/>
+<ellipse cx="116" cy="46" rx="4" ry="2" fill="#ffe060" opacity=".8"/>
+<circle cx="116" cy="42" r="4" fill="#ff8000" opacity=".7"/>
+<ellipse cx="116" cy="38" rx="5" ry="8" fill="#ff4000" opacity=".5"/>
+<circle cx="50" cy="30" r="8" fill="#c8904a"/>
+<rect x="47" y="38" width="6" height="18" fill="#3a4a2a"/>
+<path d="M102 44 L108 38 L112 40 L106 46Z" fill="#c8904a" opacity=".8"/>
+</svg>`,
+
+'Capitaine des Damnés': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <radialGradient id="cd1a" cx="50%" cy="30%"><stop offset="0%" stop-color="#1a0820"/><stop offset="100%" stop-color="#060408"/></radialGradient>
+  <radialGradient id="cd1b" cx="50%" cy="50%"><stop offset="0%" stop-color="#40c870" stop-opacity=".7"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+</defs>
+<rect width="130" height="82" fill="url(#cd1a)"/>
+<path d="M0 55 Q32 50 65 54 Q98 58 130 52 L130 82 L0 82Z" fill="#08060e"/>
+<path d="M0 62 Q32 58 65 62 Q98 66 130 60 L130 82 L0 82Z" fill="#0a080e"/>
+<ellipse cx="65" cy="36" rx="20" ry="25" fill="url(#cd1b)" opacity=".4"/>
+<circle cx="65" cy="24" r="8" fill="#202030"/>
+<rect x="58" y="18" width="14" height="5" fill="#101018" rx="1"/>
+<path d="M56 18 L65 12 L74 18" stroke="#c8c0e0" stroke-width="1.5" fill="none"/>
+<path d="M60 30 L50 26 L48 34" stroke="#404060" stroke-width="1.5" fill="none"/>
+<path d="M70 30 L80 26 L82 34" stroke="#404060" stroke-width="1.5" fill="none"/>
+<rect x="61" y="32" width="8" height="22" fill="#202030"/>
+<path d="M61 35 L52 40 L54 48 L61 44Z" fill="#202030"/>
+<path d="M69 35 L78 40 L76 48 L69 44Z" fill="#181828"/>
+<circle cx="61" cy="23" r="2" fill="#40d870" opacity=".9"/>
+<circle cx="69" cy="23" r="2" fill="#40d870" opacity=".9"/>
+<path d="M62 26 Q65 28 68 26" stroke="#40d870" stroke-width="1" fill="none" opacity=".8"/>
+<rect x="61" y="54" width="4" height="14" fill="#181828"/>
+<rect x="65" y="54" width="4" height="14" fill="#141620"/>
+</svg>`,
+
+'Le Hollandais Volant': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <radialGradient id="hv1a" cx="50%" cy="40%"><stop offset="0%" stop-color="#0e0820"/><stop offset="100%" stop-color="#040408"/></radialGradient>
+  <radialGradient id="hv1b" cx="50%" cy="60%"><stop offset="0%" stop-color="#4060d0" stop-opacity=".5"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+</defs>
+<rect width="130" height="82" fill="url(#hv1a)"/>
+<rect width="130" height="82" fill="url(#hv1b)"/>
+<circle cx="20" cy="12" r="1" fill="#fff" opacity=".8"/>
+<circle cx="50" cy="6" r=".8" fill="#fff" opacity=".6"/>
+<circle cx="90" cy="10" r=".7" fill="#fff" opacity=".7"/>
+<circle cx="115" cy="18" r=".9" fill="#fff" opacity=".5"/>
+<ellipse cx="65" cy="50" rx="50" ry="8" fill="#1a1a40" opacity=".9"/>
+<rect x="55" y="20" width="20" height="30" fill="#1a1830" opacity=".9" rx="2"/>
+<rect x="58" y="10" width="2.5" height="40" fill="#2a2040"/>
+<rect x="72" y="15" width="2.5" height="35" fill="#2a2040"/>
+<path d="M60.5 12 L72 20 L60.5 30Z" fill="#3a3060" opacity=".8"/>
+<path d="M74.5 17 L86 24 L74.5 33Z" fill="#3a3060" opacity=".7"/>
+<path d="M60.5 32 L72 40 L60.5 48Z" fill="#3a3060" opacity=".6"/>
+<path d="M30 52 Q65 44 100 52" stroke="#4050c0" stroke-width="1.5" fill="none" opacity=".7"/>
+<path d="M20 58 Q65 50 110 58" stroke="#3040a0" stroke-width="1" fill="none" opacity=".5"/>
+<path d="M15 66 Q65 56 115 66 L115 82 L15 82Z" fill="#0a0a1e" opacity=".8"/>
+<ellipse cx="65" cy="50" rx="48" ry="5" fill="none" stroke="#4060d0" stroke-width="1" opacity=".4"/>
+</svg>`,
+
+// ── Nouveaux Élémentaux (Phase 1) ──
+'Ondine Gardienne': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <radialGradient id="og1a" cx="50%" cy="40%"><stop offset="0%" stop-color="#041428"/><stop offset="100%" stop-color="#020810"/></radialGradient>
+  <radialGradient id="og1b" cx="50%" cy="50%"><stop offset="0%" stop-color="#40c0ff" stop-opacity=".6"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+</defs>
+<rect width="130" height="82" fill="url(#og1a)"/>
+<rect width="130" height="82" fill="url(#og1b)"/>
+<path d="M0 52 Q32 44 65 50 Q98 56 130 48 L130 82 L0 82Z" fill="#04101e"/>
+<path d="M0 60 Q32 54 65 58 Q98 62 130 56 L130 82 L0 82Z" fill="#061420"/>
+<circle cx="65" cy="30" r="10" fill="#60d0ff" opacity=".6"/>
+<ellipse cx="65" cy="30" rx="6" ry="8" fill="#a0e8ff" opacity=".7"/>
+<path d="M60 20 Q65 8 70 20" fill="#60d0ff" opacity=".5"/>
+<path d="M55 25 Q48 20 50 30" stroke="#40b0e0" stroke-width="1.5" fill="none" opacity=".7"/>
+<path d="M75 25 Q82 20 80 30" stroke="#40b0e0" stroke-width="1.5" fill="none" opacity=".7"/>
+<path d="M58 38 Q65 50 72 38" fill="#40b0d0" opacity=".6"/>
+<path d="M60 42 Q65 56 70 42" fill="#3090b0" opacity=".5"/>
+<path d="M20 48 Q32 44 44 48" stroke="#40b0ff" stroke-width="1.5" fill="none" opacity=".5"/>
+<path d="M86 48 Q98 44 110 48" stroke="#40b0ff" stroke-width="1.5" fill="none" opacity=".5"/>
+<circle cx="60" cy="28" r="2" fill="#e0f8ff" opacity=".9"/>
+<circle cx="70" cy="28" r="2" fill="#e0f8ff" opacity=".9"/>
+</svg>`,
+
+'Sylphe des Brumes': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <linearGradient id="sb1a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0a1428"/><stop offset="100%" stop-color="#040810"/></linearGradient>
+  <radialGradient id="sb1b" cx="50%" cy="40%"><stop offset="0%" stop-color="#c0d8ff" stop-opacity=".4"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+</defs>
+<rect width="130" height="82" fill="url(#sb1a)"/>
+<ellipse cx="40" cy="40" rx="35" ry="20" fill="#c0d0e0" opacity=".06"/>
+<ellipse cx="90" cy="30" rx="28" ry="15" fill="#c0d0e0" opacity=".05"/>
+<rect width="130" height="82" fill="url(#sb1b)"/>
+<ellipse cx="65" cy="36" rx="22" ry="28" fill="#d0e8ff" opacity=".12"/>
+<ellipse cx="65" cy="30" rx="8" ry="12" fill="#e0f0ff" opacity=".3"/>
+<path d="M57 20 Q65 10 73 20 Q78 28 73 36 Q65 44 57 36 Q52 28 57 20Z" fill="#c0d8f0" opacity=".25"/>
+<path d="M58 18 Q65 8 72 18" stroke="#e0f0ff" stroke-width="1.5" fill="none" opacity=".5"/>
+<path d="M50 30 Q42 25 44 34" stroke="#b0cce0" stroke-width="1.5" fill="none" opacity=".5"/>
+<path d="M80 30 Q88 25 86 34" stroke="#b0cce0" stroke-width="1.5" fill="none" opacity=".5"/>
+<path d="M0 45 Q20 40 40 45 Q60 50 80 44 Q100 38 130 44" stroke="#b0c8e0" stroke-width="1.5" fill="none" opacity=".3"/>
+<path d="M0 52 Q25 47 50 52 Q75 57 100 51 L130 53" stroke="#a0b8d0" stroke-width="1" fill="none" opacity=".25"/>
+<circle cx="60" cy="27" r="1.5" fill="#ffffff" opacity=".6"/>
+<circle cx="70" cy="27" r="1.5" fill="#ffffff" opacity=".6"/>
+</svg>`,
+
+'Esprit Corail': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs><radialGradient id="ec1a" cx="50%" cy="50%"><stop offset="0%" stop-color="#081820"/><stop offset="100%" stop-color="#040c10"/></radialGradient></defs>
+<rect width="130" height="82" fill="url(#ec1a)"/>
+<path d="M0 54 Q32 48 65 52 Q98 56 130 50 L130 82 L0 82Z" fill="#041018"/>
+<path d="M65 60 L65 30" stroke="#ff6080" stroke-width="2" opacity=".5"/>
+<path d="M65 30 L58 18 M65 30 L72 16 M65 35 L55 24 M65 35 L75 22 M65 40 L52 32 M65 40 L78 30" stroke="#ff6080" stroke-width="1.5" stroke-linecap="round" opacity=".7"/>
+<path d="M65 44 L50 38 M65 44 L80 38" stroke="#ff8090" stroke-width="1.2" opacity=".5"/>
+<ellipse cx="65" cy="44" rx="14" ry="6" fill="#ff4060" opacity=".15"/>
+<circle cx="50" cy="50" r="3" fill="#ff6090" opacity=".4"/>
+<path d="M50 53 L48 44 M50 53 L53 44 M50 53 L46 48" stroke="#ff6090" stroke-width="1" stroke-linecap="round" opacity=".5"/>
+<circle cx="82" cy="46" r="2.5" fill="#ff8090" opacity=".4"/>
+<path d="M82 49 L80 42 M82 49 L84 42" stroke="#ff8090" stroke-width="1" stroke-linecap="round" opacity=".5"/>
+<ellipse cx="65" cy="50" rx="20" ry="4" fill="#ff4060" opacity=".1"/>
+</svg>`,
+
+'Djinn des Abysses': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <radialGradient id="da1a" cx="50%" cy="30%"><stop offset="0%" stop-color="#1a0820"/><stop offset="100%" stop-color="#06040e"/></radialGradient>
+  <radialGradient id="da1b" cx="50%" cy="50%"><stop offset="0%" stop-color="#8040ff" stop-opacity=".7"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+</defs>
+<rect width="130" height="82" fill="url(#da1a)"/>
+<rect width="130" height="82" fill="url(#da1b)"/>
+<path d="M0 55 Q32 50 65 54 Q98 58 130 52 L130 82 L0 82Z" fill="#0a0614"/>
+<ellipse cx="65" cy="32" rx="16" ry="28" fill="#6020d0" opacity=".3"/>
+<ellipse cx="65" cy="24" rx="10" ry="14" fill="#8040ff" opacity=".4"/>
+<circle cx="65" cy="18" r="8" fill="#4020a0"/>
+<path d="M60 14 Q65 8 70 14" stroke="#c080ff" stroke-width="1.5" fill="none"/>
+<circle cx="61" cy="17" r="2.5" fill="#e0c0ff" opacity=".9"/>
+<circle cx="69" cy="17" r="2.5" fill="#e0c0ff" opacity=".9"/>
+<circle cx="61" cy="17" r="1" fill="#3010a0"/>
+<circle cx="69" cy="17" r="1" fill="#3010a0"/>
+<path d="M55 26 L44 22 L42 30" stroke="#8040d0" stroke-width="1.5" fill="none"/>
+<path d="M75 26 L86 22 L88 30" stroke="#8040d0" stroke-width="1.5" fill="none"/>
+<path d="M60 32 Q45 42 50 60" stroke="#6020c0" stroke-width="2.5" fill="none" opacity=".7"/>
+<path d="M70 32 Q85 42 80 60" stroke="#6020c0" stroke-width="2.5" fill="none" opacity=".7"/>
+<ellipse cx="65" cy="50" rx="12" ry="5" fill="#8040ff" opacity=".2"/>
+</svg>`,
+
+'Titan des Mers': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs><linearGradient id="tm1a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#040c1a"/><stop offset="100%" stop-color="#02060e"/></linearGradient></defs>
+<rect width="130" height="82" fill="url(#tm1a)"/>
+<path d="M0 45 Q32 36 65 42 Q98 48 130 40 L130 82 L0 82Z" fill="#060e18"/>
+<path d="M0 54 Q32 46 65 50 Q98 54 130 48 L130 82 L0 82Z" fill="#08101c"/>
+<ellipse cx="65" cy="38" rx="28" ry="36" fill="#1a3a5a" opacity=".5"/>
+<rect x="56" y="8" width="18" height="52" fill="#1a3050" rx="4"/>
+<ellipse cx="65" cy="10" rx="10" ry="8" fill="#1e3858"/>
+<path d="M54 12 L40 8 L36 18 L50 20Z" fill="#1a3050"/>
+<path d="M76 12 L90 8 L94 18 L80 20Z" fill="#1a3050"/>
+<path d="M56 30 L38 26 L34 38 L54 38Z" fill="#182848"/>
+<path d="M74 30 L92 26 L96 38 L76 38Z" fill="#182848"/>
+<circle cx="59" cy="16" r="3" fill="#60c0e0" opacity=".8"/>
+<circle cx="71" cy="16" r="3" fill="#60c0e0" opacity=".8"/>
+<path d="M60 20 Q65 24 70 20" stroke="#60c0e0" stroke-width="1.2" fill="none" opacity=".7"/>
+<rect x="56" y="60" width="8" height="18" fill="#162840"/>
+<rect x="66" y="60" width="8" height="18" fill="#12203a"/>
+</svg>`,
+
+'Phénix Aquatique': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <radialGradient id="pa1a" cx="50%" cy="30%"><stop offset="0%" stop-color="#0a1428"/><stop offset="100%" stop-color="#040810"/></radialGradient>
+  <radialGradient id="pa1b" cx="50%" cy="40%"><stop offset="0%" stop-color="#40c8ff" stop-opacity=".8"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+</defs>
+<rect width="130" height="82" fill="url(#pa1a)"/>
+<rect width="130" height="82" fill="url(#pa1b)"/>
+<path d="M0 55 Q32 48 65 52 Q98 56 130 50 L130 82 L0 82Z" fill="#040c18"/>
+<path d="M65 50 Q40 30 20 15 Q40 25 55 18 Q50 35 65 50Z" fill="#20a0e0" opacity=".7"/>
+<path d="M65 50 Q90 30 110 15 Q90 25 75 18 Q80 35 65 50Z" fill="#20a0e0" opacity=".7"/>
+<path d="M65 50 Q55 25 45 5 Q58 20 65 30 Q72 20 85 5 Q75 25 65 50Z" fill="#60d0ff" opacity=".8"/>
+<ellipse cx="65" cy="22" rx="8" ry="6" fill="#a0e8ff" opacity=".9"/>
+<circle cx="65" cy="20" r="5" fill="#e0f8ff"/>
+<circle cx="62" cy="18" r="1.5" fill="#1a4060"/>
+<circle cx="68" cy="18" r="1.5" fill="#1a4060"/>
+<path d="M30 50 Q48 40 65 50 Q82 40 100 50" stroke="#40c0f0" stroke-width="2" fill="none" opacity=".5"/>
+<path d="M15 60 Q40 52 65 58 Q90 52 115 60" stroke="#2090d0" stroke-width="1.5" fill="none" opacity=".4"/>
+</svg>`,
+
+'Léviathan': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs>
+  <radialGradient id="lv1a" cx="50%" cy="60%"><stop offset="0%" stop-color="#02080e"/><stop offset="100%" stop-color="#010406"/></radialGradient>
+  <radialGradient id="lv1b" cx="50%" cy="50%"><stop offset="0%" stop-color="#004080" stop-opacity=".6"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+</defs>
+<rect width="130" height="82" fill="url(#lv1a)"/>
+<rect width="130" height="82" fill="url(#lv1b)"/>
+<path d="M-10 40 Q30 20 65 36 Q100 52 140 32" stroke="#0a2840" stroke-width="16" fill="none" stroke-linecap="round"/>
+<path d="M-10 40 Q30 20 65 36 Q100 52 140 32" stroke="#0d3450" stroke-width="10" fill="none" stroke-linecap="round"/>
+<ellipse cx="18" cy="38" rx="16" ry="12" fill="#0a2030"/>
+<path d="M8 32 L2 20 L14 26Z" fill="#082030"/>
+<path d="M12 30 L6 16 L18 22Z" fill="#0a2838"/>
+<path d="M24 30 L22 16 L30 24Z" fill="#082030"/>
+<circle cx="14" cy="36" r="5" fill="#0a1828"/>
+<circle cx="14" cy="36" r="3" fill="#105080"/>
+<circle cx="12" cy="34" r="1.5" fill="#40c0ff" opacity=".9"/>
+<path d="M125 34 L138 24 L136 38Z" fill="#082030"/>
+<path d="M30 44 L26 54 M40 46 L38 56 M50 47 L50 58 M60 46 L62 56 M70 46 L74 56 M80 44 L86 54" stroke="#0a2840" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>
+<path d="M0 58 Q32 52 65 56 Q98 60 130 54 L130 82 L0 82Z" fill="#02060c"/>
 </svg>`,
 
 };
