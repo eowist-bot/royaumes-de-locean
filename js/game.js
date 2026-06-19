@@ -253,10 +253,14 @@ const SPELL_EFFECTS = {
 };
 
 // ── Dégâts & combat (contre-attaque séquentielle) ──
-function dealDamage(attacker, attackerBoard, defender, defenderIsHero=false, defenderBoard=[]){
+function dealDamage(attacker, attackerBoard, defender, defenderIsHero=false, defenderBoard=[], attackerOwner=player, defenderOwner=enemy){
   if(defenderIsHero){
     const dmg = effAtk(attacker, attackerBoard);
     defender.hp -= dmg;
+    if(has(attacker,'Vol de vie') && dmg>0){
+      attackerOwner.hp = Math.min(MAX_HP, attackerOwner.hp+dmg);
+      log(`🩸 ${attacker.name} vole ${dmg} PV !`,'log-event');
+    }
     sndHeroHit();
     flashHero(defender===player?'playerZone':'enemyZone', dmg);
     log(`⚔️ ${attacker.name} attaque le héros pour ${dmg} dégâts !`,
@@ -273,6 +277,10 @@ function dealDamage(attacker, attackerBoard, defender, defenderIsHero=false, def
     log(`☠️ ${attacker.name} empoisonne ${defender.name} !`,'log-attack');
   } else {
     defender.currentHp -= atkDmg; sndHit();
+    if(has(attacker,'Vol de vie') && atkDmg>0){
+      attackerOwner.hp = Math.min(MAX_HP, attackerOwner.hp+atkDmg);
+      log(`🩸 ${attacker.name} vole ${atkDmg} PV !`,'log-event');
+    }
   }
   // Contre-attaque seulement si le défenseur survit
   if(defender.currentHp > 0){
@@ -285,16 +293,29 @@ function dealDamage(attacker, attackerBoard, defender, defenderIsHero=false, def
       log(`☠️ ${defender.name} contre-attaque et empoisonne ${attacker.name} !`,'log-event');
     } else if(ctrDmg>0){
       attacker.currentHp -= ctrDmg; sndHit();
+      if(has(defender,'Vol de vie') && ctrDmg>0 && !defenderIsHero){
+        defenderOwner.hp = Math.min(MAX_HP, defenderOwner.hp+ctrDmg);
+        log(`🩸 ${defender.name} vole ${ctrDmg} PV en contre-attaquant !`,'log-event');
+      }
     }
   }
 }
 
 function cleanup(){
-  const dying = [...player.board,...enemy.board].filter(c=>c.currentHp<=0);
+  const dyingPlayer = player.board.filter(c=>c.currentHp<=0);
+  const dyingEnemy  = enemy.board.filter(c=>c.currentHp<=0);
+  const dying = [...dyingPlayer, ...dyingEnemy];
   dying.forEach((c,i)=>{
     setTimeout(()=>{ sndDeath(); log(`💀 ${c.name} est détruit(e) !`,'log-event'); }, i*180);
     const el = document.querySelector(`[data-uid="${c._uid}"]`);
     if(el) flashUnit(el, 0, true);
+    if(has(c,'Rebond')){
+      const owner = dyingPlayer.includes(c) ? player : enemy;
+      const fresh = {...c, keywords:[...c.keywords], currentHp:c.hp,
+        attacked:false, justPlayed:true, hasShield:false, _doubleUsed:false, _uid:++_uidCounter};
+      owner.hand.push(fresh);
+      log(`↩️ ${c.name} rebondit dans la main !`,'log-event');
+    }
   });
   player.board = player.board.filter(c=>c.currentHp>0);
   enemy.board  = enemy.board.filter(c=>c.currentHp>0);
@@ -395,11 +416,11 @@ function enemyTurn(){
       .slice().sort((a,b)=>a.currentHp-b.currentHp);
     if(targets.length){
       log(`🤖 ${attacker.name} attaque ${targets[0].name}`,'log-enemy');
-      dealDamage(attacker, enemy.board, targets[0], false, player.board);
+      dealDamage(attacker, enemy.board, targets[0], false, player.board, enemy, player);
       cleanup();
     } else if(!player.board.some(c=>has(c,'Provocation'))){
       log(`🤖 ${attacker.name} attaque votre héros !`,'log-enemy');
-      dealDamage(attacker, enemy.board, player, true);
+      dealDamage(attacker, enemy.board, player, true, [], enemy, player);
     }
   });
 }
@@ -409,8 +430,14 @@ function playerAttack(targetUnit, targetIsHero=false){
   if(pendingAction){ resolveTarget(targetIsHero ? null : targetUnit, targetIsHero); return; }
   if(!selectedUnit) return;
   log(`⚔️ ${selectedUnit.name} attaque ${targetIsHero?'l\'Amiral':targetUnit.name} !`,'log-player');
-  dealDamage(selectedUnit, player.board, targetIsHero?enemy:targetUnit, targetIsHero, enemy.board);
-  selectedUnit.attacked=true; selectedUnit=null;
+  dealDamage(selectedUnit, player.board, targetIsHero?enemy:targetUnit, targetIsHero, enemy.board, player, enemy);
+  if(has(selectedUnit,'Double attaque') && !selectedUnit._doubleUsed){
+    selectedUnit._doubleUsed=true;
+    log(`⚡ ${selectedUnit.name} peut attaquer une seconde fois !`,'log-event');
+  } else {
+    selectedUnit.attacked=true;
+  }
+  selectedUnit=null;
   cleanup(); if(!checkEnd()) render();
 }
 
@@ -476,8 +503,8 @@ function endTurn(){
     if(checkEnd()) return;
 
     // Reset flags
-    player.board.forEach(c=>{ c.attacked=false; c.justPlayed=false; });
-    enemy.board.forEach(c=>{ c.attacked=false; c.justPlayed=false; });
+    player.board.forEach(c=>{ c.attacked=false; c.justPlayed=false; c._doubleUsed=false; });
+    enemy.board.forEach(c=>{ c.attacked=false; c.justPlayed=false; c._doubleUsed=false; });
     enemy.heroPowerUsed=false;
 
     // Mana ennemi
@@ -511,7 +538,10 @@ function makeUnit(c, board, opts={}){
   if(opts.exhausted)   cls+=' exhausted';
   if(opts.validTarget) cls+=' valid-target';
   if(c.hasShield)      cls+=' shield-up';
-  if(has(c,'Provocation')) cls+=' has-taunt';
+  if(has(c,'Provocation'))    cls+=' has-taunt';
+  if(has(c,'Vol de vie'))     cls+=' has-lifesteal';
+  if(has(c,'Double attaque')) cls+=' has-doubleatk';
+  if(has(c,'Rebond'))         cls+=' has-rebond';
   if((sb.atk>0||sb.hp>0)) cls+=' synergy-active';
   d.className=cls; d.dataset.uid=c._uid;
   const dispAtk = c.atk + sb.atk;
@@ -670,6 +700,7 @@ let gameMode = 'campaign';
 
 function showModeScreen(){
   document.getElementById('mode-screen').style.display = 'flex';
+  document.getElementById('collection-screen').style.display = 'none';
   document.getElementById('mode-campaign').onclick = ()=>{
     gameMode = 'campaign';
     document.getElementById('mode-screen').style.display = 'none';
@@ -680,6 +711,50 @@ function showModeScreen(){
     document.getElementById('mode-screen').style.display = 'none';
     startDraft();
   };
+  document.getElementById('mode-collection').onclick = showCollection;
+}
+
+function showCollection(){
+  const modeEl = document.getElementById('mode-screen');
+  const colEl  = document.getElementById('collection-screen');
+  modeEl.style.display = 'none';
+  colEl.style.display  = 'flex';
+
+  const filters = ['Tous','Pirate','Bête marine','Élémental','Sort'];
+  let activeFilter = 'Tous';
+
+  function renderCollection(){
+    const pool = activeFilter==='Tous' ? CARD_POOL
+      : CARD_POOL.filter(c=> activeFilter==='Sort' ? c.isSpell : c.cardType===activeFilter);
+    colEl.innerHTML = `
+      <div class="col-header">
+        <div class="col-title">📚 Collection</div>
+        <div class="col-filters">${filters.map(f=>`<button class="col-filter${f===activeFilter?' active':''}" data-f="${f}">${f} ${f==='Tous'?'('+CARD_POOL.length+')':''}</button>`).join('')}</div>
+        <button class="col-back" id="col-back-btn">← Retour</button>
+      </div>
+      <div class="col-grid">${pool.map(card=>{
+        const rk = rarityKey(card.rarity);
+        const art = CARD_ART[card.name]||'';
+        const kwHtml = card.keywords.length ? `<div class="card-keywords">${card.keywords.join(' · ')}</div>` : '';
+        const descHtml = card.isSpell
+          ? `<div class="card-spell-desc">${card.spellDesc||''}</div>`
+          : (card.battlecry ? `<div class="card-bc-desc">⚡ ${card.battlecry.desc}</div>` : '');
+        const statsHtml = card.isSpell ? '' : `<div class="col-stats"><span class="u-atk">${card.atk}</span><span class="u-hp">${card.hp}</span></div>`;
+        const typeLabel = `<div class="card-type-label type-${(card.isSpell?'Sort':card.cardType).replace(' ','-')}">${card.isSpell?'SORT':card.cardType.toUpperCase()}</div>`;
+        return `<div class="card r-${rk}${card.isSpell?' spell':''}">
+          <div class="card-cost">${card.cost}</div>
+          <div class="card-art">${art}</div>
+          <div class="card-name">${card.name}</div>
+          <div class="card-rarity">${card.rarity}</div>
+          ${typeLabel}${kwHtml}${descHtml}${statsHtml}
+        </div>`;
+      }).join('')}</div>`;
+    colEl.querySelectorAll('.col-filter').forEach(btn=>{
+      btn.onclick = ()=>{ activeFilter=btn.dataset.f; renderCollection(); };
+    });
+    document.getElementById('col-back-btn').onclick = showModeScreen;
+  }
+  renderCollection();
 }
 
 // ── Campagne ──

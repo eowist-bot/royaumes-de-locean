@@ -92,6 +92,9 @@ h1{text-align:center;font-family:'Pirata One',cursive;font-size:48px;
 
 /* Provocation */
 .unit.has-taunt{border-style:double;border-color:#e67e22;border-width:3px}
+.unit.has-lifesteal{box-shadow:0 0 8px #e040fb88}
+.unit.has-doubleatk{box-shadow:0 0 8px #f0e04088}
+.unit.has-rebond{box-shadow:0 0 8px #40e0f088}
 
 /* ── Cartes en main ── */
 .hand{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0;padding:4px}
@@ -386,6 +389,32 @@ hr{border:none;border-top:1px solid var(--border);margin:8px 0}
 .reward-offers .card{cursor:pointer;transition:transform .15s,box-shadow .15s}
 .reward-offers .card:hover{transform:translateY(-6px) scale(1.04);box-shadow:0 8px 28px rgba(0,0,0,.6)}
 .reward-chosen{transform:translateY(-8px) scale(1.06) !important;box-shadow:0 0 24px #f0c03088 !important;border-color:var(--gold) !important}
+
+/* ── Collection ── */
+#collection-screen{display:none;flex-direction:column;align-items:center;gap:16px;padding:10px 0 40px;width:100%}
+.col-header{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;width:100%;padding:0 20px}
+.col-title{font-family:'Pirata One',cursive;font-size:28px;color:var(--gold)}
+.col-filters{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.col-filter{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:4px 14px;
+  font-family:'Cinzel',serif;font-size:12px;color:#8ab0c8;cursor:pointer;transition:all .15s}
+.col-filter:hover{border-color:var(--gold);color:var(--gold)}
+.col-filter.active{background:var(--gold);border-color:var(--gold);color:#1a0a00;font-weight:bold}
+.col-back{background:transparent;border:1px solid var(--border);border-radius:8px;
+  padding:5px 14px;color:#7a9ab0;font-size:12px;cursor:pointer;transition:all .15s;margin-left:auto}
+.col-back:hover{border-color:#aaa;color:#ccc}
+.col-grid{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:1100px;padding:0 16px}
+.col-grid .card{cursor:default;transform:none!important}
+.col-grid .card:hover{transform:translateY(-4px) scale(1.03)!important;transition:transform .15s}
+.col-stats{display:flex;justify-content:space-between;padding:2px 8px;margin-top:2px}
+.col-stats .u-atk{background:#c0392b;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;color:white}
+.col-stats .u-hp{background:#27ae60;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;color:white}
+.card-bc-desc{font-size:8px;color:#f0c060;text-align:center;padding:1px 4px;font-style:italic}
+.card-type-label{font-family:'Cinzel',serif;font-size:8px;letter-spacing:.5px;text-align:center;
+  padding:1px 6px;border-radius:3px;margin:1px auto;width:fit-content}
+.card-type-label.type-Pirate{background:#3a0808;color:#f08080}
+.card-type-label.type-Bête-marine,.card-type-label.type-Bête\.marine{background:#08203a;color:#80c0f0}
+.card-type-label.type-Élémental{background:#2a1808;color:#f0c060}
+.card-type-label.type-Sort{background:#1a0828;color:#d0a0f0}
 
 /* ── Écran de sélection de mode ── */
 #mode-screen{display:none;flex-direction:column;align-items:center;gap:24px;padding:20px 0 40px}

@@ -98,6 +98,24 @@ const CARD_POOL = [
   {name:'Golem Corail',         emoji:'🪨', cost:5, atk:4, hp:6, rarity:'Rare',       cardType:'Élémental',
    keywords:['Provocation'], battlecry:null, isSpell:false},
 
+  // ═══ PIRATES — mécaniques ═══
+  {name:'Corsaire Enragé',    emoji:'😤', cost:4, atk:3, hp:3, rarity:'Rare',       cardType:'Pirate',
+   keywords:['Double attaque'], battlecry:null, isSpell:false},
+  {name:'Flibustier Sangsue', emoji:'🧛', cost:3, atk:2, hp:2, rarity:'Rare',       cardType:'Pirate',
+   keywords:['Vol de vie'], battlecry:null, isSpell:false},
+
+  // ═══ BÊTES MARINES — mécaniques ═══
+  {name:'Piranha Frénétique', emoji:'🐡', cost:2, atk:2, hp:1, rarity:'Commune',    cardType:'Bête marine',
+   keywords:['Double attaque'], battlecry:null, isSpell:false},
+  {name:'Méduse Éternelle',   emoji:'✨', cost:2, atk:1, hp:3, rarity:'Rare',       cardType:'Bête marine',
+   keywords:['Rebond','Poison'], battlecry:null, isSpell:false},
+  {name:'Vampire des Abysses',emoji:'🦇', cost:4, atk:3, hp:4, rarity:'Épique',     cardType:'Bête marine',
+   keywords:['Vol de vie'], battlecry:null, isSpell:false},
+
+  // ═══ ÉLÉMENTAUX — mécaniques ═══
+  {name:'Spectre Marin',      emoji:'👻', cost:3, atk:2, hp:3, rarity:'Rare',       cardType:'Élémental',
+   keywords:['Rebond','Bouclier divin'], battlecry:null, isSpell:false},
+
   // ═══ SORTS ═══
   {name:'Eaux Guérisseuses', emoji:'💧', cost:2, atk:0, hp:0, rarity:'Commune', cardType:'Sort', isSpell:true,
    keywords:[], battlecry:null,

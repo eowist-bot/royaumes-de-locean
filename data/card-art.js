@@ -935,6 +935,103 @@ const CARD_ART = {
 <ellipse cx="95" cy="48" rx="3" ry="2" fill="white" opacity=".5" filter="url(#ed1g)"/>
 </svg>`,
 
+'Corsaire Enragé': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs><radialGradient id="ce1a" cx="50%" cy="40%"><stop offset="0%" stop-color="#2a0808"/><stop offset="100%" stop-color="#080204"/></radialGradient><filter id="ce1f"><feGaussianBlur stdDeviation="1.5"/></filter></defs>
+<rect width="130" height="82" fill="url(#ce1a)"/>
+<ellipse cx="65" cy="55" rx="50" ry="20" fill="#800000" opacity=".25" filter="url(#ce1f)"/>
+<circle cx="65" cy="34" r="16" fill="#c05030"/>
+<circle cx="65" cy="34" r="16" fill="none" stroke="#e07050" stroke-width="1.5" opacity=".7"/>
+<rect x="61" y="20" width="8" height="14" fill="#8b4513" rx="1"/>
+<path d="M65 20 L58 10 L73 13Z" fill="#cc2222"/>
+<line x1="45" y1="38" x2="52" y2="45" stroke="#c09050" stroke-width="2.5" stroke-linecap="round"/>
+<line x1="85" y1="38" x2="78" y2="45" stroke="#c09050" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M53 52 L65 48 L77 52" stroke="#e07050" stroke-width="2" fill="none" stroke-linecap="round"/>
+<path d="M20 62 Q40 55 65 58 Q90 61 110 55" stroke="#e04020" stroke-width="1.5" fill="none" opacity=".6"/>
+<circle cx="57" cy="30" r="3" fill="#ff4040" opacity=".9"/>
+<circle cx="73" cy="30" r="3" fill="#ff4040" opacity=".9"/>
+<path d="M59 38 Q65 42 71 38" stroke="#ff6040" stroke-width="2" fill="none"/>
+</svg>`,
+
+'Flibustier Sangsue': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs><radialGradient id="fs1a" cx="50%" cy="40%"><stop offset="0%" stop-color="#1a0828"/><stop offset="100%" stop-color="#060208"/></radialGradient><filter id="fs1f"><feGaussianBlur stdDeviation="2"/></filter></defs>
+<rect width="130" height="82" fill="url(#fs1a)"/>
+<ellipse cx="65" cy="50" rx="45" ry="22" fill="#6a0a6a" opacity=".3" filter="url(#fs1f)"/>
+<circle cx="65" cy="33" r="15" fill="#3a1048"/>
+<circle cx="65" cy="33" r="15" fill="none" stroke="#c040c0" stroke-width="1.5" opacity=".8"/>
+<path d="M58 25 L62 20 L65 24 L68 20 L72 25" stroke="#e060e0" stroke-width="1.5" fill="none"/>
+<circle cx="58" cy="30" r="3" fill="#e040fb" opacity=".9"/>
+<circle cx="72" cy="30" r="3" fill="#e040fb" opacity=".9"/>
+<path d="M60 38 Q65 43 70 38" stroke="#e040fb" stroke-width="2" fill="none"/>
+<path d="M62 40 L63 46 L65 44 L67 46 L68 40" fill="#e040fb" opacity=".8"/>
+<ellipse cx="65" cy="50" rx="10" ry="4" fill="#c040c0" opacity=".3" filter="url(#fs1f)"/>
+<path d="M30 60 Q50 52 65 55 Q80 58 100 52" stroke="#c040c0" stroke-width="1.5" fill="none" opacity=".5"/>
+<circle cx="65" cy="48" r="4" fill="#e040fb" opacity=".4" filter="url(#fs1f)"/>
+</svg>`,
+
+'Piranha Frénétique': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs><radialGradient id="pf1a" cx="50%" cy="50%"><stop offset="0%" stop-color="#081828"/><stop offset="100%" stop-color="#020608"/></radialGradient><filter id="pf1f"><feGaussianBlur stdDeviation="1.2"/></filter></defs>
+<rect width="130" height="82" fill="url(#pf1a)"/>
+<path d="M10 48 Q30 40 50 44 Q70 48 90 42 Q110 36 125 40 L125 56 Q105 50 85 54 Q65 58 45 54 Q25 50 10 56Z" fill="#1a4060" opacity=".6"/>
+<path d="M10 52 Q35 44 60 48 Q85 52 110 46" stroke="#40a0d0" stroke-width="1.5" fill="none" opacity=".5"/>
+<ellipse cx="75" cy="42" rx="28" ry="12" fill="#e04020" opacity=".9"/>
+<path d="M48 42 L38 35 L42 42 L38 49Z" fill="#c03010"/>
+<path d="M100 38 L115 42 L100 46Z" fill="#c03010"/>
+<circle cx="96" cy="40" r="3" fill="white" opacity=".9"/>
+<circle cx="97" cy="40" r="1.5" fill="black"/>
+<path d="M54 38 L56 42 L58 38 M62 37 L64 42 L66 37 M70 37 L72 42 L74 37 M78 37 L80 42 L82 37 M86 37 L88 42 L90 37" stroke="#ff6040" stroke-width="1.5" fill="none"/>
+<ellipse cx="55" cy="38" rx="18" ry="6" fill="#ff4020" opacity=".15" filter="url(#pf1f)"/>
+</svg>`,
+
+'Méduse Éternelle': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs><radialGradient id="me1a" cx="50%" cy="35%"><stop offset="0%" stop-color="#080820"/><stop offset="100%" stop-color="#020206"/></radialGradient><radialGradient id="me1b" cx="50%" cy="35%"><stop offset="0%" stop-color="#40e0d0" stop-opacity=".4"/><stop offset="100%" stop-color="transparent"/></radialGradient><filter id="me1f"><feGaussianBlur stdDeviation="2.5"/></filter><filter id="me1g"><feGaussianBlur stdDeviation="1"/></filter></defs>
+<rect width="130" height="82" fill="url(#me1a)"/>
+<ellipse cx="65" cy="35" rx="35" ry="26" fill="url(#me1b)" filter="url(#me1f)"/>
+<ellipse cx="65" cy="30" rx="22" ry="16" fill="#30d0c0" opacity=".18"/>
+<ellipse cx="65" cy="30" rx="22" ry="16" fill="none" stroke="#60e8d8" stroke-width="2" opacity=".7"/>
+<ellipse cx="65" cy="30" rx="15" ry="10" fill="#50e8d8" opacity=".12"/>
+<path d="M48 43 Q46 55 44 68" stroke="#60e8d8" stroke-width="1.5" fill="none" opacity=".6"/>
+<path d="M54 46 Q53 58 51 70" stroke="#40d0c0" stroke-width="1" fill="none" opacity=".5"/>
+<path d="M65 48 Q65 61 64 74" stroke="#60e8d8" stroke-width="1.5" fill="none" opacity=".6"/>
+<path d="M76 46 Q77 58 79 70" stroke="#40d0c0" stroke-width="1" fill="none" opacity=".5"/>
+<path d="M82 43 Q84 55 86 67" stroke="#60e8d8" stroke-width="1.5" fill="none" opacity=".6"/>
+<circle cx="65" cy="26" r="5" fill="#e040fb" opacity=".8" filter="url(#me1g)"/>
+<path d="M57 32 Q61 36 65 34 Q69 36 73 32" stroke="#e040fb" stroke-width="1.5" fill="none" opacity=".7"/>
+<circle cx="57" cy="26" r="2.5" fill="#e040fb" opacity=".7" filter="url(#me1g)"/>
+<circle cx="73" cy="26" r="2.5" fill="#e040fb" opacity=".7" filter="url(#me1g)"/>
+<ellipse cx="65" cy="16" rx="8" ry="4" fill="#80ffee" opacity=".3" filter="url(#me1f)"/>
+</svg>`,
+
+'Vampire des Abysses': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs><radialGradient id="va1a" cx="50%" cy="35%"><stop offset="0%" stop-color="#12021e"/><stop offset="100%" stop-color="#040108"/></radialGradient><filter id="va1f"><feGaussianBlur stdDeviation="2"/></filter><filter id="va1g"><feGaussianBlur stdDeviation="1"/></filter></defs>
+<rect width="130" height="82" fill="url(#va1a)"/>
+<ellipse cx="65" cy="52" rx="50" ry="18" fill="#5a006a" opacity=".2" filter="url(#va1f)"/>
+<path d="M40 50 Q50 30 65 25 Q80 30 90 50 L85 60 Q75 55 65 57 Q55 55 45 60Z" fill="#2a0840" opacity=".9"/>
+<path d="M65 25 L50 45 L65 40 L80 45Z" fill="#4a1060" opacity=".8"/>
+<path d="M42 48 Q30 35 35 20 L48 32Z" fill="#3a0850" opacity=".9"/>
+<path d="M88 48 Q100 35 95 20 L82 32Z" fill="#3a0850" opacity=".9"/>
+<circle cx="57" cy="38" r="4" fill="#e040fb" opacity=".9" filter="url(#va1g)"/>
+<circle cx="73" cy="38" r="4" fill="#e040fb" opacity=".9" filter="url(#va1g)"/>
+<path d="M58 48 L62 44 L65 48 L68 44 L72 48" stroke="#e040fb" stroke-width="1.5" fill="none"/>
+<path d="M50 52 Q65 47 80 52" stroke="#c020e0" stroke-width="1.5" fill="none" opacity=".6"/>
+<ellipse cx="65" cy="28" rx="12" ry="4" fill="#e040fb" opacity=".15" filter="url(#va1f)"/>
+</svg>`,
+
+'Spectre Marin': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
+<defs><radialGradient id="sm1a" cx="50%" cy="40%"><stop offset="0%" stop-color="#060e18"/><stop offset="100%" stop-color="#020408"/></radialGradient><radialGradient id="sm1b" cx="50%" cy="40%"><stop offset="0%" stop-color="#80d0ff" stop-opacity=".3"/><stop offset="100%" stop-color="transparent"/></radialGradient><filter id="sm1f"><feGaussianBlur stdDeviation="3"/></filter><filter id="sm1g"><feGaussianBlur stdDeviation="1.2"/></filter></defs>
+<rect width="130" height="82" fill="url(#sm1a)"/>
+<ellipse cx="65" cy="42" rx="40" ry="30" fill="url(#sm1b)" filter="url(#sm1f)"/>
+<path d="M45 60 Q50 28 65 22 Q80 28 85 60 Q75 68 65 65 Q55 68 45 60Z" fill="white" opacity=".08"/>
+<path d="M45 60 Q50 28 65 22 Q80 28 85 60 Q75 68 65 65 Q55 68 45 60Z" fill="none" stroke="#a0d8ff" stroke-width="1.5" opacity=".5"/>
+<path d="M45 60 Q40 70 38 78" stroke="#a0d8ff" stroke-width="1.5" fill="none" opacity=".5"/>
+<path d="M85 60 Q90 70 92 78" stroke="#a0d8ff" stroke-width="1.5" fill="none" opacity=".5"/>
+<path d="M55 60 Q52 68 50 76" stroke="#80c0ff" stroke-width="1" fill="none" opacity=".4"/>
+<path d="M75 60 Q78 68 80 76" stroke="#80c0ff" stroke-width="1" fill="none" opacity=".4"/>
+<ellipse cx="57" cy="38" rx="4" ry="3" fill="#60d0ff" opacity=".8" filter="url(#sm1g)"/>
+<ellipse cx="73" cy="38" rx="4" ry="3" fill="#60d0ff" opacity=".8" filter="url(#sm1g)"/>
+<path d="M58 47 Q65 52 72 47" stroke="#80c8ff" stroke-width="1.5" fill="none" opacity=".7"/>
+<ellipse cx="65" cy="26" rx="10" ry="4" fill="#ffffff" opacity=".2" filter="url(#sm1g)"/>
+</svg>`,
+
 'Brume de Guerre': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 82">
 <defs><radialGradient id="bg1a" cx="50%" cy="50%"><stop offset="0%" stop-color="#0a0a18"/><stop offset="100%" stop-color="#040408"/></radialGradient><radialGradient id="bg1b" cx="50%" cy="50%"><stop offset="0%" stop-color="#606080" stop-opacity=".6"/><stop offset="100%" stop-color="transparent"/></radialGradient><filter id="bg1f"><feGaussianBlur stdDeviation="4"/></filter></defs>
 <rect width="130" height="82" fill="url(#bg1a)"/><rect width="130" height="82" fill="url(#bg1b)"/>
