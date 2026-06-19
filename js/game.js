@@ -1583,9 +1583,9 @@ function showModeScreen(){
   document.getElementById('mode-collection').onclick = showCollection;
   // Taverne + Deck Builder : visibles seulement avec une carrière active
   const taverneBtn = document.getElementById('mode-taverne');
-  if(taverneBtn){ taverneBtn.style.display = career ? 'flex' : 'none'; taverneBtn.onclick = showTaverne; }
+  if(taverneBtn){ taverneBtn.style.display = career ? 'block' : 'none'; taverneBtn.onclick = showTaverne; }
   const dbBtn = document.getElementById('mode-deckbuilder');
-  if(dbBtn){ dbBtn.style.display = career ? 'flex' : 'none'; dbBtn.onclick = showDeckBuilder; }
+  if(dbBtn){ dbBtn.style.display = career ? 'block' : 'none'; dbBtn.onclick = showDeckBuilder; }
 }
 
 function applyCareeerHero(){
