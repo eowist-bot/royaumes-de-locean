@@ -729,7 +729,9 @@ function showCollection(){
       .slice().sort((a,b)=>{
         if(a.cost!==b.cost) return a.cost-b.cost;
         const r={'Commune':0,'Rare':1,'Épique':2,'Légendaire':3};
-        return (r[a.rarity]??0)-(r[b.rarity]??0);
+        if(a.rarity!==b.rarity) return (r[a.rarity]??0)-(r[b.rarity]??0);
+        const f={'Pirate':0,'Bête marine':1,'Élémental':2,'Sort':3};
+        return (f[a.cardType]??0)-(f[b.cardType]??0);
       });
     colEl.innerHTML = `
       <div class="col-header">
