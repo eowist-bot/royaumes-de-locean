@@ -857,7 +857,7 @@ const CAMPAIGN_STAGES = [
     name:"L'Entité des Profondeurs", avatar:'👁️', title:'Boss Secret',
     desc:"Une force indicible tapie au fond des abysses. Aucun capitaine n'en est revenu.",
     heroPower:{name:'Œil abyssal', desc:'1 dégât à une unité aléatoire ennemie', cost:1, emoji:'👁️', effect:'deal1Random'},
-    deckType:null, hp:45, secret:true,
+    deckType:null, hp:45, startMana:5, secret:true,
   },
 ];
 let campaignStage = 0;
@@ -993,7 +993,8 @@ function startCampaignFight(){
   const stage = CAMPAIGN_STAGES[campaignStage];
   document.getElementById('enemyAvatar').textContent = stage.avatar;
   document.getElementById('enemyName').textContent = stage.name;
-  enemy.hp=stage.hp||MAX_HP; enemy.mana=1; enemy.maxMana=1;
+  const sMana = stage.startMana||1;
+  enemy.hp=stage.hp||MAX_HP; enemy.mana=sMana; enemy.maxMana=sMana;
   enemy.hand=[]; enemy.board=[];
   enemy.heroPowerUsed=false; enemy.fatigue=0;
   enemy.deck = buildEnemyDeck(stage, campaignStage);
