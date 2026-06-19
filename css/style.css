@@ -381,6 +381,11 @@ hr{border:none;border-top:1px solid var(--border);margin:8px 0}
 .reward-next-name{font-family:'Cinzel',serif;font-size:16px;color:var(--gold)}
 .reward-next-desc{font-size:11px;color:#7a9ab0;max-width:260px}
 .camp-complete-emoji{font-size:60px;margin:10px 0}
+.reward-pick-title{font-family:'Cinzel',serif;font-size:14px;color:var(--gold);letter-spacing:.5px;margin-top:4px}
+.reward-offers{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+.reward-offers .card{cursor:pointer;transition:transform .15s,box-shadow .15s}
+.reward-offers .card:hover{transform:translateY(-6px) scale(1.04);box-shadow:0 8px 28px rgba(0,0,0,.6)}
+.reward-chosen{transform:translateY(-8px) scale(1.06) !important;box-shadow:0 0 24px #f0c03088 !important;border-color:var(--gold) !important}
 
 /* ── Écran de sélection de mode ── */
 #mode-screen{display:none;flex-direction:column;align-items:center;gap:24px;padding:20px 0 40px}

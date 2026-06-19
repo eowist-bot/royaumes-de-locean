@@ -780,12 +780,17 @@ function handleCampaignVictory(){
   setTimeout(()=>showRewardScreen(CAMPAIGN_STAGES[campaignStage], healAmt), 900);
 }
 
-function showRewardScreen(nextStage, healAmt){
-  document.getElementById('game-layout').style.display='none';
-  const el = document.getElementById('reward-screen');
-  el.innerHTML = `
-    <div class="reward-title">⚔️ Victoire !</div>
-    <div class="reward-heal">💊 +${healAmt} PV récupérés (${player.hp}/${MAX_HP})</div>
+function getRewardOffers(){
+  const chosen = [];
+  while(chosen.length < 3){
+    const c = CARD_POOL[Math.floor(Math.random()*CARD_POOL.length)];
+    if(!chosen.includes(c)) chosen.push(c);
+  }
+  return chosen;
+}
+
+function showRewardContinue(el, nextStage, healAmt){
+  el.innerHTML += `
     <div class="reward-next">
       <div class="reward-next-label">PROCHAIN ADVERSAIRE</div>
       <div class="reward-next-avatar">${nextStage.avatar}</div>
@@ -793,7 +798,6 @@ function showRewardScreen(nextStage, healAmt){
       <div class="reward-next-desc">${nextStage.desc}</div>
     </div>
     <button id="reward-continue-btn">⚔️ Continuer !</button>`;
-  el.style.display = 'flex';
   document.getElementById('reward-continue-btn').onclick = ()=>{
     el.style.display = 'none';
     player.mana=1; player.maxMana=1;
@@ -809,6 +813,32 @@ function showRewardScreen(nextStage, healAmt){
     for(let i=0;i<4;i++) drawCard(player);
     startCampaignFight();
   };
+}
+
+function showRewardScreen(nextStage, healAmt){
+  document.getElementById('game-layout').style.display='none';
+  const el = document.getElementById('reward-screen');
+  const offers = getRewardOffers();
+  el.innerHTML = `
+    <div class="reward-title">⚔️ Victoire !</div>
+    <div class="reward-heal">💊 +${healAmt} PV récupérés (${player.hp}/${MAX_HP})</div>
+    <div class="reward-pick-title">🎁 Choisissez une carte à ajouter à votre deck :</div>
+    <div class="reward-offers"></div>`;
+  el.style.display = 'flex';
+  const offersEl = el.querySelector('.reward-offers');
+  offers.forEach(card=>{
+    const cardEl = makeDraftCardEl(card);
+    cardEl.onclick = ()=>{
+      draftDeck.push({...card, keywords:[...card.keywords]});
+      offersEl.querySelectorAll('.card').forEach(c=>c.style.pointerEvents='none');
+      cardEl.classList.add('reward-chosen');
+      setTimeout(()=>{
+        el.querySelectorAll('.reward-pick-title, .reward-offers').forEach(e=>e.remove());
+        showRewardContinue(el, nextStage, healAmt);
+      }, 800);
+    };
+    offersEl.appendChild(cardEl);
+  });
 }
 
 function showCampaignComplete(){
