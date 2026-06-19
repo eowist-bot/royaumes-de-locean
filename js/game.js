@@ -417,6 +417,10 @@ function playCard(i){
 
   if(c.isSpell){
     if(c.needsTarget){
+      const preview = {card:c, bc:null};
+      const vt = getValidTargets(preview);
+      const hasTargets = vt.enemies.length||vt.allies.length||vt.weakEnemies.length;
+      if(!hasTargets){ log(`⚠️ Aucune cible valide pour ${c.name} !`,'log-event'); return; }
       player.mana -= c.cost;
       pendingAction = {type:'spell', owner:player, opp:enemy, card:c, cardIdx:i};
       log(`🔮 Sort sélectionné : ${c.name} — choisissez une cible`,'log-event');
@@ -440,6 +444,12 @@ function playCard(i){
 
   if(c.battlecry){
     if(c.battlecry.needsTarget){
+      const vt = getValidTargets({bc:c.battlecry, unit:c});
+      const hasTargets = vt.enemies.length||vt.allies.length||vt.weakEnemies.length;
+      if(!hasTargets){
+        log(`⚠️ Battlecry de ${c.name} : aucune cible valide, effet ignoré`,'log-event');
+        render(); return;
+      }
       pendingAction = {type:'battlecry', owner:player, ownerBoard:player.board, unit:c, bc:c.battlecry};
       log(`🎯 Battlecry : ${c.battlecry.desc} — choisissez une cible`,'log-event');
       render(); return;
