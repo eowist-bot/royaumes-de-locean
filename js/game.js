@@ -362,26 +362,42 @@ function resolveTarget(target, targetIsHero=false){
   if(!checkEnd()) render();
 }
 
+function enemyPickTarget(targetFilter){
+  const ep = player.board.filter(c=>c.currentHp>0);
+  const ea = enemy.board.filter(c=>c.currentHp>0);
+  if(targetFilter==='enemy')      return ep.sort((a,b)=>a.currentHp-b.currentHp)[0]||null;
+  if(targetFilter==='enemy-weak') return ep.filter(c=>c.currentHp<=2)[0]||null;
+  if(targetFilter==='ally')       return ea.sort((a,b)=>b.atk-a.atk)[0]||null;
+  if(targetFilter==='ally-Pirate')return ea.filter(c=>c.cardType==='Pirate').sort((a,b)=>b.atk-a.atk)[0]||null;
+  return null;
+}
+
 // ── Tour de l'IA ──
 function enemyTurn(){
   // Utiliser pouvoir héros si possible
   enemyUseHeroPower();
 
-  // Sorts IA
+  // Sorts IA (avec ciblage)
   let castingSpell = true;
   while(castingSpell){
     castingSpell = false;
-    const si = enemy.hand.findIndex(c=>c.isSpell && c.cost<=enemy.mana && !c.needsTarget);
+    const si = enemy.hand.findIndex(c=>c.isSpell && c.cost<=enemy.mana);
     if(si>=0){
       const s = enemy.hand[si];
-      enemy.mana -= s.cost;
-      // Sorts sans cible uniquement (l'IA ne gère pas le ciblage)
-      // Inverser owner/opp pour l'IA
-      const fakeSpell = {...SPELL_EFFECTS};
-      const ownerFn = SPELL_EFFECTS[s.spellEffect];
-      if(ownerFn) ownerFn(enemy, player);
-      log(`🤖 L'IA lance ${s.name} !`,'log-enemy');
-      enemy.hand.splice(si,1);
+      if(s.needsTarget){
+        const target = enemyPickTarget(s.targetFilter);
+        if(!target){ castingSpell=false; break; } // pas de cible valide, passer
+        enemy.mana -= s.cost;
+        SPELL_EFFECTS[s.spellEffect]?.(enemy, player, target);
+        log(`🤖 L'IA lance ${s.name} sur ${target.name} !`,'log-enemy');
+        enemy.hand.splice(si,1);
+        cleanup();
+      } else {
+        enemy.mana -= s.cost;
+        SPELL_EFFECTS[s.spellEffect]?.(enemy, player);
+        log(`🤖 L'IA lance ${s.name} !`,'log-enemy');
+        enemy.hand.splice(si,1);
+      }
       castingSpell = true;
     }
   }
@@ -400,9 +416,14 @@ function enemyTurn(){
       enemy.board.push(c);
       enemy.hand.splice(idx.i,1);
       log(`🤖 L'IA joue ${c.name} (${c.cost}💎)`,'log-enemy');
-      // Battlecry auto (sans cible)
-      if(c.battlecry && !c.battlecry.needsTarget && BATTLECRY_EFFECTS[c.battlecry.effect]){
-        BATTLECRY_EFFECTS[c.battlecry.effect](enemy, enemy.board);
+      // Battlecry (avec ou sans cible)
+      if(c.battlecry && BATTLECRY_EFFECTS[c.battlecry.effect]){
+        if(c.battlecry.needsTarget){
+          const target = enemyPickTarget(c.battlecry.targetFilter);
+          if(target) BATTLECRY_EFFECTS[c.battlecry.effect](enemy, enemy.board, target);
+        } else {
+          BATTLECRY_EFFECTS[c.battlecry.effect](enemy, enemy.board);
+        }
       }
       played=true;
     }
@@ -783,20 +804,60 @@ const CAMPAIGN_STAGES = [
 ];
 let campaignStage = 0;
 
-function buildEnemyDeck(stageConfig){
-  let pool;
-  if(stageConfig.deckType){
-    const typed = CARD_POOL.filter(c=>c.cardType===stageConfig.deckType||c.isSpell);
-    pool = [...typed,...typed,...CARD_POOL.filter(c=>c.isSpell)];
-  } else {
-    pool = [...CARD_POOL];
-    CARD_POOL.forEach(c=>{ if(c.rarity==='Rare'||c.rarity==='Épique'||c.rarity==='Légendaire') pool.push(c); });
+function pickN(from, n){
+  const src=[...from], out=[];
+  while(out.length<n && src.length)
+    out.push(src.splice(Math.floor(Math.random()*src.length),1)[0]);
+  return out;
+}
+
+function buildEnemyDeck(stageConfig, stageIdx){
+  const P  = CARD_POOL.filter(c=>c.cardType==='Pirate'    &&!c.isSpell);
+  const B  = CARD_POOL.filter(c=>c.cardType==='Bête marine'&&!c.isSpell);
+  const E  = CARD_POOL.filter(c=>c.cardType==='Élémental' &&!c.isSpell);
+  const S  = CARD_POOL.filter(c=>c.isSpell);
+  const lo = arr=>arr.filter(c=>c.cost<=3);
+  const mi = arr=>arr.filter(c=>c.cost>=4&&c.cost<=6);
+  const hi = arr=>arr.filter(c=>c.cost>=7);
+  const rk = arr=>arr.filter(c=>c.rarity==='Épique'||c.rarity==='Légendaire');
+
+  let deck;
+  switch(stageIdx){
+    case 0: // Corsaire — Pirates agressifs, courbe basse
+      deck = [
+        ...pickN(lo(P), 5), ...pickN(mi(P), 3), ...pickN(P, 2),
+        ...pickN(lo(S), 3), ...pickN(S, 2),
+      ]; break;
+    case 1: // Sirène — Bêtes marines solides, soin
+      deck = [
+        ...pickN(lo(B), 4), ...pickN(mi(B), 5), ...pickN(hi(B).concat(rk(B)), 2),
+        ...pickN(lo(S), 2), ...pickN(mi(S), 2),
+      ]; break;
+    case 2: // Maître des Tempêtes — Élémentaux + sorts dégâts
+      deck = [
+        ...pickN(lo(E), 3), ...pickN(mi(E), 4), ...pickN(hi(E).concat(rk(E)), 3),
+        ...pickN(lo(S), 2), ...pickN(mi(S).concat(rk(S)), 3),
+      ]; break;
+    default: // Amiral — meilleur deck mixte, épiques/légendaires
+      const elite = CARD_POOL.filter(c=>c.rarity==='Épique'||c.rarity==='Légendaire');
+      deck = [
+        ...pickN(elite.filter(c=>!c.isSpell&&c.cost<=4), 4),
+        ...pickN(elite.filter(c=>!c.isSpell&&c.cost>=5), 4),
+        ...pickN(elite.filter(c=>c.isSpell), 3),
+        ...pickN(CARD_POOL.filter(c=>c.rarity==='Rare'&&!c.isSpell), 2),
+        ...pickN(CARD_POOL.filter(c=>c.rarity==='Rare'&&c.isSpell), 2),
+      ]; break;
   }
-  for(let i=pool.length-1;i>0;i--){
+  // Compléter à 20 cartes (deck plus long = parties plus longues)
+  const TARGET = 20;
+  while(deck.length<TARGET)
+    deck.push(CARD_POOL[Math.floor(Math.random()*CARD_POOL.length)]);
+  deck = deck.slice(0,TARGET);
+  for(let i=deck.length-1;i>0;i--){
     const j=Math.floor(Math.random()*(i+1));
-    [pool[i],pool[j]]=[pool[j],pool[i]];
+    [deck[i],deck[j]]=[deck[j],deck[i]];
   }
-  return pool.slice(0,15);
+  return deck;
 }
 
 function showCampaignIntro(){
@@ -831,7 +892,7 @@ function startCampaignFight(){
   enemy.hp=MAX_HP; enemy.mana=1; enemy.maxMana=1;
   enemy.hand=[]; enemy.board=[];
   enemy.heroPowerUsed=false; enemy.fatigue=0;
-  enemy.deck = buildEnemyDeck(stage);
+  enemy.deck = buildEnemyDeck(stage, campaignStage);
   for(let i=0;i<4;i++) drawCard(enemy);
   document.getElementById('game-layout').style.display='flex';
   document.getElementById('log').innerHTML='';
@@ -1092,7 +1153,7 @@ function startQuickFight(){
   enemy.hp=MAX_HP; enemy.mana=1; enemy.maxMana=1;
   enemy.hand=[]; enemy.board=[];
   enemy.heroPowerUsed=false; enemy.fatigue=0;
-  enemy.deck = buildDeck();
+  enemy.deck = buildEnemyDeck(stage, 3);
   for(let i=0;i<4;i++) drawCard(enemy);
   document.getElementById('game-layout').style.display='flex';
   document.getElementById('log').innerHTML='';
