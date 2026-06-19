@@ -1012,7 +1012,7 @@ function getDraftCostRange(pick){
 function getDraftOffers(){
   const [minCost, maxCost] = getDraftCostRange(draftPick);
   // Exclure les Légendaires déjà en main (unicité)
-  const ownedLegendaries = new Set(pickedCards.filter(c=>c.rarity==='Légendaire').map(c=>c.name));
+  const ownedLegendaries = new Set(draftDeck.filter(c=>c.rarity==='Légendaire').map(c=>c.name));
   let pool = CARD_POOL.filter(c=>
     c.cost>=minCost && c.cost<=maxCost &&
     !(c.rarity==='Légendaire' && ownedLegendaries.has(c.name))
