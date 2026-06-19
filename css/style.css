@@ -403,8 +403,15 @@ hr{border:none;border-top:1px solid var(--border);margin:8px 0}
   padding:5px 14px;color:#7a9ab0;font-size:12px;cursor:pointer;transition:all .15s;margin-left:auto}
 .col-back:hover{border-color:#aaa;color:#ccc}
 .col-grid{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:1100px;padding:0 16px}
-.col-grid .card{cursor:default;transform:none!important}
+.col-grid .card{cursor:default;transform:none!important;width:155px;height:250px}
 .col-grid .card:hover{transform:translateY(-4px) scale(1.03)!important;transition:transform .15s}
+.col-grid .card-art{height:98px}
+.col-grid .card-name{font-size:11px}
+.col-grid .card-rarity-gem{font-size:10px}
+.col-grid .card-keywords{font-size:10px}
+.col-grid .card-bc-desc,.col-grid .card-spell-desc{font-size:10px}
+.col-grid .card-type-label{font-size:10px}
+.col-grid .card-cost{width:34px;height:34px;font-size:16px}
 .col-stats{display:flex;justify-content:space-between;padding:2px 8px;margin-top:2px}
 .col-stats .u-atk{background:#c0392b;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;color:white}
 .col-stats .u-hp{background:#27ae60;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;color:white}
