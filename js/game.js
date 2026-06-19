@@ -500,13 +500,22 @@ function checkEnd(){
     sndVictory();
     if(gameMode==='quick'){
       showCombatResult(true, ()=>{
+        if(career) awardVictoryCredits();
         document.getElementById('game-layout').style.display='none';
         const el=document.getElementById('reward-screen');
+        const careerBlock = career ? `
+          <div class="reward-career-info">
+            <div class="reward-quality">${player.hp>=25?'Victoire Éclatante ⭐⭐⭐':player.hp>=10?'Victoire Normale ⭐⭐':'Victoire Piètre ⭐'}</div>
+            <div class="reward-credits-earned">+${player.hp>=25?3:player.hp>=10?2:1} crédit${(player.hp>=25?3:player.hp>=10?2:1)>1?'s':''} gagnés</div>
+            <div class="reward-credits-total">💰 Total : ${career.credits} cr</div>
+          </div>
+          <button class="btn-primary" onclick="showTaverne()" style="margin-top:8px">🏪 Taverne</button>` : '';
         el.innerHTML=`
           <div class="reward-title">🏆 Victoire !</div>
           <div class="camp-complete-emoji">⚓</div>
           <div class="camp-subtitle">L'Amiral Maelström est coulé !</div>
-          <button id="reward-continue-btn" onclick="location.reload()">🔄 Rejouer</button>`;
+          ${careerBlock}
+          <button class="btn-secondary" onclick="location.reload()" style="margin-top:12px">🔄 Menu principal</button>`;
         el.style.display='flex';
       });
     } else {
@@ -776,7 +785,7 @@ function makeUnit(c, board, opts={}){
   const dispHp  = c.currentHp + sb.hp;
   const typeLabel = c.cardType && c.cardType!=='Sort' ? `<div class="u-type type-${c.cardType.replace(' ','-')}">${c.cardType}</div>` : '';
   const bcLabel = c.battlecry ? `<div class="u-bc">★</div>` : '';
-  d.innerHTML=`<div class="u-art">${CARD_ART[c.name]||`<span class="u-emoji">${c.emoji}</span>`}</div>
+  d.innerHTML=`<div class="u-art">${getCardArt(c)}</div>
     <div class="u-name">${c.name}</div>
     ${typeLabel}
     <div class="u-stats"><span class="u-atk${sb.atk>0?' buffed':''}">${dispAtk}</span><span class="u-hp${dispHp<c.hp?' damaged':''}">${dispHp}</span></div>
@@ -888,7 +897,7 @@ function render(){
       d.className='card spell r-'+rk+(affordable?'':' unaffordable');
       d.innerHTML=`
         <div class="card-cost">${c.cost}</div>
-        <div class="card-art">${CARD_ART[c.name]||`<span style="font-size:44px;display:flex;align-items:center;justify-content:center;height:100%">${c.emoji}</span>`}</div>
+        <div class="card-art">${getCardArt(c)}</div>
         <div class="card-divider"></div>
         <div class="card-name-bar"><div class="card-name">${c.name}</div></div>
         <div class="card-textbox">
@@ -901,7 +910,7 @@ function render(){
       const sb = synergyBonus(c, player.board);
       d.innerHTML=`
         <div class="card-cost">${c.cost}</div>
-        <div class="card-art">${CARD_ART[c.name]||`<span style="font-size:44px;display:flex;align-items:center;justify-content:center;height:100%">${c.emoji}</span>`}</div>
+        <div class="card-art">${getCardArt(c)}</div>
         <div class="card-divider"></div>
         <div class="card-name-bar"><div class="card-name">${c.name}</div></div>
         <div class="card-textbox">
@@ -2078,6 +2087,34 @@ function getDraftOffers(){
   return chosen;
 }
 
+// Retourne le SVG d'une carte (depuis CARD_ART ou un placeholder cohérent)
+function getCardArt(card){
+  if(CARD_ART[card.name]) return CARD_ART[card.name];
+  const palette = {
+    'Pirate':           {bg:'#2a1208', accent:'#c9841c', dim:'#7a4a10'},
+    'Bête marine':      {bg:'#051828', accent:'#1e7db8', dim:'#0d4a6a'},
+    'Élémental':        {bg:'#280a00', accent:'#c94a1c', dim:'#7a2a10'},
+    'Tribu des Récifs': {bg:'#081a0c', accent:'#2ea84c', dim:'#0f5a20'},
+    'Spectre':          {bg:'#120820', accent:'#8b4cf6', dim:'#4a1a8a'},
+    'Triton':           {bg:'#041418', accent:'#06b6d4', dim:'#0a5a6e'},
+    'Sort':             {bg:'#0e0a28', accent:'#7c5adc', dim:'#3a1a8a'},
+  };
+  const key = card.isSpell ? 'Sort' : (card.cardType || 'Sort');
+  const {bg, accent, dim} = palette[key] || palette['Sort'];
+  // Utiliser l'emoji du fichier cards.js mais dans un SVG maîtrisé
+  const ico = card.emoji || '✦';
+  return `<svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="80" fill="${bg}" rx="6"/>
+    <rect x="3" y="3" width="94" height="74" fill="none" stroke="${dim}" stroke-width="1.5" rx="5"/>
+    <line x1="0" y1="55" x2="100" y2="55" stroke="${dim}" stroke-width="0.8" opacity="0.4"/>
+    <text x="50" y="34" text-anchor="middle" dominant-baseline="middle" font-size="30">${ico}</text>
+    <text x="50" y="68" text-anchor="middle" dominant-baseline="middle" font-size="9"
+      fill="${accent}" font-family="sans-serif" font-weight="600" letter-spacing="0.5">
+      ${(card.isSpell?'SORT':(card.cardType||'').toUpperCase()).slice(0,14)}
+    </text>
+  </svg>`;
+}
+
 function makeDraftCardEl(card){
   const rk = rarityKey(card.rarity);
   const d = document.createElement('div');
@@ -2085,7 +2122,7 @@ function makeDraftCardEl(card){
     d.className='card spell r-'+rk;
     d.innerHTML=`
       <div class="card-cost">${card.cost}</div>
-      <div class="card-art">${CARD_ART[card.name]||`<span style="font-size:44px;display:flex;align-items:center;justify-content:center;height:100%">${card.emoji}</span>`}</div>
+      <div class="card-art">${getCardArt(card)}</div>
       <div class="card-divider"></div>
       <div class="card-name-bar"><div class="card-name">${card.name}</div></div>
       <div class="card-textbox">
@@ -2097,7 +2134,7 @@ function makeDraftCardEl(card){
     d.className='card r-'+rk;
     d.innerHTML=`
       <div class="card-cost">${card.cost}</div>
-      <div class="card-art">${CARD_ART[card.name]||`<span style="font-size:44px;display:flex;align-items:center;justify-content:center;height:100%">${card.emoji}</span>`}</div>
+      <div class="card-art">${getCardArt(card)}</div>
       <div class="card-divider"></div>
       <div class="card-name-bar"><div class="card-name">${card.name}</div></div>
       <div class="card-textbox">
