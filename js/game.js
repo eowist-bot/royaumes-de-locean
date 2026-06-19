@@ -133,12 +133,52 @@ function synergyBonus(unit, board){
   if(!unit.cardType || unit.isSpell) return {atk:0,hp:0};
   const allies = board.filter(u=>u!==unit && u.cardType===unit.cardType).length;
   if(allies===0) return {atk:0,hp:0};
-  if(unit.cardType==='Pirate')       return {atk:Math.min(allies,3), hp:0};
-  if(unit.cardType==='Bête marine')  return {atk:0, hp:Math.min(allies,3)};
-  if(unit.cardType==='Élémental')    return {atk:Math.min(allies,2), hp:Math.min(allies,2)};
+  if(unit.cardType==='Pirate')          return {atk:Math.min(allies,3), hp:0};
+  if(unit.cardType==='Bête marine')     return {atk:0, hp:Math.min(allies,3)};
+  if(unit.cardType==='Élémental')       return {atk:Math.min(allies,2), hp:Math.min(allies,2)};
+  if(unit.cardType==='Tribu des Récifs')return {atk:Math.min(allies,3), hp:Math.min(allies,3)};
+  if(unit.cardType==='Spectre')         return {atk:Math.min(allies,3), hp:0};
+  if(unit.cardType==='Triton')          return {atk:0, hp:Math.min(allies,3)};
   return {atk:0,hp:0};
 }
 function effAtk(unit, board){ return unit.atk + synergyBonus(unit,board).atk; }
+
+// ── Utilitaire crédits ──
+function creditValue(card){
+  if(card.isPower) return 25;
+  return {Commune:2, Rare:5, Épique:10, Légendaire:20}[card.rarity]||2;
+}
+function sellValue(card){ return Math.floor(creditValue(card)/2); }
+
+// ── Effets de pouvoir héros (carrière) ──
+const HERO_POWER_EFFECTS = {
+  hp_heal2:()=>{ player.hp=Math.min(MAX_HP,player.hp+2); sndSpell(); },
+  hp_heal4:()=>{ player.hp=Math.min(MAX_HP,player.hp+4); sndSpell(); },
+  hp_drawCard:()=>{ drawCard(player); sndSpell(); },
+  hp_draw2Cards:()=>{ drawCard(player); drawCard(player); sndSpell(); },
+  hp_deal1hp:()=>{ enemy.hp-=1; sndHeroHit(); flashHero('enemyZone',1); checkEnd(); },
+  hp_deal2Random:()=>{
+    if(enemy.board.length){
+      const t=enemy.board[Math.floor(Math.random()*enemy.board.length)];
+      t.currentHp-=2; sndHit(); cleanup();
+    } else { enemy.hp-=2; sndHeroHit(); flashHero('enemyZone',2); checkEnd(); }
+  },
+  hp_buffOneRandom:()=>{
+    if(player.board.length){
+      const t=player.board[Math.floor(Math.random()*player.board.length)];
+      t.atk+=1; sndSpell();
+    }
+  },
+  hp_buffAllAllies:()=>{ player.board.forEach(u=>{u.atk+=1;u.hp+=1;u.currentHp+=1;}); sndSpell(); },
+  hp_summonTotem:()=>{
+    if(player.board.length<MAX_BOARD){
+      player.board.push({name:'Totem',emoji:'🗿',cost:0,atk:0,hp:3,rarity:'Commune',
+        cardType:'Tribu des Récifs',keywords:['Provocation'],battlecry:null,isSpell:false,
+        currentHp:3,attacked:false,justPlayed:true,hasShield:false,_uid:++_uidCounter});
+      sndSpell();
+    }
+  },
+};
 
 // ── Pouvoirs héros ──
 function useHeroPower(){
@@ -147,6 +187,7 @@ function useHeroPower(){
   if(player.mana < hp.cost){ log('⚠️ Pas assez de mana.','log-event'); return; }
   player.mana -= hp.cost;
   player.heroPowerUsed = true;
+  // Héros fixes (Jack/Naïa/Zephyr)
   if(hp.effect==='heal2hp'){
     player.hp = Math.min(MAX_HP, player.hp+2); sndSpell();
     log(`${hp.emoji} Pouvoir héros : ${selectedHero.name} récupère 2 PV !`,'log-player');
@@ -155,8 +196,12 @@ function useHeroPower(){
     log(`${hp.emoji} Pouvoir héros : ${selectedHero.name} pioche une carte !`,'log-player');
   } else if(hp.effect==='deal1hp'){
     enemy.hp-=1; sndHeroHit(); flashHero('enemyZone',1);
-    log(`${hp.emoji} Pouvoir héros : ${selectedHero.name} inflige 1 dégât à l'ennemi !`,'log-player');
+    log(`${hp.emoji} Pouvoir héros : ${selectedHero.name} inflige 1 dégât !`,'log-player');
     checkEnd(); return;
+  // Pouvoirs héros carrière (powerEffect)
+  } else if(HERO_POWER_EFFECTS[hp.effect]){
+    HERO_POWER_EFFECTS[hp.effect]();
+    log(`${hp.emoji} Pouvoir héros : ${hp.name} !`,'log-player');
   }
   render();
 }
@@ -252,6 +297,73 @@ const BATTLECRY_EFFECTS = {
     opp.board.forEach(u=>{ u.currentHp-=3; }); sndHit();
     log(`🐲 Battlecry : Léviathan inflige 3 dégâts à toutes les unités ennemies !`,'log-event');
     cleanup();
+  },
+
+  // ── Tribaux des Récifs ──
+  tribalAllBuff:(owner, ownerBoard)=>{
+    const t = ownerBoard.filter(u=>u.cardType==='Tribu des Récifs');
+    t.forEach(u=>{ u.atk+=1; u.hp+=1; u.currentHp+=1; });
+    log(`🪬 Battlecry : ${t.length} Tribal(aux) reçoivent +1/+1 !`,'log-event');
+  },
+  tribalChiefBuff:(owner, ownerBoard)=>{
+    const t = ownerBoard.filter(u=>u.cardType==='Tribu des Récifs');
+    t.forEach(u=>{ u.atk+=2; u.hp+=2; u.currentHp+=2; });
+    log(`🦁 Battlecry : ${t.length} Tribal(aux) reçoivent +2/+2 !`,'log-event');
+  },
+  allAllyAtkBuff:(owner, ownerBoard)=>{
+    ownerBoard.forEach(u=>{ u.atk+=1; });
+    log(`🪘 Battlecry : toutes vos unités reçoivent +1 ATK !`,'log-event');
+  },
+  summon2Warriors:(owner, ownerBoard)=>{
+    if(ownerBoard.length>=MAX_BOARD) return;
+    for(let i=0;i<2&&ownerBoard.length<MAX_BOARD;i++){
+      ownerBoard.push({name:'Guerrier Tribal',emoji:'⚔️',cost:1,atk:1,hp:1,
+        rarity:'Commune',cardType:'Tribu des Récifs',keywords:[],battlecry:null,isSpell:false,
+        currentHp:1,attacked:false,justPlayed:true,hasShield:false,_uid:++_uidCounter});
+    }
+    log(`👑 Battlecry : 2 Guerriers Tribaux invoqués !`,'log-event');
+  },
+
+  // ── Spectres des Naufrages ──
+  spectreAoe1:(owner, ownerBoard)=>{
+    const opp = (owner===player) ? enemy : player;
+    opp.board.forEach(u=>{ u.currentHp-=1; }); sndHit();
+    log(`💀 Battlecry : 1 dégât à toutes les unités ennemies !`,'log-event');
+    cleanup();
+  },
+  summon2Larvae:(owner, ownerBoard)=>{
+    if(ownerBoard.length>=MAX_BOARD) return;
+    for(let i=0;i<2&&ownerBoard.length<MAX_BOARD;i++){
+      ownerBoard.push({name:'Larve Spectrale',emoji:'💀',cost:1,atk:1,hp:1,
+        rarity:'Commune',cardType:'Spectre',keywords:['Rebond'],battlecry:null,isSpell:false,
+        currentHp:1,attacked:false,justPlayed:true,hasShield:false,_uid:++_uidCounter});
+    }
+    log(`🛸 Battlecry : 2 Larves Spectrales invoquées !`,'log-event');
+  },
+  spectreBuff:(owner, ownerBoard)=>{
+    const s = ownerBoard.filter(u=>u.cardType==='Spectre');
+    s.forEach(u=>{ u.atk+=2; u.hp+=2; u.currentHp+=2; });
+    log(`🌑 Battlecry : ${s.length} Spectre(s) reçoivent +2/+2 !`,'log-event');
+  },
+
+  // ── Tritons Guerriers ──
+  tritonHpBuff:(owner, ownerBoard)=>{
+    const t = ownerBoard.filter(u=>u.cardType==='Triton');
+    t.forEach(u=>{ u.hp+=1; u.currentHp+=1; });
+    log(`👁️ Battlecry : ${t.length} Triton(s) reçoivent +1 PV !`,'log-event');
+  },
+  tritonShieldAll:(owner, ownerBoard)=>{
+    ownerBoard.forEach(u=>{ u.hasShield=true; });
+    log(`👑 Battlecry : Bouclier divin donné à toutes vos unités !`,'log-event');
+  },
+  summon2Guards:(owner, ownerBoard)=>{
+    if(ownerBoard.length>=MAX_BOARD) return;
+    for(let i=0;i<2&&ownerBoard.length<MAX_BOARD;i++){
+      ownerBoard.push({name:'Garde Triton',emoji:'🛡️',cost:2,atk:1,hp:3,
+        rarity:'Commune',cardType:'Triton',keywords:['Provocation'],battlecry:null,isSpell:false,
+        currentHp:3,attacked:false,justPlayed:true,hasShield:false,_uid:++_uidCounter});
+    }
+    log(`🔱 Battlecry : 2 Gardes Triton invoqués !`,'log-event');
   },
 };
 
@@ -363,6 +475,14 @@ function cleanup(){
       log(`↩️ ${c.name} rebondit dans la main !`,'log-event');
     }
   });
+  // Synergie Tribaux : +1 ATK à tous les survivants quand un Tribal meurt
+  const dyingTribalPlayer = dyingPlayer.filter(c=>c.cardType==='Tribu des Récifs').length;
+  const dyingTribalEnemy  = dyingEnemy.filter(c=>c.cardType==='Tribu des Récifs').length;
+  if(dyingTribalPlayer>0)
+    player.board.filter(c=>c.cardType==='Tribu des Récifs'&&c.currentHp>0).forEach(u=>{ u.atk+=dyingTribalPlayer; });
+  if(dyingTribalEnemy>0)
+    enemy.board.filter(c=>c.cardType==='Tribu des Récifs'&&c.currentHp>0).forEach(u=>{ u.atk+=dyingTribalEnemy; });
+
   player.board = player.board.filter(c=>c.currentHp>0);
   enemy.board  = enemy.board.filter(c=>c.currentHp>0);
 }

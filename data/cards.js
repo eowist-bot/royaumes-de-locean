@@ -162,6 +162,171 @@ const CARD_POOL = [
   {name:'Spectre Marin',      emoji:'👻', cost:3, atk:2, hp:3, rarity:'Rare',       cardType:'Élémental',
    keywords:['Rebond','Bouclier divin'], battlecry:null, isSpell:false},
 
+  // ═══════════════════════════════════════════════════════════════
+  // NOUVELLE FAMILLE : TRIBAUX DES RÉCIFS 🪬
+  // Synergie : +1 ATK à toutes les unités Tribaux alliées quand l'une d'elles meurt
+  // ═══════════════════════════════════════════════════════════════
+
+  // — Communes bas coût (0-2) : 6 cartes — deck de départ carrière
+  {name:'Enfant des Récifs',    emoji:'🧒', cost:0, atk:1, hp:1, rarity:'Commune', cardType:'Tribu des Récifs',
+   keywords:[], battlecry:null, isSpell:false},
+  {name:'Éclaireur Tribal',     emoji:'🏹', cost:1, atk:1, hp:2, rarity:'Commune', cardType:'Tribu des Récifs',
+   keywords:[], battlecry:null, isSpell:false},
+  {name:'Guerrier des Coraux',  emoji:'🪸', cost:1, atk:2, hp:1, rarity:'Commune', cardType:'Tribu des Récifs',
+   keywords:['Charge'], battlecry:null, isSpell:false},
+  {name:'Pêcheur Tribal',       emoji:'🎣', cost:2, atk:1, hp:3, rarity:'Commune', cardType:'Tribu des Récifs',
+   keywords:['Provocation'], battlecry:null, isSpell:false},
+  {name:'Lancier des Récifs',   emoji:'🗡️', cost:2, atk:2, hp:2, rarity:'Commune', cardType:'Tribu des Récifs',
+   keywords:[], battlecry:null, isSpell:false},
+  {name:'Guérisseur du Clan',   emoji:'🌿', cost:2, atk:1, hp:2, rarity:'Commune', cardType:'Tribu des Récifs',
+   keywords:[],
+   battlecry:{desc:'Votre héros récupère 2 PV', effect:'healHero2', needsTarget:false},
+   isSpell:false},
+
+  // — Communes mid (3-4) : 5 cartes
+  {name:'Ancien du Clan',       emoji:'👴', cost:3, atk:2, hp:3, rarity:'Commune', cardType:'Tribu des Récifs',
+   keywords:[], battlecry:null, isSpell:false},
+  {name:'Chasseur Tribal',      emoji:'🐆', cost:3, atk:3, hp:2, rarity:'Commune', cardType:'Tribu des Récifs',
+   keywords:[], battlecry:null, isSpell:false},
+  {name:'Gardien des Totems',   emoji:'🗿', cost:3, atk:1, hp:4, rarity:'Commune', cardType:'Tribu des Récifs',
+   keywords:['Provocation'], battlecry:null, isSpell:false},
+  {name:'Berserker Tribal',     emoji:'😡', cost:4, atk:4, hp:2, rarity:'Commune', cardType:'Tribu des Récifs',
+   keywords:['Charge'], battlecry:null, isSpell:false},
+  {name:'Défenseur des Récifs', emoji:'🛡️', cost:4, atk:2, hp:4, rarity:'Commune', cardType:'Tribu des Récifs',
+   keywords:['Provocation'], battlecry:null, isSpell:false},
+
+  // — Communes haut (5+) : 4 cartes
+  {name:'Champion Tribal',      emoji:'🏆', cost:5, atk:4, hp:4, rarity:'Commune', cardType:'Tribu des Récifs',
+   keywords:[], battlecry:null, isSpell:false},
+  {name:'Géant des Coraux',     emoji:'🦣', cost:6, atk:5, hp:5, rarity:'Commune', cardType:'Tribu des Récifs',
+   keywords:[], battlecry:null, isSpell:false},
+  {name:'Colosse Tribal',       emoji:'⛰️', cost:7, atk:6, hp:6, rarity:'Commune', cardType:'Tribu des Récifs',
+   keywords:['Provocation'], battlecry:null, isSpell:false},
+  {name:'Grand Guerrier',       emoji:'⚔️', cost:8, atk:7, hp:7, rarity:'Commune', cardType:'Tribu des Récifs',
+   keywords:[], battlecry:null, isSpell:false},
+
+  // — Rares
+  {name:'Chaman des Récifs',    emoji:'🔮', cost:3, atk:2, hp:3, rarity:'Rare',       cardType:'Tribu des Récifs',
+   keywords:[],
+   battlecry:{desc:'+1/+1 à tous les Tribaux alliés', effect:'tribalAllBuff', needsTarget:false},
+   isSpell:false},
+  {name:'Esprit Protecteur',    emoji:'✨', cost:4, atk:3, hp:3, rarity:'Rare',       cardType:'Tribu des Récifs',
+   keywords:['Vol de vie'], battlecry:null, isSpell:false},
+  {name:'Totem de Guerre',      emoji:'🪘', cost:5, atk:2, hp:5, rarity:'Rare',       cardType:'Tribu des Récifs',
+   keywords:['Provocation'],
+   battlecry:{desc:'+1 ATK à toutes vos unités', effect:'allAllyAtkBuff', needsTarget:false},
+   isSpell:false},
+
+  // — Épique
+  {name:'Matriarche des Récifs',emoji:'👑', cost:6, atk:4, hp:5, rarity:'Épique',     cardType:'Tribu des Récifs',
+   keywords:[],
+   battlecry:{desc:'Invoque 2 Guerriers Tribaux 1/1', effect:'summon2Warriors', needsTarget:false},
+   isSpell:false},
+
+  // — Légendaire
+  {name:'Grand Chef Korag',     emoji:'🦁', cost:7, atk:6, hp:7, rarity:'Légendaire', cardType:'Tribu des Récifs',
+   keywords:['Provocation','Bouclier divin'],
+   battlecry:{desc:'+2/+2 à tous les Tribaux alliés', effect:'tribalChiefBuff', needsTarget:false},
+   isSpell:false},
+
+  // ═══════════════════════════════════════════════════════════════
+  // NOUVELLE FAMILLE : SPECTRES DES NAUFRAGES 💀
+  // Synergie : +1 ATK par Spectre allié (max 3). Beaucoup ont Rebond.
+  // ═══════════════════════════════════════════════════════════════
+  {name:'Larve Spectrale',      emoji:'💀', cost:1, atk:1, hp:1, rarity:'Commune',    cardType:'Spectre',
+   keywords:['Rebond'], battlecry:null, isSpell:false},
+  {name:'Matelot Fantôme',      emoji:'⚓', cost:2, atk:1, hp:2, rarity:'Commune',    cardType:'Spectre',
+   keywords:['Rebond'], battlecry:null, isSpell:false},
+  {name:'Officier Damné',       emoji:'🎩', cost:3, atk:2, hp:2, rarity:'Commune',    cardType:'Spectre',
+   keywords:['Rebond'], battlecry:null, isSpell:false},
+  {name:'Canonnier Maudit',     emoji:'💣', cost:4, atk:3, hp:3, rarity:'Commune',    cardType:'Spectre',
+   keywords:['Rebond'], battlecry:null, isSpell:false},
+  {name:'Amiral Fantôme',       emoji:'👻', cost:5, atk:3, hp:4, rarity:'Commune',    cardType:'Spectre',
+   keywords:['Rebond','Provocation'], battlecry:null, isSpell:false},
+
+  {name:'Capitaine Maudit',     emoji:'🏴‍☠️', cost:3, atk:3, hp:2, rarity:'Rare',      cardType:'Spectre',
+   keywords:['Rebond'],
+   battlecry:{desc:'1 dégât à toutes les unités ennemies', effect:'spectreAoe1', needsTarget:false},
+   isSpell:false},
+  {name:'Galion Fantôme',       emoji:'🚢', cost:5, atk:4, hp:4, rarity:'Rare',       cardType:'Spectre',
+   keywords:['Rebond','Bouclier divin'], battlecry:null, isSpell:false},
+  {name:'Spectre Vengeur',      emoji:'⚔️', cost:6, atk:4, hp:5, rarity:'Rare',       cardType:'Spectre',
+   keywords:['Rebond','Poison'], battlecry:null, isSpell:false},
+
+  {name:'Vaisseau Maudit',      emoji:'🛸', cost:7, atk:5, hp:6, rarity:'Épique',     cardType:'Spectre',
+   keywords:['Rebond'],
+   battlecry:{desc:'Invoque 2 Larves Spectrales 1/1 Rebond', effect:'summon2Larvae', needsTarget:false},
+   isSpell:false},
+
+  {name:'Le Hollandais Noir',   emoji:'🌑', cost:8, atk:7, hp:8, rarity:'Légendaire', cardType:'Spectre',
+   keywords:['Rebond','Provocation'],
+   battlecry:{desc:'+2/+2 à tous les Spectres alliés', effect:'spectreBuff', needsTarget:false},
+   isSpell:false},
+
+  // ═══════════════════════════════════════════════════════════════
+  // NOUVELLE FAMILLE : TRITONS GUERRIERS 🔱
+  // Synergie : +1 HP par Triton allié (max 3)
+  // ═══════════════════════════════════════════════════════════════
+  {name:'Recrue Triton',        emoji:'🔱', cost:1, atk:2, hp:1, rarity:'Commune',    cardType:'Triton',
+   keywords:['Charge'], battlecry:null, isSpell:false},
+  {name:'Garde Triton',         emoji:'🛡️', cost:2, atk:1, hp:3, rarity:'Commune',    cardType:'Triton',
+   keywords:['Provocation'], battlecry:null, isSpell:false},
+  {name:'Fantassin Triton',     emoji:'⚔️', cost:3, atk:2, hp:3, rarity:'Commune',    cardType:'Triton',
+   keywords:[], battlecry:null, isSpell:false},
+  {name:'Chevalier Triton',     emoji:'🐟', cost:4, atk:3, hp:3, rarity:'Commune',    cardType:'Triton',
+   keywords:['Bouclier divin'], battlecry:null, isSpell:false},
+  {name:'Commandant Triton',    emoji:'🌊', cost:5, atk:4, hp:4, rarity:'Commune',    cardType:'Triton',
+   keywords:[], battlecry:null, isSpell:false},
+
+  {name:'Sentinelle Triton',    emoji:'👁️', cost:3, atk:2, hp:4, rarity:'Rare',       cardType:'Triton',
+   keywords:['Provocation'],
+   battlecry:{desc:'+1 PV à tous les Tritons alliés', effect:'tritonHpBuff', needsTarget:false},
+   isSpell:false},
+  {name:'Lancier Triton',       emoji:'🗡️', cost:4, atk:4, hp:2, rarity:'Rare',       cardType:'Triton',
+   keywords:['Charge','Double attaque'], battlecry:null, isSpell:false},
+  {name:'Paladin Triton',       emoji:'✝️', cost:5, atk:3, hp:5, rarity:'Rare',       cardType:'Triton',
+   keywords:['Provocation','Vol de vie'], battlecry:null, isSpell:false},
+
+  {name:'Général Triton',       emoji:'👑', cost:6, atk:4, hp:6, rarity:'Épique',     cardType:'Triton',
+   keywords:[],
+   battlecry:{desc:'Donne Bouclier divin à toutes vos unités', effect:'tritonShieldAll', needsTarget:false},
+   isSpell:false},
+
+  {name:'Roi Poséidon',         emoji:'🔱', cost:8, atk:8, hp:8, rarity:'Légendaire', cardType:'Triton',
+   keywords:['Provocation','Bouclier divin'],
+   battlecry:{desc:'Invoque 2 Gardes Triton 1/3 Provocation', effect:'summon2Guards', needsTarget:false},
+   isSpell:false},
+
+  // ═══════════════════════════════════════════════════════════════
+  // CARTES POUVOIR HÉROS (isPower:true, rarity Légendaire)
+  // 3 pouvoirs de départ + 5 disponibles en packs
+  // ═══════════════════════════════════════════════════════════════
+  {name:'Veille Tribale',         emoji:'🪬', cost:1, atk:0, hp:0, rarity:'Légendaire', cardType:'Pouvoir', isPower:true, isSpell:false,
+   keywords:[], battlecry:null,
+   powerDesc:'+1 ATK à une unité alliée aléatoire', powerEffect:'hp_buffOneRandom', isStarter:true},
+  {name:'Chant du Clan',          emoji:'🎵', cost:3, atk:0, hp:0, rarity:'Légendaire', cardType:'Pouvoir', isPower:true, isSpell:false,
+   keywords:[], battlecry:null,
+   powerDesc:'Pioche une carte', powerEffect:'hp_drawCard', isStarter:true},
+  {name:'Offrande aux Totems',    emoji:'🙏', cost:3, atk:0, hp:0, rarity:'Légendaire', cardType:'Pouvoir', isPower:true, isSpell:false,
+   keywords:[], battlecry:null,
+   powerDesc:'Récupère 2 PV', powerEffect:'hp_heal2', isStarter:true},
+
+  {name:'Frappe Tribale',         emoji:'💥', cost:2, atk:0, hp:0, rarity:'Légendaire', cardType:'Pouvoir', isPower:true, isSpell:false,
+   keywords:[], battlecry:null,
+   powerDesc:'2 dégâts à une unité ennemie aléatoire', powerEffect:'hp_deal2Random'},
+  {name:'Appel du Totem',         emoji:'🗿', cost:2, atk:0, hp:0, rarity:'Légendaire', cardType:'Pouvoir', isPower:true, isSpell:false,
+   keywords:[], battlecry:null,
+   powerDesc:'Invoque un Totem 0/3 Provocation', powerEffect:'hp_summonTotem'},
+  {name:'Bénédiction Ancestrale', emoji:'💚', cost:2, atk:0, hp:0, rarity:'Légendaire', cardType:'Pouvoir', isPower:true, isSpell:false,
+   keywords:[], battlecry:null,
+   powerDesc:'Soigne votre héros de 4 PV', powerEffect:'hp_heal4'},
+  {name:'Furie de Guerre',        emoji:'⚡', cost:3, atk:0, hp:0, rarity:'Légendaire', cardType:'Pouvoir', isPower:true, isSpell:false,
+   keywords:[], battlecry:null,
+   powerDesc:'+1/+1 à toutes vos unités', powerEffect:'hp_buffAllAllies'},
+  {name:'Vision Chamanique',      emoji:'🔮', cost:4, atk:0, hp:0, rarity:'Légendaire', cardType:'Pouvoir', isPower:true, isSpell:false,
+   keywords:[], battlecry:null,
+   powerDesc:'Pioche 2 cartes', powerEffect:'hp_draw2Cards'},
+
   // ═══ SORTS ═══
   {name:'Eaux Guérisseuses', emoji:'💧', cost:2, atk:0, hp:0, rarity:'Commune', cardType:'Sort', isSpell:true,
    keywords:[], battlecry:null,
