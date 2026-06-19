@@ -506,3 +506,44 @@ hr{border:none;border-top:1px solid var(--border);margin:8px 0}
 .camp-secret-boss.unlocked{border-color:#c9a84c;background:rgba(40,20,60,.5)}
 .camp-secret-boss.locked{opacity:.65;filter:grayscale(.4)}
 .camp-buttons{display:flex;flex-direction:column;gap:12px;width:100%;max-width:400px;margin-top:18px}
+
+/* ── Sélection de héros ── */
+#hero-select-screen{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;padding:30px 20px;gap:24px;background:var(--bg);
+}
+.hero-select-title{
+  font-family:'Pirata One',cursive;font-size:clamp(28px,5vw,42px);
+  color:var(--gold);text-shadow:0 2px 12px rgba(201,168,76,.4);
+}
+.hero-select-cards{
+  display:flex;gap:24px;flex-wrap:wrap;justify-content:center;
+}
+.hero-select-card{
+  background:var(--surface);border:2px solid var(--border);border-radius:16px;
+  padding:24px 20px;width:220px;display:flex;flex-direction:column;
+  align-items:center;gap:10px;cursor:pointer;
+  transition:border-color .2s,transform .15s,box-shadow .2s;
+}
+.hero-select-card:hover{
+  border-color:var(--gold);transform:translateY(-4px);
+  box-shadow:0 8px 30px rgba(201,168,76,.25);
+}
+.hero-select-avatar{font-size:56px;line-height:1}
+.hero-select-name{font-family:'Cinzel',serif;font-size:16px;font-weight:700;color:var(--gold);text-align:center}
+.hero-select-title-sub{font-size:11px;color:#7a9bb8;font-style:italic;text-align:center}
+.hero-select-family{font-size:12px;color:#9ab;text-align:center}
+.hero-select-family b{color:#cde}
+.hero-select-desc{font-size:12px;color:#8aa;text-align:center;line-height:1.5}
+.hero-select-power{
+  font-size:11px;color:#ffe;background:rgba(255,255,255,.07);
+  border:1px solid var(--border);border-radius:8px;
+  padding:6px 10px;text-align:center;line-height:1.4;
+}
+.hero-select-btn{
+  margin-top:6px;background:var(--gold);color:#1a0e00;
+  border:none;border-radius:8px;padding:8px 22px;
+  font-family:'Cinzel',serif;font-weight:700;font-size:13px;
+  cursor:pointer;transition:background .15s,transform .1s;
+}
+.hero-select-btn:hover{background:#e8c060;transform:scale(1.04)}

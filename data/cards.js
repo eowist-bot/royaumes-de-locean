@@ -98,6 +98,22 @@ const CARD_POOL = [
   {name:'Golem Corail',         emoji:'🪨', cost:5, atk:4, hp:6, rarity:'Rare',       cardType:'Élémental',
    keywords:['Provocation'], battlecry:null, isSpell:false},
 
+  // ═══ PIRATES — nouvelles cartes courbe complète ═══
+  {name:'Gabier Intrépide',       emoji:'🧑‍✈️', cost:1, atk:1, hp:2, rarity:'Commune',    cardType:'Pirate',
+   keywords:[], battlecry:null, isSpell:false},
+  {name:'Boucanier des Tempêtes', emoji:'⛵',  cost:2, atk:3, hp:1, rarity:'Commune',    cardType:'Pirate',
+   keywords:['Charge'], battlecry:null, isSpell:false},
+  {name:'Canonnier des Mers',     emoji:'💣',  cost:3, atk:3, hp:2, rarity:'Rare',       cardType:'Pirate',
+   keywords:[],
+   battlecry:{desc:'Inflige 2 dégâts à une unité ennemie', effect:'cannoneerShot', needsTarget:true, targetFilter:'enemy'},
+   isSpell:false},
+  {name:'Capitaine des Damnés',   emoji:'💀',  cost:5, atk:4, hp:5, rarity:'Épique',     cardType:'Pirate',
+   keywords:[],
+   battlecry:{desc:'+1/+1 à tous les Pirates alliés', effect:'allPirateBuff', needsTarget:false},
+   isSpell:false},
+  {name:'Le Hollandais Volant',   emoji:'🚀',  cost:7, atk:6, hp:7, rarity:'Légendaire', cardType:'Pirate',
+   keywords:['Provocation','Bouclier divin'], battlecry:null, isSpell:false},
+
   // ═══ PIRATES — mécaniques ═══
   {name:'Corsaire Enragé',    emoji:'😤', cost:4, atk:3, hp:3, rarity:'Rare',       cardType:'Pirate',
    keywords:['Double attaque'], battlecry:null, isSpell:false},
@@ -111,6 +127,28 @@ const CARD_POOL = [
    keywords:['Rebond','Poison'], battlecry:null, isSpell:false},
   {name:'Vampire des Abysses',emoji:'🦇', cost:4, atk:3, hp:4, rarity:'Épique',     cardType:'Bête marine',
    keywords:['Vol de vie'], battlecry:null, isSpell:false},
+
+  // ═══ ÉLÉMENTAUX — nouvelles cartes courbe complète ═══
+  {name:'Ondine Gardienne',    emoji:'🌊', cost:1, atk:1, hp:3, rarity:'Commune',    cardType:'Élémental',
+   keywords:['Provocation'], battlecry:null, isSpell:false},
+  {name:'Sylphe des Brumes',   emoji:'🌬️', cost:2, atk:2, hp:2, rarity:'Commune',    cardType:'Élémental',
+   keywords:[],
+   battlecry:{desc:'+1 ATK à un Élémental allié', effect:'sylphBuff', needsTarget:true, targetFilter:'ally-Élémental'},
+   isSpell:false},
+  {name:'Esprit Corail',       emoji:'🪸', cost:3, atk:2, hp:4, rarity:'Rare',       cardType:'Élémental',
+   keywords:['Vol de vie'], battlecry:null, isSpell:false},
+  {name:'Djinn des Abysses',   emoji:'🌀', cost:4, atk:3, hp:4, rarity:'Rare',       cardType:'Élémental',
+   keywords:[],
+   battlecry:{desc:'2 dégâts à toutes les unités ennemies', effect:'djinnAoe', needsTarget:false},
+   isSpell:false},
+  {name:'Titan des Mers',      emoji:'🗿', cost:5, atk:6, hp:5, rarity:'Épique',     cardType:'Élémental',
+   keywords:['Charge'], battlecry:null, isSpell:false},
+  {name:'Phénix Aquatique',    emoji:'🔥', cost:6, atk:4, hp:4, rarity:'Épique',     cardType:'Élémental',
+   keywords:['Rebond','Bouclier divin'], battlecry:null, isSpell:false},
+  {name:'Léviathan',           emoji:'🐲', cost:8, atk:7, hp:9, rarity:'Légendaire', cardType:'Élémental',
+   keywords:['Provocation'],
+   battlecry:{desc:'3 dégâts à toutes les unités ennemies', effect:'leviathanAoe', needsTarget:false},
+   isSpell:false},
 
   // ═══ ÉLÉMENTAUX — mécaniques ═══
   {name:'Spectre Marin',      emoji:'👻', cost:3, atk:2, hp:3, rarity:'Rare',       cardType:'Élémental',

@@ -140,18 +140,23 @@ function synergyBonus(unit, board){
 function effAtk(unit, board){ return unit.atk + synergyBonus(unit,board).atk; }
 
 // ── Pouvoirs héros ──
-const HERO_POWERS = {
-  player:{name:"Soins d'urgence", desc:'Récupère 2 PV', cost:2, emoji:'💊'},
-  enemy: {name:'Recrutement',     desc:'Invoque un Matelot 1/1', cost:2, emoji:'📣'},
-};
 function useHeroPower(){
+  const hp = selectedHero.heroPower;
   if(player.heroPowerUsed){ log('⚠️ Pouvoir héros déjà utilisé ce tour.','log-event'); return; }
-  if(player.mana < HERO_POWERS.player.cost){ log('⚠️ Pas assez de mana.','log-event'); return; }
-  player.mana -= HERO_POWERS.player.cost;
+  if(player.mana < hp.cost){ log('⚠️ Pas assez de mana.','log-event'); return; }
+  player.mana -= hp.cost;
   player.heroPowerUsed = true;
-  player.hp = Math.min(MAX_HP, player.hp+2);
-  sndSpell();
-  log('💊 Pouvoir héros : Capitaine Aurore récupère 2 PV !','log-player');
+  if(hp.effect==='heal2hp'){
+    player.hp = Math.min(MAX_HP, player.hp+2); sndSpell();
+    log(`${hp.emoji} Pouvoir héros : ${selectedHero.name} récupère 2 PV !`,'log-player');
+  } else if(hp.effect==='drawCard'){
+    drawCard(player); sndSpell();
+    log(`${hp.emoji} Pouvoir héros : ${selectedHero.name} pioche une carte !`,'log-player');
+  } else if(hp.effect==='deal1hp'){
+    enemy.hp-=1; sndHeroHit(); flashHero('enemyZone',1);
+    log(`${hp.emoji} Pouvoir héros : ${selectedHero.name} inflige 1 dégât à l'ennemi !`,'log-player');
+    checkEnd(); return;
+  }
   render();
 }
 function enemyUseHeroPower(){
@@ -215,8 +220,36 @@ const BATTLECRY_EFFECTS = {
   drawCard:(owner)=>{ drawCard(owner); log('🃏 Battlecry : vous piochez une carte !','log-event'); },
   stun:(owner, ownerBoard, target)=>{
     if(!target) return;
-    target.justPlayed=true; target.attacked=true; // saute son prochain tour
+    target.justPlayed=true; target.attacked=true;
     log(`💤 Battlecry : ${target.name} est étourdi(e) et passe son tour !`,'log-event');
+  },
+  cannoneerShot:(owner, ownerBoard, target)=>{
+    if(!target) return;
+    target.currentHp-=2; sndHit();
+    log(`💣 Battlecry : Canonnier inflige 2 dégâts à ${target.name} !`,'log-event');
+    cleanup();
+  },
+  allPirateBuff:(owner, ownerBoard)=>{
+    const pirates = ownerBoard.filter(u=>u.cardType==='Pirate');
+    pirates.forEach(u=>{ u.atk+=1; u.hp+=1; u.currentHp+=1; });
+    log(`💀 Battlecry : ${pirates.length} Pirate(s) reçoivent +1/+1 !`,'log-event');
+  },
+  sylphBuff:(owner, ownerBoard, target)=>{
+    if(!target) return;
+    target.atk+=1;
+    log(`🌬️ Battlecry : ${target.name} reçoit +1 ATK !`,'log-event');
+  },
+  djinnAoe:(owner, ownerBoard)=>{
+    const opp = (owner===player) ? enemy : player;
+    opp.board.forEach(u=>{ u.currentHp-=2; }); sndHit();
+    log(`🌀 Battlecry : Djinn inflige 2 dégâts à toutes les unités ennemies !`,'log-event');
+    cleanup();
+  },
+  leviathanAoe:(owner, ownerBoard)=>{
+    const opp = (owner===player) ? enemy : player;
+    opp.board.forEach(u=>{ u.currentHp-=3; }); sndHit();
+    log(`🐲 Battlecry : Léviathan inflige 3 dégâts à toutes les unités ennemies !`,'log-event');
+    cleanup();
   },
 };
 
@@ -390,7 +423,8 @@ function enemyPickTarget(targetFilter){
   if(targetFilter==='enemy')      return ep.sort((a,b)=>a.currentHp-b.currentHp)[0]||null;
   if(targetFilter==='enemy-weak') return ep.filter(c=>c.currentHp<=2)[0]||null;
   if(targetFilter==='ally')       return ea.sort((a,b)=>b.atk-a.atk)[0]||null;
-  if(targetFilter==='ally-Pirate')return ea.filter(c=>c.cardType==='Pirate').sort((a,b)=>b.atk-a.atk)[0]||null;
+  if(targetFilter==='ally-Pirate')    return ea.filter(c=>c.cardType==='Pirate').sort((a,b)=>b.atk-a.atk)[0]||null;
+  if(targetFilter==='ally-Élémental') return ea.filter(c=>c.cardType==='Élémental').sort((a,b)=>b.atk-a.atk)[0]||null;
   return null;
 }
 
@@ -637,6 +671,7 @@ function getValidTargets(action){
   const weakEnemies = enemy.board.filter(c=>c.currentHp<=2);
   if(filter==='ally')            return {allies, enemies:[], weakEnemies:[]};
   if(filter==='ally-Pirate')     return {allies:allies.filter(c=>c.cardType==='Pirate'&&c!==action.unit), enemies:[], weakEnemies:[]};
+  if(filter==='ally-Élémental')  return {allies:allies.filter(c=>c.cardType==='Élémental'&&c!==action.unit), enemies:[], weakEnemies:[]};
   if(filter==='enemy')           return {allies:[], enemies, weakEnemies:[]};
   if(filter==='enemy-weak')      return {allies:[], enemies:[], weakEnemies};
   return {allies:[], enemies:[], weakEnemies:[]};
@@ -662,10 +697,12 @@ function render(){
   // Pouvoir héros joueur
   const hpBtn = document.getElementById('heroPowerBtn');
   if(hpBtn){
-    const hp = HERO_POWERS.player;
+    const hp = selectedHero.heroPower;
     const canUse = !player.heroPowerUsed && player.mana >= hp.cost;
     hpBtn.disabled = !canUse;
     hpBtn.className = 'hero-power-btn'+(player.heroPowerUsed?' used':'')+(canUse?' available':'');
+    hpBtn.innerHTML = `${hp.emoji}<span>${hp.cost}💎</span>`;
+    hpBtn.title = `${hp.name} — ${hp.desc} (coût : ${hp.cost}💎)`;
   }
 
   // Annuler
@@ -768,23 +805,73 @@ function startBGM(){ bgm.play().catch(()=>{}); document.removeEventListener('poi
 document.addEventListener('pointerdown',startBGM);
 document.addEventListener('keydown',startBGM);
 
+// ── Héros jouables ──
+const HEROES = [
+  {
+    id:'jack', name:'Jack le Corsaire', avatar:'🏴‍☠️', family:'Pirate',
+    title:'Maître des mers du Sud',
+    desc:'Commande une flotte de pirates redoutables. Chaque victoire alimente sa légende.',
+    heroPower:{name:"Soins d'urgence", desc:'Récupère 2 PV', cost:2, emoji:'💊', effect:'heal2hp'},
+  },
+  {
+    id:'naia', name:'Naïa la Sirène', avatar:'🧜', family:'Bête marine',
+    title:'Gardienne des profondeurs',
+    desc:'Contrôle les créatures des abysses avec une grâce mortelle.',
+    heroPower:{name:'Appel des profondeurs', desc:'Pioche une carte', cost:2, emoji:'🎴', effect:'drawCard'},
+  },
+  {
+    id:'zephyr', name:'Zephyr le Tempestaire', avatar:'🌩️', family:'Élémental',
+    title:'Maître des tempêtes',
+    desc:'Déchaîne des élémentaux dévastateurs et frappe l\'ennemi avec la foudre.',
+    heroPower:{name:'Foudre', desc:'1 dégât au héros ennemi', cost:1, emoji:'⚡', effect:'deal1hp'},
+  },
+];
+let selectedHero = HEROES[0];
+
 // ── Sélection de mode ──
 let gameMode = 'campaign';
 
 function showModeScreen(){
   document.getElementById('mode-screen').style.display = 'flex';
   document.getElementById('collection-screen').style.display = 'none';
+  document.getElementById('hero-select-screen').style.display = 'none';
   document.getElementById('mode-campaign').onclick = ()=>{
     gameMode = 'campaign';
     document.getElementById('mode-screen').style.display = 'none';
-    startDraft();
+    showHeroSelect();
   };
   document.getElementById('mode-quick').onclick = ()=>{
     gameMode = 'quick';
     document.getElementById('mode-screen').style.display = 'none';
-    startDraft();
+    showHeroSelect();
   };
   document.getElementById('mode-collection').onclick = showCollection;
+}
+
+function showHeroSelect(){
+  const el = document.getElementById('hero-select-screen');
+  el.innerHTML = `
+    <div class="hero-select-title">⚓ Choisissez votre Capitaine</div>
+    <div class="hero-select-cards">
+      ${HEROES.map(h=>`
+        <div class="hero-select-card" data-hero="${h.id}">
+          <div class="hero-select-avatar">${h.avatar}</div>
+          <div class="hero-select-name">${h.name}</div>
+          <div class="hero-select-title-sub">${h.title}</div>
+          <div class="hero-select-family">Famille : <b>${h.family}</b></div>
+          <div class="hero-select-desc">${h.desc}</div>
+          <div class="hero-select-power">${h.heroPower.emoji} ${h.heroPower.name} — ${h.heroPower.desc} (${h.heroPower.cost}💎)</div>
+          <button class="hero-select-btn">Choisir</button>
+        </div>`).join('')}
+    </div>`;
+  el.style.display = 'flex';
+  el.querySelectorAll('.hero-select-card').forEach(card=>{
+    card.querySelector('.hero-select-btn').onclick = ()=>{
+      selectedHero = HEROES.find(h=>h.id===card.dataset.hero);
+      el.style.display = 'none';
+      startDraft();
+    };
+  });
 }
 
 function showCollection(){
@@ -1030,8 +1117,9 @@ function handleCampaignVictory(){
 
 function getRewardOffers(){
   const ownedLegendaries = new Set(draftDeck.filter(c=>c.rarity==='Légendaire').map(c=>c.name));
-  const pool = CARD_POOL.filter(c=>!(c.rarity==='Légendaire' && ownedLegendaries.has(c.name)));
-  const src = pool.length >= 3 ? pool : CARD_POOL;
+  const heroPool = CARD_POOL.filter(c=>c.cardType===selectedHero.family||c.isSpell);
+  const pool = heroPool.filter(c=>!(c.rarity==='Légendaire' && ownedLegendaries.has(c.name)));
+  const src = pool.length >= 3 ? pool : heroPool;
   const chosen = [];
   while(chosen.length < 3){
     const c = src[Math.floor(Math.random()*src.length)];
@@ -1154,18 +1242,17 @@ function getDraftCostRange(pick){
 
 function getDraftOffers(){
   const [minCost, maxCost] = getDraftCostRange(draftPick);
-  // Exclure les Légendaires déjà en main (unicité)
   const ownedLegendaries = new Set(draftDeck.filter(c=>c.rarity==='Légendaire').map(c=>c.name));
-  let pool = CARD_POOL.filter(c=>
+  // Pool filtré : famille du héros + sorts, dans la tranche de coût
+  const heroPool = CARD_POOL.filter(c=>c.cardType===selectedHero.family||c.isSpell);
+  let pool = heroPool.filter(c=>
     c.cost>=minCost && c.cost<=maxCost &&
     !(c.rarity==='Légendaire' && ownedLegendaries.has(c.name))
   );
-  // Pool trop petit → élargir au-delà de la plage de coût
+  // Pool trop petit → élargir sur toute la famille+sorts
   if(pool.length < 6){
-    const wider = CARD_POOL.filter(c=>
-      !(c.rarity==='Légendaire' && ownedLegendaries.has(c.name))
-    );
-    pool = wider.length >= 6 ? wider : CARD_POOL;
+    const wider = heroPool.filter(c=>!(c.rarity==='Légendaire' && ownedLegendaries.has(c.name)));
+    pool = wider.length >= 6 ? wider : heroPool;
   }
   const chosen = [];
   while(chosen.length < 3){
@@ -1282,6 +1369,10 @@ function startDraft(){
 }
 
 function startGame(){
+  // Appliquer le héros choisi
+  document.getElementById('playerAvatar').textContent = selectedHero.avatar;
+  document.getElementById('playerName').textContent   = selectedHero.name;
+
   const deck = draftDeck.map(c=>({...c, keywords:[...c.keywords]}));
   for(let i=deck.length-1;i>0;i--){
     const j=Math.floor(Math.random()*(i+1));
