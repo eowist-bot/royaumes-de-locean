@@ -515,7 +515,7 @@ function checkEnd(){
           <div class="camp-complete-emoji">⚓</div>
           <div class="camp-subtitle">L'Amiral Maelström est coulé !</div>
           ${careerBlock}
-          <button class="btn-secondary" onclick="location.reload()" style="margin-top:12px">🔄 Menu principal</button>`;
+          <button class="btn-secondary" onclick="backToHub()" style="margin-top:12px">🔄 Menu principal</button>`;
         el.style.display='flex';
       });
     } else {
@@ -1121,6 +1121,14 @@ function showCareerCreate(){
   };
 }
 
+function backToHub(){
+  ['game-layout','reward-screen','campaign-screen','draft-screen',
+   'hero-select-screen','career-screen','taverne-screen','deckbuilder-screen',
+   'pack-reveal-screen','collection-screen','combat-result','deck-preview-modal'
+  ].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display='none'; });
+  showModeScreen();
+}
+
 // ══════════════════════════════════════════════════════════════
 // TAVERNE
 // ══════════════════════════════════════════════════════════════
@@ -1158,11 +1166,25 @@ function rollRarity(pool, guaranteeRare=false){
   return src[Math.floor(Math.random()*src.length)];
 }
 
+// Pouvoirs non encore possédés (évite les doublons dans les packs)
+function availablePowers(){
+  return CARD_POOL.filter(c=>c.isPower && !career.ownedPowerNames.includes(c.name));
+}
+
+// ~12% de chance par pack d'obtenir un pouvoir inédit (≈1 toutes les 8 ouvertures)
+const POWER_DROP_RATE = 0.12;
+
 function openMixedPack(){
   const pool = CARD_POOL.filter(c=>!c.isPower);
+  const powers = availablePowers();
   const cards = [];
   for(let i=0;i<4;i++) cards.push(rollRarity(pool));
-  cards.push(rollRarity(pool, true));
+  // 5e carte : pouvoir inédit avec 12% de chance, sinon Rare+ normale
+  if(powers.length > 0 && Math.random() < POWER_DROP_RATE){
+    cards.push(powers[Math.floor(Math.random()*powers.length)]);
+  } else {
+    cards.push(rollRarity(pool, true));
+  }
   return cards;
 }
 
@@ -1170,14 +1192,29 @@ function openThematicPack(family){
   const familyPool = CARD_POOL.filter(c=>c.cardType===family && !c.isPower && !c.isSpell);
   const sortPool   = CARD_POOL.filter(c=>c.isSpell && !c.isPower);
   const fallback   = CARD_POOL.filter(c=>!c.isPower);
+  const famPowers  = availablePowers().filter(c=>c.cardType===family);
+  const allPowers  = availablePowers();
   const cards = [];
   for(let i=0;i<4;i++) cards.push(rollRarity(familyPool.length?familyPool:fallback));
-  cards.push(rollRarity(sortPool.length?sortPool:fallback));
+  // 5e carte : pouvoir (famille en priorité) avec 12% de chance, sinon sort
+  const powerPool = famPowers.length ? famPowers : allPowers;
+  if(powerPool.length > 0 && Math.random() < POWER_DROP_RATE){
+    cards.push(powerPool[Math.floor(Math.random()*powerPool.length)]);
+  } else {
+    cards.push(rollRarity(sortPool.length?sortPool:fallback));
+  }
   return cards;
 }
 
 function addPackToCollection(cards){
-  cards.forEach(c=>{ if(c) career.ownedCards.push(c.name); });
+  cards.forEach(c=>{
+    if(!c) return;
+    if(c.isPower){
+      if(!career.ownedPowerNames.includes(c.name)) career.ownedPowerNames.push(c.name);
+    } else {
+      career.ownedCards.push(c.name);
+    }
+  });
   saveCareer();
 }
 
@@ -1208,23 +1245,55 @@ function showTaverne(){
   el.style.display = 'flex';
 }
 
+// Crée un wrapper de carte pour Taverne/Deck Builder (scale 75%)
+function makeCardWrap(card, opts={}){
+  // opts: { selected, cantSelect, badgeText, badgeDisabled, onBadge, onWrap, count }
+  const wrap = document.createElement('div');
+  wrap.className = 'card-wrap'
+    + (opts.selected ? ' selected-card' : '')
+    + (opts.cantSelect ? ' cant-select' : '');
+  const cardEl = makeDraftCardEl(card);
+  wrap.appendChild(cardEl);
+  if(opts.count > 1){
+    const cb = document.createElement('div');
+    cb.className = 'card-select-badge';
+    cb.textContent = '×'+opts.count;
+    wrap.appendChild(cb);
+  }
+  if(opts.badgeText){
+    const badge = document.createElement('div');
+    badge.className = 'card-sell-badge' + (opts.badgeDisabled ? ' disabled' : '');
+    badge.textContent = opts.badgeText;
+    if(opts.onBadge && !opts.badgeDisabled) badge.onclick = e=>{ e.stopPropagation(); opts.onBadge(); };
+    wrap.appendChild(badge);
+  }
+  if(opts.onWrap) wrap.onclick = opts.onWrap;
+  return wrap;
+}
+
+// Construit une section par bande pour la Taverne ou le Deck Builder
+function makeBandSection(titleText, countText, shelf){
+  const sec = document.createElement('div');
+  sec.className = 'band-section';
+  const hdr = document.createElement('div');
+  hdr.className = 'band-section-title';
+  hdr.innerHTML = `${titleText} <span class="band-count-badge">${countText}</span>`;
+  sec.appendChild(hdr);
+  sec.appendChild(shelf);
+  return sec;
+}
+
 function renderTaverne(el){
   const cr = career.credits;
   const canMixed    = cr >= 10;
   const canThematic = cr >= 15;
 
-  const countMap = {};
-  career.ownedCards.forEach(n=>{ countMap[n]=(countMap[n]||0)+1; });
-  const sellable = Object.entries(countMap)
-    .map(([n,cnt])=>({ card:CARD_POOL.find(c=>c.name===n), name:n, count:cnt }))
-    .filter(x=>x.card && !x.card.isPower)
-    .sort((a,b)=>creditValue(b.card)-creditValue(a.card));
-
+  // En-tête + packs (innerHTML pour la partie statique)
   el.innerHTML = `
     <div class="taverne-header">
       <div class="taverne-title">🏪 Taverne</div>
-      <div class="taverne-credits">💰 ${cr} crédit${cr!==1?'s':''}</div>
-      <button class="btn-secondary" id="taverne-back-btn">← Retour</button>
+      <div class="taverne-credits" id="tav-cr-display">💰 ${cr} crédit${cr!==1?'s':''}</div>
+      <button class="btn-secondary" id="taverne-back-btn">← Hub</button>
     </div>
 
     <div class="taverne-section">
@@ -1239,7 +1308,7 @@ function renderTaverne(el){
         <div class="pack-card ${canThematic?'':'pack-disabled'}" id="buy-thematic-card">
           <div class="pack-icon">🏷️</div>
           <div class="pack-name">Pack Thématique</div>
-          <div class="pack-desc">4 cartes d'une famille + 1 Sort. Choisissez votre famille ci-dessous, puis cliquez.</div>
+          <div class="pack-desc">4 cartes d'une famille + 1 Sort. Choisissez votre famille, puis cliquez.</div>
           <div class="family-picker" id="family-picker">
             ${FAMILIES_PLAYABLE.map(f=>`<div class="family-chip" data-family="${f}">${f}</div>`).join('')}
           </div>
@@ -1248,38 +1317,75 @@ function renderTaverne(el){
       </div>
     </div>
 
-    <div class="taverne-section">
-      <div class="taverne-section-title">💸 Vendre des cartes</div>
-      <div class="sell-grid" id="sell-grid">
-        ${sellable.length===0?'<div style="color:#5a7a8a;font-size:13px">Aucune carte à vendre.</div>':
-          sellable.map(({card,name,count})=>{
-            const sv = sellValue(card);
-            const ok = canSell(name);
-            return `<div class="sell-card">
-              ${count>1?`<div class="sell-card-count">×${count}</div>`:''}
-              <div class="sell-card-emoji">${card.emoji||'🃏'}</div>
-              <div class="sell-card-name">${name}</div>
-              <div class="sell-card-type">${card.isSpell?'Sort':card.cardType} · ${card.rarity}</div>
-              <div class="sell-card-price">+${sv} cr</div>
-              <button class="sell-btn" data-sell="${name}" ${ok?'':'disabled'}>Vendre</button>
-            </div>`;
-          }).join('')}
-      </div>
-      <div style="font-size:11px;color:#4a6a7a;margin-top:10px">
-        Minimum requis : 6 cartes basses (0-2) + 5 médianes (3-4) + 4 hautes (5+) + 2 sorts + 1 pouvoir.
-      </div>
+    <div id="tav-sell-container" style="width:100%;max-width:820px;display:flex;flex-direction:column;gap:16px"></div>
+    <div style="font-size:11px;color:#4a6a7a;text-align:center">
+      Minimum requis : 6 basses + 5 médianes + 4 hautes + 2 sorts + 1 pouvoir.
     </div>`;
 
-  document.getElementById('taverne-back-btn').onclick = ()=>{
-    el.style.display='none'; showModeScreen();
-  };
+  // Construire les bandes de vente avec vraies cartes
+  function buildSellSections(){
+    const countMap = {};
+    career.ownedCards.forEach(n=>{ countMap[n]=(countMap[n]||0)+1; });
+
+    const container = document.getElementById('tav-sell-container');
+    container.innerHTML = '';
+
+    const BAND_DEFS = [
+      { label:'💸 Vendre — Cartes Basses (0–2)',  filter: c=>!c.isPower && !c.isSpell && c.cost<=2 },
+      { label:'💸 Vendre — Sorts',                filter: c=>!c.isPower && c.isSpell },
+      { label:'💸 Vendre — Cartes Médianes (3–4)',filter: c=>!c.isPower && !c.isSpell && c.cost>=3 && c.cost<=4 },
+      { label:'💸 Vendre — Cartes Hautes (5+)',   filter: c=>!c.isPower && !c.isSpell && c.cost>=5 },
+
+    ];
+
+    BAND_DEFS.forEach(({label, filter})=>{
+      const entries = Object.entries(countMap)
+        .map(([n,cnt])=>({ card:CARD_POOL.find(c=>c.name===n), name:n, count:cnt }))
+        .filter(x=>x.card && filter(x.card))
+        .sort((a,b)=>a.card.cost-b.card.cost || a.card.name.localeCompare(b.card.name));
+      if(!entries.length) return;
+
+      const shelf = document.createElement('div');
+      shelf.className = 'card-shelf';
+      entries.forEach(({card, name, count})=>{
+        const sv = sellValue(card);
+        const ok = canSell(name);
+        const wrap = makeCardWrap(card, {
+          count: count>1?count:0,
+          badgeText: ok ? `Vendre +${sv}cr` : 'Min. requis',
+          badgeDisabled: !ok,
+          onBadge: ()=>{
+            const idx = career.ownedCards.indexOf(name);
+            career.ownedCards.splice(idx,1);
+            const band = cardBand(card);
+            const di = career.activeDeck[band]?.indexOf(name);
+            if(di!==-1 && di!=null) career.activeDeck[band].splice(di,1);
+            career.credits += sv;
+            saveCareer();
+            updateCreditsBadge();
+            document.getElementById('tav-cr-display').textContent =
+              `💰 ${career.credits} crédit${career.credits!==1?'s':''}`;
+            buildSellSections();
+          },
+        });
+        shelf.appendChild(wrap);
+      });
+      container.appendChild(makeBandSection(label, `${entries.length} carte${entries.length>1?'s':''}`, shelf));
+    });
+    if(!container.children.length){
+      container.innerHTML = '<div style="color:#5a7a8a;font-size:13px;text-align:center;padding:12px">Aucune carte à vendre.</div>';
+    }
+  }
+  buildSellSections();
+
+  // Retour hub
+  document.getElementById('taverne-back-btn').onclick = ()=>{ el.style.display='none'; showModeScreen(); };
 
   // Pack mélangé
   if(canMixed){
     document.getElementById('buy-mixed').onclick = ()=>{
       career.credits -= 10; saveCareer();
-      const cards = openMixedPack();
-      addPackToCollection(cards);
+      const cards = openMixedPack(); addPackToCollection(cards);
       el.style.display='none';
       showPackReveal(cards, ()=>{ el.style.display='flex'; renderTaverne(el); });
     };
@@ -1298,32 +1404,13 @@ function renderTaverne(el){
   if(canThematic){
     document.getElementById('buy-thematic-card').onclick = e=>{
       if(e.target.classList.contains('family-chip')) return;
-      if(!selectedFamily){ return; }
+      if(!selectedFamily) return;
       career.credits -= 15; saveCareer();
-      const cards = openThematicPack(selectedFamily);
-      addPackToCollection(cards);
+      const cards = openThematicPack(selectedFamily); addPackToCollection(cards);
       el.style.display='none';
       showPackReveal(cards, ()=>{ el.style.display='flex'; renderTaverne(el); });
     };
   }
-
-  // Vente
-  el.querySelectorAll('.sell-btn:not([disabled])').forEach(btn=>{
-    btn.onclick = ()=>{
-      const name = btn.dataset.sell;
-      const card = CARD_POOL.find(c=>c.name===name);
-      if(!card || !canSell(name)) return;
-      const idx = career.ownedCards.indexOf(name);
-      career.ownedCards.splice(idx,1);
-      const band = cardBand(card);
-      const di = career.activeDeck[band].indexOf(name);
-      if(di!==-1) career.activeDeck[band].splice(di,1);
-      career.credits += sellValue(card);
-      saveCareer();
-      updateCreditsBadge();
-      renderTaverne(el);
-    };
-  });
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1338,7 +1425,6 @@ function showDeckBuilder(){
 }
 
 function renderDeckBuilder(el){
-  // État local : copies des listes actives (modifiées en live)
   const draft = {
     low:  [...career.activeDeck.low],
     mid:  [...career.activeDeck.mid],
@@ -1346,35 +1432,20 @@ function renderDeckBuilder(el){
   };
   let activePower = career.activePowerName;
 
-  // Construire un inventaire {cardName → ownedCount}
   const owned = {};
   career.ownedCards.forEach(n=>{ owned[n]=(owned[n]||0)+1; });
 
-  // Toutes les cartes non-pouvoir par bande, dupliquées selon la quantité possédée
-  function bandList(minCost, maxCost){
+  function bandEntries(minCost, maxCost){
     const result = [];
     Object.entries(owned).forEach(([n, cnt])=>{
       const c = CARD_POOL.find(x=>x.name===n);
-      if(!c || c.isPower) return;
-      if(c.cost<minCost || c.cost>maxCost) return;
+      if(!c || c.isPower || c.cost<minCost || c.cost>maxCost) return;
       for(let i=0;i<cnt;i++) result.push({card:c, copy:i});
     });
     result.sort((a,b)=>a.card.cost-b.card.cost || a.card.name.localeCompare(b.card.name));
     return result;
   }
 
-  const bands = {
-    low:  { label:'Basses (0–2)', min:0, max:2, target:6, key:'low', items: bandList(0,2) },
-    mid:  { label:'Médianes (3–4)', min:3, max:4, target:5, key:'mid', items: bandList(3,4) },
-    high: { label:'Hautes (5+)', min:5, max:99, target:4, key:'high', items: bandList(5,99) },
-  };
-
-  function countSorts(list){
-    return list.reduce((acc, key)=>{
-      const arr = draft[key];
-      return acc + arr.filter(n=>{ const c=CARD_POOL.find(x=>x.name===n); return c&&c.isSpell; }).length;
-    },['low','mid','high'].filter(()=>true));
-  }
   function totalSorts(){
     return ['low','mid','high'].reduce((acc,k)=>
       acc + draft[k].filter(n=>{ const c=CARD_POOL.find(x=>x.name===n); return c&&c.isSpell; }).length, 0);
@@ -1383,142 +1454,128 @@ function renderDeckBuilder(el){
     return draft.low.length===6 && draft.mid.length===5 && draft.high.length===4 && totalSorts()>=2;
   }
 
-  // Génération du HTML
-  function tabBadge(key){
-    const b = bands[key];
-    const cnt = draft[key].length;
-    const cls = cnt===b.target?'full':cnt>b.target?'over':'';
-    return `<span class="db-tab-badge ${cls}">${cnt}/${b.target}</span>`;
-  }
+  const BAND_DEFS = [
+    { key:'low',  label:'Cartes Basses (0–2)',  target:6,  entries: bandEntries(0,2)  },
+    { key:'mid',  label:'Cartes Médianes (3–4)',target:5,  entries: bandEntries(3,4)  },
+    { key:'high', label:'Cartes Hautes (5+)',   target:4,  entries: bandEntries(5,99) },
+  ];
 
+  // Header statique
   el.innerHTML = `
     <div class="db-header">
       <div class="db-title">🗂️ Mon Deck</div>
       <div style="display:flex;gap:10px;align-items:center">
-        <button class="btn-secondary" id="db-back-btn">← Retour</button>
-        <button class="db-save-btn" id="db-save-btn" ${isValid()?'':'disabled'}>💾 Sauvegarder</button>
+        <button class="btn-secondary" id="db-back-btn">← Hub</button>
+        <button class="db-save-btn" id="db-save-btn">💾 Sauvegarder</button>
       </div>
     </div>
+    <div id="db-validity-hint" style="font-size:12px;color:#5a7a8a;text-align:center"></div>`;
 
-    <div class="db-powers">
-      <div class="db-powers-title">⚡ Pouvoir héroïque actif</div>
-      <div class="db-power-grid" id="db-power-grid">
-        ${career.ownedPowerNames.map(pname=>{
-          const p = CARD_POOL.find(c=>c.name===pname);
-          if(!p) return '';
-          return `<div class="db-power-card ${pname===activePower?'active':''}" data-power="${pname}">
-            <div class="career-power-emoji">${p.emoji}</div>
-            <div class="career-power-name">${p.name}</div>
-            <div class="career-power-desc">${p.powerDesc}</div>
-            <div class="career-power-cost">${p.cost}💎</div>
-          </div>`;
-        }).join('')}
-      </div>
-    </div>
-
-    <div class="db-tabs" id="db-tabs">
-      <button class="db-tab active" data-band="low">Basses ${tabBadge('low')}</button>
-      <button class="db-tab" data-band="mid">Médianes ${tabBadge('mid')}</button>
-      <button class="db-tab" data-band="high">Hautes ${tabBadge('high')}</button>
-    </div>
-
-    ${Object.entries(bands).map(([key,b],i)=>`
-      <div class="db-band ${i===0?'active':''}" id="db-band-${key}">
-        <div class="db-band-header">
-          <span>${b.label} — <span id="db-count-${key}">${draft[key].length}</span>/${b.target} sélectionnées</span>
-          <span style="color:#5a7a8a;font-size:11px">Sorts dans le deck : <span id="db-sorts-count">${totalSorts()}</span>/2 min</span>
-        </div>
-        <div class="db-card-grid" id="db-grid-${key}">
-          ${b.items.map(({card,copy})=>{
-            // Combien de copies de ce nom sont sélectionnées ?
-            const selCount = draft[key].filter(n=>n===card.name).length;
-            const isSelected = copy < selCount;
-            return `<div class="db-card ${isSelected?'selected':''} ${card.isSpell?'sort-card':''}"
-              data-name="${card.name}" data-band="${key}" data-copy="${copy}">
-              <div class="db-card-cost">${card.cost}💎</div>
-              <div class="db-card-emoji">${card.emoji||'🃏'}</div>
-              <div class="db-card-name">${card.name}</div>
-              <div class="db-card-meta">${card.isSpell?'Sort':card.cardType} · ${card.rarity}</div>
-            </div>`;
-          }).join('')}
-        </div>
-        <div class="db-hint">${b.items.length===0?'Aucune carte dans cette bande de coût. Achetez des packs à la Taverne !':''}</div>
-      </div>`).join('')}
-    <div id="db-validity-hint" style="font-size:12px;color:#5a7a8a;text-align:center">
-      ${isValid()?'✓ Deck valide — prêt à jouer':'Complétez 6 basses + 5 médianes + 4 hautes avec min 2 sorts pour sauvegarder.'}
-    </div>`;
-
-  // Événements — sélection de pouvoir
-  el.querySelectorAll('.db-power-card').forEach(card=>{
-    card.onclick = ()=>{
-      el.querySelectorAll('.db-power-card').forEach(c=>c.classList.remove('active'));
-      card.classList.add('active');
-      activePower = card.dataset.power;
-    };
-  });
-
-  // Événements — onglets
-  el.querySelectorAll('.db-tab').forEach(tab=>{
-    tab.onclick = ()=>{
-      el.querySelectorAll('.db-tab').forEach(t=>t.classList.remove('active'));
-      el.querySelectorAll('.db-band').forEach(b=>b.classList.remove('active'));
-      tab.classList.add('active');
-      el.querySelector(`#db-band-${tab.dataset.band}`)?.classList.add('active');
-    };
-  });
-
-  // Événements — toggle carte
-  function refreshUI(){
-    // Mettre à jour les badges d'onglets
-    el.querySelectorAll('.db-tab').forEach(tab=>{
-      const key = tab.dataset.band;
-      const b = bands[key];
-      const cnt = draft[key].length;
-      const cls = cnt===b.target?'full':cnt>b.target?'over':'';
-      tab.innerHTML = `${b.label.split(' ')[0]} <span class="db-tab-badge ${cls}">${cnt}/${b.target}</span>`;
+  // Section pouvoirs avec vraies cartes
+  const pwrSection = document.createElement('div');
+  pwrSection.className = 'band-section';
+  pwrSection.innerHTML = '<div class="band-section-title">⚡ Pouvoir héroïque — cliquez pour activer</div>';
+  const pwrShelf = document.createElement('div');
+  pwrShelf.className = 'card-shelf';
+  career.ownedPowerNames.forEach(pname=>{
+    const p = CARD_POOL.find(c=>c.name===pname);
+    if(!p) return;
+    const wrap = makeCardWrap(p, {
+      selected: pname===activePower,
+      onWrap: ()=>{
+        activePower = pname;
+        pwrShelf.querySelectorAll('.card-wrap').forEach(w=>w.classList.remove('selected-card'));
+        wrap.classList.add('selected-card');
+      },
     });
-    // Compteurs
-    ['low','mid','high'].forEach(key=>{
-      const el2 = document.getElementById(`db-count-${key}`);
-      if(el2) el2.textContent = draft[key].length;
-    });
-    document.querySelectorAll('#db-sorts-count').forEach(e=>e.textContent=totalSorts());
-    // Bouton sauvegarder
-    document.getElementById('db-save-btn').disabled = !isValid();
-    document.getElementById('db-validity-hint').textContent =
-      isValid()?'✓ Deck valide — prêt à jouer':'Complétez 6 basses + 5 médianes + 4 hautes avec min 2 sorts pour sauvegarder.';
-  }
+    pwrShelf.appendChild(wrap);
+  });
+  pwrSection.appendChild(pwrShelf);
+  el.appendChild(pwrSection);
 
-  el.querySelectorAll('.db-card').forEach(card=>{
-    card.onclick = ()=>{
-      const name = card.dataset.name;
-      const band = card.dataset.band;
-      const copy = parseInt(card.dataset.copy);
-      const selCount = draft[band].filter(n=>n===name).length;
-      const isSelected = copy < selCount;
-      if(isSelected){
-        // Désélectionner une copie
-        const idx = draft[band].lastIndexOf(name);
-        draft[band].splice(idx,1);
-        card.classList.remove('selected');
-      } else {
-        // Sélectionner si pas encore au max de la bande
-        const b = bands[band];
-        if(draft[band].length >= b.target) return; // bande pleine
-        draft[band].push(name);
-        card.classList.add('selected');
+  // Sections par bande avec vraies cartes
+  BAND_DEFS.forEach(({key, label, target, entries})=>{
+    const shelf = document.createElement('div');
+    shelf.className = 'card-shelf';
+    shelf.id = `db-shelf-${key}`;
+
+    function buildShelf(){
+      shelf.innerHTML = '';
+      if(!entries.length){
+        shelf.innerHTML = '<div style="color:#5a7a8a;font-size:13px;padding:8px">Aucune carte — achetez des packs à la Taverne !</div>';
+        return;
       }
-      refreshUI();
-    };
+      entries.forEach(({card, copy})=>{
+        const selCount = draft[key].filter(n=>n===card.name).length;
+        const isSelected = copy < selCount;
+        const bandFull = draft[key].length >= target;
+        const wrap = makeCardWrap(card, {
+          selected: isSelected,
+          cantSelect: !isSelected && bandFull,
+          onWrap: ()=>{
+            const sc = draft[key].filter(n=>n===card.name).length;
+            const isSel = copy < sc;
+            if(isSel){
+              draft[key].splice(draft[key].lastIndexOf(card.name), 1);
+            } else {
+              if(draft[key].length >= target) return;
+              draft[key].push(card.name);
+            }
+            refreshDB();
+          },
+        });
+        shelf.appendChild(wrap);
+      });
+    }
+
+    function refreshDB(){
+      // Reconstruire toutes les shelves
+      BAND_DEFS.forEach(b=>{
+        document.getElementById(`db-shelf-${b.key}`)?.parentElement
+          ?.querySelector('.band-section-title span.band-count-badge')
+          ?.parentElement && refreshBandTitle(b);
+      });
+      buildShelf(); // rebuild this shelf
+      updateSaveBtn();
+    }
+
+    function refreshBandTitle(b){
+      const cnt = draft[b.key].length;
+      const badge = document.querySelector(`#db-shelf-${b.key}`)
+        ?.closest('.band-section')?.querySelector('.band-count-badge');
+      if(badge){
+        badge.textContent = `${cnt}/${b.target}`;
+        badge.className = 'band-count-badge' + (cnt===b.target?' full':cnt>b.target?' over':'');
+      }
+    }
+
+    buildShelf();
+
+    const cnt0 = draft[key].length;
+    const cls0 = cnt0===target?'full':cnt0>target?'over':'';
+    const sec = document.createElement('div');
+    sec.className = 'band-section';
+    sec.innerHTML = `<div class="band-section-title">${label} <span class="band-count-badge ${cls0}">${cnt0}/${target}</span></div>`;
+    sec.appendChild(shelf);
+    el.appendChild(sec);
   });
 
-  // Sauvegarder
+  function updateSaveBtn(){
+    const btn = document.getElementById('db-save-btn');
+    const hint = document.getElementById('db-validity-hint');
+    const valid = isValid();
+    if(btn) btn.disabled = !valid;
+    if(hint) hint.textContent = valid
+      ? `✓ Deck valide · Sorts : ${totalSorts()}`
+      : `Complétez 6+5+4 avec min 2 sorts — Sorts actuels : ${totalSorts()}`;
+  }
+  updateSaveBtn();
+
   document.getElementById('db-save-btn').onclick = ()=>{
     if(!isValid()) return;
     career.activeDeck = { low:[...draft.low], mid:[...draft.mid], high:[...draft.high] };
     career.activePowerName = activePower;
     saveCareer();
-    // Feedback visuel
     const btn = document.getElementById('db-save-btn');
     btn.textContent = '✓ Sauvegardé !';
     btn.style.background = '#3a9a3a';
@@ -2014,7 +2071,7 @@ function showCampaignComplete(){
     <div class="camp-subtitle">Votre flotte domine tous les océans !<br>Un défi secret vient de s'ouvrir…</div>
     ${careerInfo}
     <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:12px">
-      <button class="btn-secondary" onclick="location.reload()">🔄 Menu principal</button>
+      <button class="btn-secondary" onclick="backToHub()">🔄 Menu principal</button>
       ${taverneBtn}
     </div>`;
   el.style.display = 'flex';
@@ -2032,7 +2089,7 @@ function showSecretVictory(){
     <div class="camp-subtitle">Vous avez repoussé L'Entité des Profondeurs.<br>Les océans vous appartiennent à jamais.</div>
     ${careerInfo}
     <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:12px">
-      <button class="btn-secondary" onclick="location.reload()">🔄 Menu principal</button>
+      <button class="btn-secondary" onclick="backToHub()">🔄 Menu principal</button>
       ${taverneBtn}
     </div>`;
   el.style.display = 'flex';
@@ -2049,7 +2106,7 @@ function showDefeatScreen(){
     <div class="reward-title" style="color:#e74c3c">💀 Défaite !</div>
     <div class="camp-complete-emoji">🌊</div>
     <div class="camp-subtitle">${isSecret ? "L'Entité des Profondeurs vous a englouti..." : `Votre flotte a sombré au combat ${campaignStage+1}...`}</div>
-    <button id="reward-continue-btn" onclick="location.reload()">🔄 Recommencer la campagne</button>`;
+    <button id="reward-continue-btn" onclick="backToHub()">🔄 Recommencer la campagne</button>`;
   el.style.display = 'flex';
 }
 
